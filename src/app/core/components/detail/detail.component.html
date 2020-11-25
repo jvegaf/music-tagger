@@ -1,12 +1,29 @@
 <dui-form>
+  <dui-form-row label="Filename">
+    <dui-input [(ngModel)]="item.filename"></dui-input>
+  </dui-form-row>
   <dui-form-row label="Title">
-    <dui-input>ola</dui-input>
+    <dui-input [(ngModel)]="item.tags.title"></dui-input>
   </dui-form-row>
   <dui-form-row label="Artist">
-    <dui-input>ke</dui-input>
+    <dui-input [(ngModel)]="item.tags.artist"></dui-input>
   </dui-form-row>
   <dui-form-row label="Album">
-    <dui-input>ase</dui-input>
+    <dui-input [(ngModel)]="item.tags.album"></dui-input>
   </dui-form-row>
+  <dui-form-row label="Genre">
+    <dui-input [(ngModel)]="item.tags.genre"></dui-input>
+  </dui-form-row>
+  <dui-form-row label="BPM">
+    <dui-input [(ngModel)]="item.tags.bpm"></dui-input>
+  </dui-form-row>
+  <dui-form-row label="Year">
+    <dui-input [(ngModel)]="item.tags.year"></dui-input>
+  </dui-form-row>
+  <dui-form-row label="Key">
+    <dui-input [(ngModel)]="item.tags.initialKey"></dui-input>
+  </dui-form-row>
+
+
 </dui-form>
 

@@ -19,8 +19,8 @@
   <dui-window-content>
     <app-tracklist (showDetail)="showDetail($event)"></app-tracklist>
   </dui-window-content>
-  <dui-dialog [(visible)]="detailDialog" #detail >
-    <app-detail [item]="itemSelected"></app-detail>
+  <dui-dialog [(visible)]="detailDialog" [minWidth]="800" #detail >
+    <app-detail *ngIf="itemSelected" [item]="itemSelected"></app-detail>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
       <dui-button closeDialog primary>Save</dui-button>
