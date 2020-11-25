@@ -21,8 +21,10 @@ exports.cleanFilenames = (items, value) => {
 }
 
 const getTagsOfFiles = (folderPath, files) => {
-  return files.map((file) => {
-    return getTagsOfFile(folderPath, file);
+  return files.map((file, index) => {
+    let item = getTagsOfFile(folderPath, file);
+    item.id = index;
+    return item;
   });
 };
 

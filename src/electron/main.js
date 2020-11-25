@@ -1,21 +1,25 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const id3 = require('./services/id3Service');
+const path = require('path');
 
 let mainWindow
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
+    minWidth: 1200,
+    minHeight: 800,
+    fullscreen: true,
+    backgroundColor: "#80FFFFFF",
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      allowRunningInsecureContent: false,
+      preload: __dirname + './../../node_modules/@marcj/angular-desktop-ui/preload.js'
     }
   })
 
-  mainWindow.setMenuBarVisibility(false)
-
+  // mainWindow.setMenuBarVisibility(false)
   mainWindow.loadFile('dist/music-tagger/index.html')
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(createWindow)

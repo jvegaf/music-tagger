@@ -17,13 +17,19 @@ import {
   DuiTableModule,
   DuiWindowModule,
 } from '@marcj/angular-desktop-ui';
+import { TracklistComponent } from './core/components/tracklist/tracklist.component';
+import { NgxElectronModule } from 'ngx-electron';
+import { DetailComponent } from './core/components/detail/detail.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TracklistComponent,
+    DetailComponent
   ],
   imports: [
     BrowserModule,
+    NgxElectronModule,
     DuiAppModule.forRoot(),
     DuiWindowModule.forRoot(),
 

@@ -1,18 +1,29 @@
- <dui-window>
-    <dui-window-header>
-        Angular Desktop UI
-        <dui-window-toolbar>
-            <dui-button-group>
-                <dui-button textured icon="envelop"></dui-button>
-            </dui-button-group>
-            <dui-button-group float="right">
-                <dui-input textured icon="search" placeholder="Search" round clearer></dui-input>
-            </dui-button-group>
-        </dui-window-toolbar>
-    </dui-window-header>
-    <dui-window-content>
-        <div>
-            This is the window content
-        </div>
-    </dui-window-content>
-</dui-window> 
+<dui-window [closable]="true" [maximizable]="true" [minimizable]="true">
+  <dui-window-header>
+    {{ title }}
+    <dui-window-toolbar>
+      <dui-button-group>
+        <dui-button textured icon="folder" (click)="openFolder()"></dui-button>
+      </dui-button-group>
+      <dui-button-group float="right">
+        <dui-input
+          textured
+          icon="search"
+          placeholder="Search"
+          round
+          clearer
+        ></dui-input>
+      </dui-button-group>
+    </dui-window-toolbar>
+  </dui-window-header>
+  <dui-window-content>
+    <app-tracklist (showDetail)="showDetail($event)"></app-tracklist>
+  </dui-window-content>
+  <dui-dialog [(visible)]="detailDialog" #detail >
+    <app-detail [item]="itemSelected"></app-detail>
+    <dui-dialog-actions>
+      <dui-button closeDialog>Close</dui-button>
+      <dui-button closeDialog primary>Save</dui-button>
+    </dui-dialog-actions>
+  </dui-dialog>
+</dui-window>
