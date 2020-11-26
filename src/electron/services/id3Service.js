@@ -11,11 +11,12 @@ exports.getTagsFromPath = (folderPath) => {
 exports.cleanFilenames = (items, value) => {
   return items.map(item => {
     if (item.filename.indexOf(value) !== -1) {
-      let newName = item.filename.replace(value, '');
-      fs.renameSync(
-        path.join(item.filepath, item.filename),
-        path.join(item.filepath, newName));
-      item = getTagsOfFile(item.filepath, newName);
+      const newName = item.filename.replace(value, '');
+      const oldFile = path.join(item.filepath, item.filename);
+      let newfile = path.join(item.filepath, newName);
+      fs.renameSync(oldFile, newfile);
+      item.filename = newName;
+      return item;
     }
   });
 }
@@ -47,12 +48,8 @@ const getTagsOfFile = (folderPath, filename) => {
   item.tags = tags;
 
   item.filepath = folderPath;
-  item.filename = fileExtensionClean(filename);
+  item.filename = filename;
   return item;
-}
-
-const fileExtensionClean = (filename) => {
-  return filename.replace('.mp3', '');
 }
 
 /**

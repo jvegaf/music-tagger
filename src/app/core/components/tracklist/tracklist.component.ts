@@ -16,7 +16,7 @@ export class TracklistComponent implements OnInit {
 
   @Output() showDetail = new EventEmitter<string>();
 
-  datasource = [];
+  datasource: Track[] = [];
 
   constructor(private changeDetectorRefs: ChangeDetectorRef) { }
 

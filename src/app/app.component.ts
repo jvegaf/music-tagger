@@ -9,16 +9,21 @@ import { Track } from './core/models/Track';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
   title = 'Music Tagger';
   itemSelected: Track;
+  dirtyString = '';
+  haveData = false;
   detailDialog = false;
+  cleanerDialog = false;
 
   @ViewChild(TracklistComponent)
-  private tracklist: TracklistComponent;
+  tracklist: TracklistComponent;
 
   constructor(private els: ElectronService) {
     this.els.ipcRenderer.on('tags-extracted', (event, data) => {
       this.tracklist.refresh(data);
+      this.haveData = true;
     })
   }
 
@@ -31,5 +36,21 @@ export class AppComponent {
     this.detailDialog = true;
   }
 
+  showCleaner() {
+    this.cleanerDialog = true;
+  }
+
+  setDirtyText(event) {
+    this.dirtyString = event.target.value;
+  }
+
+  cleanFilenames() {
+    this.els.ipcRenderer.send('clean-filenames', { items: this.tracklist.datasource, dirtyText: this.dirtyString });
+    this.cleanerDialog = false;
+  }
+
+  filenamesToTags() {
+
+  }
 
 }

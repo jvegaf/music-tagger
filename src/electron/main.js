@@ -8,18 +8,19 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
-    fullscreen: true,
+    frame: process.platform === 'win32' ? true : false ,
     backgroundColor: "#80FFFFFF",
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: false,
-      preload: __dirname + './../../node_modules/@marcj/angular-desktop-ui/preload.js'
+      preload: __dirname + './../../node_modules/@marcj/angular-desktop-ui/preload.js',
+      nativeWindowOpen: true,
     }
   })
 
-  // mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(process.platform === 'win32' ? true : false)
   mainWindow.loadFile('dist/music-tagger/index.html')
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(createWindow)
@@ -50,4 +51,7 @@ ipcMain.on('open-folder', async () => {
     });
 });
 
-
+ipcMain.on('clean-filenames', (event, args) => {
+  const tags = id3.cleanFilenames(args.items, args.dirtyText);
+  mainWindow.webContents.send('tags-extracted', tags);
+})

@@ -125,6 +125,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "music-tagger"
+    }
+  },
+  "defaultProject": "music-tagger",
+  "cli": {
+    "analytics": "d5263104-a107-4e83-acf7-21c4e41afe24"
+  }
 }

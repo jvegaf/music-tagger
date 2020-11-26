@@ -3,7 +3,23 @@
     {{ title }}
     <dui-window-toolbar>
       <dui-button-group>
-        <dui-button textured icon="folder" (click)="openFolder()"></dui-button>
+        <dui-button textured icon="folder" (click)="openFolder()">Open Folder</dui-button>
+      </dui-button-group>
+      <dui-button-group>
+        <dui-button
+          textured
+          icon="edit"
+          [disabled]="!haveData"
+          (click)="showCleaner()"
+          >Clean Filenames</dui-button
+        >
+        <dui-button
+          textured
+          icon="flag"
+          [disabled]="!haveData"
+          (click)="filenamesToTags()"
+          >Tags from Filenames</dui-button
+        >
       </dui-button-group>
       <dui-button-group float="right">
         <dui-input
@@ -19,11 +35,18 @@
   <dui-window-content>
     <app-tracklist (showDetail)="showDetail($event)"></app-tracklist>
   </dui-window-content>
-  <dui-dialog [(visible)]="detailDialog" [minWidth]="800" #detail >
+  <dui-dialog [(visible)]="detailDialog" [minWidth]="800" #detail>
     <app-detail *ngIf="itemSelected" [item]="itemSelected"></app-detail>
-    <dui-dialog-actions>
+    <dui-dialog-actions >
       <dui-button closeDialog>Close</dui-button>
       <dui-button closeDialog primary>Save</dui-button>
+    </dui-dialog-actions>
+  </dui-dialog>
+  <dui-dialog [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
+    <app-cleaner-view (change)="setDirtyText($event)"></app-cleaner-view>
+    <dui-dialog-actions>
+      <dui-button (click)="cleaner.close()">Close</dui-button>
+      <dui-button (click)="cleanFilenames()" primary>Clean Files</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
 </dui-window>

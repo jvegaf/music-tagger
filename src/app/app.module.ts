@@ -21,12 +21,14 @@ import {
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 import { NgxElectronModule } from 'ngx-electron';
 import { DetailComponent } from './core/components/detail/detail.component';
+import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TracklistComponent,
-    DetailComponent
+    DetailComponent,
+    CleanerViewComponent
   ],
   imports: [
     BrowserModule,
