@@ -24,7 +24,7 @@ exports.cleanFilenames = (items, value) => {
 const getTagsOfFiles = (folderPath, files) => {
   return files.map((file, index) => {
     let item = getTagsOfFile(folderPath, file);
-    item.id = index;
+    item.fileIndex = index;
     return item;
   });
 };
@@ -38,14 +38,15 @@ const getTagsOfFile = (folderPath, filename) => {
   if (tags === false){
     tags = {};
   }
-  if (tags.title === undefined) tags.title = "";
-  if (tags.artist === undefined) tags.artist = "";
-  if (tags.album === undefined) tags.album = "";
-  if (tags.year === undefined) tags.year = "";
-  if (tags.genre === undefined) tags.genre = "";
-  if (tags.bpm === undefined) tags.bpm = "";
-  if (tags.initialKey === undefined) tags.initialKey = "";
-  item.tags = tags;
+  item.titleTag = tags.title || '';
+  item.artistTag = tags.artist || '';
+  item.albumTag = tags.album || '';
+  item.yearTag = tags.year || '';
+  item.genreTag = tags.genre || '';
+  item.bpmTag = tags.bpm || '';
+  item.keyTag = tags.initialKey || '';
+  item.imageTag = tags.image;
+
 
   item.filepath = folderPath;
   item.filename = filename;
@@ -71,7 +72,17 @@ const getTagsOfFile = (folderPath, filename) => {
 exports.updateTagsOfItem = (item) => {
   const fullPath = path.join(item.filepath, item.filename);
   let fileBuffer = fs.readFileSync(fullPath);
-  let tags = item.tags;
+  let tags = {
+    title: item.titleTag,
+    artist: item.artistTag,
+    album: item.albumTag,
+    year: item.yearTag,
+    genre: item.genreTag,
+    bpm: item.bpmTag,
+    initialKey: item.keyTag,
+    image: item.imageTag
+  }
+
   let result = NodeId3.update(tags, fileBuffer);
   fs.writeFileSync(fullPath, result);
 };

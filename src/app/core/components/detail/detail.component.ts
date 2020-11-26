@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Track } from '../../models/Track';
+import { MusicTag } from '../../models/MusicTag';
 
 @Component({
   selector: 'app-detail',
@@ -8,7 +8,7 @@ import { Track } from '../../models/Track';
 })
 export class DetailComponent implements OnInit {
 
-  @Input() item: Track;
+  @Input() item: MusicTag;
 
   constructor() { }
 

@@ -1,8 +1,7 @@
 import { TagsService } from './core/services/tags.service';
-import { TracklistComponent } from './core/components/tracklist/tracklist.component';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { Track } from './core/models/Track';
+import { MusicTag } from './core/models/MusicTag';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +11,8 @@ import { Track } from './core/models/Track';
 })
 export class AppComponent {
 
-  @ViewChild(TracklistComponent)
-  tracklist: TracklistComponent;
-
   title = 'Music Tagger';
-  itemSelected: Track;
+  itemSelected: MusicTag;
   dirtyString = '';
   haveData = false;
   haveChanges = false;
@@ -24,14 +20,15 @@ export class AppComponent {
   cleanerDialog = false;
   tagsExtrDialog = false;
   savedInfoDialog = false;
-  sampleItem: Track;
+  trackItems = [];
+  sampleItem: MusicTag;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
     this.els.ipcRenderer.on('tags-extracted', (event, data) => {
-      this.tracklist.datasource = data;
       this.haveData = true;
+      this.trackItems = data;
     });
-    this.els.ipcRenderer.on('tags-saved', (event) => {
+    this.els.ipcRenderer.on('tags-saved', () => {
       this.savedInfoDialog = true;
     });
   }
@@ -40,7 +37,7 @@ export class AppComponent {
     this.els.ipcRenderer.send('open-folder');
   }
 
-  showDetail(item: Track) {
+  showDetailDialog(item: MusicTag) {
     this.itemSelected = item;
     this.detailDialog = true;
   }
@@ -50,8 +47,7 @@ export class AppComponent {
   }
 
   showTagExtrDialog() {
-    this.sampleItem = this.tracklist.datasource[0];
-    this.sampleItem = this.tagsService.convertFilenameToTags(this.sampleItem);
+    this.sampleItem = this.tagsService.convertFilenameToTags(this.trackItems[0]);
     this.tagsExtrDialog = true;
   }
 
@@ -60,19 +56,19 @@ export class AppComponent {
   }
 
   cleanFilenames() {
-    this.els.ipcRenderer.send('clean-filenames', { items: this.tracklist.datasource, dirtyText: this.dirtyString });
+    this.els.ipcRenderer.send('clean-filenames', { items: this.trackItems, dirtyText: this.dirtyString });
     this.cleanerDialog = false;
   }
 
   filenamesToTags() {
-    const tags = this.tagsService.getTagsFromFilenames(this.tracklist.datasource);
-    this.tracklist.datasource = tags;
+    const tags = this.tagsService.getTagsFromFilenames(this.trackItems);
+    this.trackItems = tags;
     this.haveChanges = true;
     this.tagsExtrDialog = false;
   }
 
   saveChanges() {
-    this.els.ipcRenderer.send('update-tags', this.tracklist.datasource);
+    this.els.ipcRenderer.send('update-tags', this.trackItems);
     this.haveChanges = false;
   }
 

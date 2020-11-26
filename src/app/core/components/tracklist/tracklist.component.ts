@@ -1,7 +1,7 @@
-import { Track } from './../../models/Track';
+import { MusicTag } from '../../models/MusicTag';
 import {
-  ChangeDetectorRef,
   Component,
+  Input,
   OnInit,
   Output,
   EventEmitter,
@@ -14,11 +14,13 @@ import {
 })
 export class TracklistComponent implements OnInit {
 
+  @Input() datasource: MusicTag[];
+
   @Output() showDetail = new EventEmitter<string>();
 
-  datasource: Track[] = [];
+  selectedItems = [];
 
-  constructor(private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

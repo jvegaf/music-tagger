@@ -43,8 +43,9 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist (showDetail)="showDetail($event)"></app-tracklist>
+    <app-tracklist [datasource]="trackItems" (showDetail)="showDetailDialog($event)"></app-tracklist>
   </dui-window-content>
+  <!-- Info Dialog -->
   <dui-dialog [(visible)]="savedInfoDialog" [minWidth]="300" #saved>
     <p>Tags Saved</p>
     <dui-dialog-actions>
@@ -76,10 +77,10 @@
       <dui-input readonly [ngModel]="sampleItem.filename"></dui-input>
     </dui-form-row>
     <dui-form-row label="Title">
-      <dui-input readonly [ngModel]="sampleItem.tags.title"></dui-input>
+      <dui-input readonly [ngModel]="sampleItem.titleTag"></dui-input>
     </dui-form-row>
     <dui-form-row label="Artist">
-      <dui-input readonly [ngModel]="sampleItem.tags.artist"></dui-input>
+      <dui-input readonly [ngModel]="sampleItem.artistTag"></dui-input>
     </dui-form-row>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>

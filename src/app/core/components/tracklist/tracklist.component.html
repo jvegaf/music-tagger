@@ -1,34 +1,10 @@
-<dui-table style="height: 100%" multiSelect [items]="datasource" [selectable]="true" (dbclick)="itemClicked($event)">
-  <dui-table-header name="title" [sortable]="true">Title</dui-table-header>
-  <dui-table-column name="title" [width]="250">
-    <ng-container *duiTableCell="let track">{{ track.tags.title }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="artist" [sortable]="true">Artist</dui-table-header>
-  <dui-table-column name="artist" [width]="250">
-    <ng-container *duiTableCell="let track">{{ track.tags.artist }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="album" [sortable]="true">Album</dui-table-header>
-    <dui-table-column name="album" [width]="250">
-      <ng-container *duiTableCell="let track">{{ track.tags.album }}</ng-container>
-    </dui-table-column>
-  <dui-table-header name="genre" [sortable]="true">Genre</dui-table-header>
-  <dui-table-column name="genre" [width]="100">
-    <ng-container *duiTableCell="let track">{{ track.tags.genre }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="bpm" [sortable]="true">BPM</dui-table-header>
-  <dui-table-column name="bpm" [width]="40">
-    <ng-container *duiTableCell="let track">{{ track.tags.bpm }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="year" [sortable]="true">Year</dui-table-header>
-  <dui-table-column name="year" [width]="40">
-    <ng-container *duiTableCell="let track">{{ track.tags.year }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="initialKey" [sortable]="true">Key</dui-table-header>
-  <dui-table-column name="initialKey" [width]="40">
-    <ng-container *duiTableCell="let track">{{ track.tags.initialKey }}</ng-container>
-  </dui-table-column>
-  <dui-table-header name="filename" [sortable]="true">Filename</dui-table-header>
-  <dui-table-column name="filename" [width]="600">
-    <ng-container *duiTableCell="let track">{{ track.filename }}</ng-container>
-  </dui-table-column>
+<dui-table style="height: 100%;" multiSelect [items]="datasource" [selectable]="true" (dbclick)="itemClicked($event)">
+<dui-table-column name="titleTag" header="Title" [width]="300"></dui-table-column>
+  <dui-table-column name="artistTag" header="Artist" [width]="300"></dui-table-column>
+  <dui-table-column name="albumTag" header="Album" [width]="250"></dui-table-column>
+  <dui-table-column name="genreTag" header="Genre" [width]="100"></dui-table-column>
+  <dui-table-column name="bpmTag" header="BPM" [width]="70"></dui-table-column>
+  <dui-table-column name="yearTag" header="Year" [width]="80"></dui-table-column>
+  <dui-table-column name="keyTag" header="Key" [width]="40"></dui-table-column>
+  <dui-table-column name="filename" header="Filename" [width]="700"></dui-table-column>
 </dui-table>
