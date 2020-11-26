@@ -18,7 +18,7 @@ function createWindow () {
     }
   })
 
-  mainWindow.setMenuBarVisibility(process.platform === 'win32' ? true : false)
+  mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile('dist/music-tagger/index.html')
   // mainWindow.webContents.openDevTools()
 }
@@ -54,4 +54,9 @@ ipcMain.on('open-folder', async () => {
 ipcMain.on('clean-filenames', (event, args) => {
   const tags = id3.cleanFilenames(args.items, args.dirtyText);
   mainWindow.webContents.send('tags-extracted', tags);
+})
+
+ipcMain.on('update-tags', (event, items) => {
+  items.forEach(item => id3.updateTagsOfItem(item));
+  mainWindow.webContents.send('tags-saved');
 })

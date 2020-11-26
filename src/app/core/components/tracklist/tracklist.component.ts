@@ -23,11 +23,6 @@ export class TracklistComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  refresh(data: Track[]) {
-    this.datasource = data;
-    this.changeDetectorRefs.detectChanges();
-  }
-
   itemClicked(event) {
     this.showDetail.emit(event);
   }

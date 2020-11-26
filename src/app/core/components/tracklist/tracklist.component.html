@@ -1,29 +1,34 @@
 <dui-table style="height: 100%" multiSelect [items]="datasource" [selectable]="true" (dbclick)="itemClicked($event)">
-  <!-- <dui-dropdown duiTableCustomRowContextMenu>
-      <dui-dropdown-item [disabled]="!selectedItems.length" (click)="remove()">Delete</dui-dropdown-item>
-  </dui-dropdown> -->
-  <dui-table-column name="title" header="Title" [width]="250">
+  <dui-table-header name="title" [sortable]="true">Title</dui-table-header>
+  <dui-table-column name="title" [width]="250">
     <ng-container *duiTableCell="let track">{{ track.tags.title }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="artist" header="Artist" [width]="250">
+  <dui-table-header name="artist" [sortable]="true">Artist</dui-table-header>
+  <dui-table-column name="artist" [width]="250">
     <ng-container *duiTableCell="let track">{{ track.tags.artist }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="album" header="Album" [width]="250">
-    <ng-container *duiTableCell="let track">{{ track.tags.album }}</ng-container>
-  </dui-table-column>
-  <dui-table-column name="genre" header="Genre" [width]="100">
+  <dui-table-header name="album" [sortable]="true">Album</dui-table-header>
+    <dui-table-column name="album" [width]="250">
+      <ng-container *duiTableCell="let track">{{ track.tags.album }}</ng-container>
+    </dui-table-column>
+  <dui-table-header name="genre" [sortable]="true">Genre</dui-table-header>
+  <dui-table-column name="genre" [width]="100">
     <ng-container *duiTableCell="let track">{{ track.tags.genre }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="bpm" header="BPM" [width]="40">
+  <dui-table-header name="bpm" [sortable]="true">BPM</dui-table-header>
+  <dui-table-column name="bpm" [width]="40">
     <ng-container *duiTableCell="let track">{{ track.tags.bpm }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="year" header="Year" [width]="40">
+  <dui-table-header name="year" [sortable]="true">Year</dui-table-header>
+  <dui-table-column name="year" [width]="40">
     <ng-container *duiTableCell="let track">{{ track.tags.year }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="initialKey" header="Key" [width]="40">
+  <dui-table-header name="initialKey" [sortable]="true">Key</dui-table-header>
+  <dui-table-column name="initialKey" [width]="40">
     <ng-container *duiTableCell="let track">{{ track.tags.initialKey }}</ng-container>
   </dui-table-column>
-  <dui-table-column name="filename" header="Filename" [width]="400">
+  <dui-table-header name="filename" [sortable]="true">Filename</dui-table-header>
+  <dui-table-column name="filename" [width]="600">
     <ng-container *duiTableCell="let track">{{ track.filename }}</ng-container>
   </dui-table-column>
 </dui-table>

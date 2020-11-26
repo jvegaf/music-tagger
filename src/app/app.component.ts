@@ -19,16 +19,21 @@ export class AppComponent {
   itemSelected: Track;
   dirtyString = '';
   haveData = false;
+  haveChanges = false;
   detailDialog = false;
   cleanerDialog = false;
   tagsExtrDialog = false;
+  savedInfoDialog = false;
   sampleItem: Track;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
     this.els.ipcRenderer.on('tags-extracted', (event, data) => {
-      this.tracklist.refresh(data);
+      this.tracklist.datasource = data;
       this.haveData = true;
-    })
+    });
+    this.els.ipcRenderer.on('tags-saved', (event) => {
+      this.savedInfoDialog = true;
+    });
   }
 
   openFolder() {
@@ -45,7 +50,8 @@ export class AppComponent {
   }
 
   showTagExtrDialog() {
-    this.sampleItem = this.tagsService.convertFilenameToTags(this.tracklist.datasource[0]);
+    this.sampleItem = this.tracklist.datasource[0];
+    this.sampleItem = this.tagsService.convertFilenameToTags(this.sampleItem);
     this.tagsExtrDialog = true;
   }
 
@@ -59,8 +65,15 @@ export class AppComponent {
   }
 
   filenamesToTags() {
-    // const tags = this.tagsService.getTagsFromFilenames(this.tracklist.datasource);
-    // this.tracklist.refresh(tags);
+    const tags = this.tagsService.getTagsFromFilenames(this.tracklist.datasource);
+    this.tracklist.datasource = tags;
+    this.haveChanges = true;
+    this.tagsExtrDialog = false;
+  }
+
+  saveChanges() {
+    this.els.ipcRenderer.send('update-tags', this.tracklist.datasource);
+    this.haveChanges = false;
   }
 
 }

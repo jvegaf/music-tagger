@@ -3,7 +3,9 @@
     {{ title }}
     <dui-window-toolbar>
       <dui-button-group>
-        <dui-button textured icon="folder" (click)="openFolder()">Open Folder</dui-button>
+        <dui-button textured icon="folder" (click)="openFolder()"
+          >Open Folder</dui-button
+        >
       </dui-button-group>
       <dui-button-group>
         <dui-button
@@ -20,6 +22,14 @@
           (click)="showTagExtrDialog()"
           >Tags from Filenames</dui-button
         >
+        <dui-button
+          textured
+          icon="check"
+          [disabled]="!haveChanges"
+          (click)="saveChanges()"
+          >Save Tags</dui-button
+        >
+
       </dui-button-group>
       <dui-button-group float="right">
         <dui-input
@@ -35,9 +45,15 @@
   <dui-window-content>
     <app-tracklist (showDetail)="showDetail($event)"></app-tracklist>
   </dui-window-content>
+  <dui-dialog [(visible)]="savedInfoDialog" [minWidth]="300" #saved>
+    <p>Tags Saved</p>
+    <dui-dialog-actions>
+      <dui-button (click)="savedInfoDialog = false" closeDialog primary>Ok</dui-button>
+    </dui-dialog-actions>
+  </dui-dialog>
   <dui-dialog [(visible)]="detailDialog" [minWidth]="800" #detail>
     <app-detail *ngIf="itemSelected" [item]="itemSelected"></app-detail>
-    <dui-dialog-actions >
+    <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
       <dui-button closeDialog primary>Save</dui-button>
     </dui-dialog-actions>
@@ -49,20 +65,22 @@
       <dui-button (click)="cleanFilenames()" primary>Clean Files</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
-  <dui-dialog [(visible)]="tagsExtrDialog" [minWidth]="800" #tagsExtract>
+  <dui-dialog
+    *ngIf="sampleItem"
+    [(visible)]="tagsExtrDialog"
+    [minWidth]="800"
+    #tagsExtract
+  >
     <h3>Filename To Tags</h3>
-    <div>
-      <p>File: </p>
-      <p>{{ sampleItem.filename }}</p>
-    </div>
-    <div>
-      <p>Title: </p>
-      <p>{{ sampleItem.tags.title }}</p>
-    </div>
-    <div>
-      <p>Artist: </p>
-      <p>{{ sampleItem.tags.artist }}</p>
-    </div>
+    <dui-form-row label="Filename">
+      <dui-input readonly [ngModel]="sampleItem.filename"></dui-input>
+    </dui-form-row>
+    <dui-form-row label="Title">
+      <dui-input readonly [ngModel]="sampleItem.tags.title"></dui-input>
+    </dui-form-row>
+    <dui-form-row label="Artist">
+      <dui-input readonly [ngModel]="sampleItem.tags.artist"></dui-input>
+    </dui-form-row>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
       <dui-button (click)="filenamesToTags()" primary>Convert Filenames To Tags</dui-button>

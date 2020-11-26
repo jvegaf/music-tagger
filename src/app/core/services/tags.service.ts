@@ -19,8 +19,12 @@ export class TagsService {
     const elements = name.split('-').map(element => {
       return element.trim();
     });
-    item.tags.artist = elements[0];
-    item.tags.title = elements[1];
+    if (elements.length > 1) {
+      item.tags.artist = elements[0];
+      item.tags.title = elements.slice(1).join('');
+      return item;
+    }
+    item.tags.title = elements[0];
     return item;
   }
 }
