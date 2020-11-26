@@ -69,8 +69,8 @@ const getTagsOfFile = (folderPath, filename) => {
  * que devuelva el item actualizado
  */
 exports.updateTagsOfItem = (item) => {
-    let fileBuffer = fs.readFileSync(item.filepath);
-    let tags = item.tags;
-    let result = NodeId3.update(tags, fileBuffer);
-    fs.writeFileSync(item.filepath, result);
+  let fileBuffer = fs.readFileSync(item.filepath);
+  let tags = item.tags;
+  let result = NodeId3.update(tags, fileBuffer);
+  fs.writeFileSync(item.filepath, result);
 };

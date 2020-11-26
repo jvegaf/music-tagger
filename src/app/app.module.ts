@@ -1,3 +1,4 @@
+import { TagsService } from './core/services/tags.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {NgModule} from '@angular/core';
@@ -51,7 +52,7 @@ import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-vie
     DuiEmojiModule,
     DuiSliderModule,
   ],
-  providers: [],
+  providers: [TagsService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -17,7 +17,7 @@
           textured
           icon="flag"
           [disabled]="!haveData"
-          (click)="filenamesToTags()"
+          (click)="showTagExtrDialog()"
           >Tags from Filenames</dui-button
         >
       </dui-button-group>
@@ -45,8 +45,27 @@
   <dui-dialog [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
     <app-cleaner-view (change)="setDirtyText($event)"></app-cleaner-view>
     <dui-dialog-actions>
-      <dui-button (click)="cleaner.close()">Close</dui-button>
+      <dui-button closeDialog>Close</dui-button>
       <dui-button (click)="cleanFilenames()" primary>Clean Files</dui-button>
+    </dui-dialog-actions>
+  </dui-dialog>
+  <dui-dialog [(visible)]="tagsExtrDialog" [minWidth]="800" #tagsExtract>
+    <h3>Filename To Tags</h3>
+    <div>
+      <p>File: </p>
+      <p>{{ sampleItem.filename }}</p>
+    </div>
+    <div>
+      <p>Title: </p>
+      <p>{{ sampleItem.tags.title }}</p>
+    </div>
+    <div>
+      <p>Artist: </p>
+      <p>{{ sampleItem.tags.artist }}</p>
+    </div>
+    <dui-dialog-actions>
+      <dui-button closeDialog>Close</dui-button>
+      <dui-button (click)="filenamesToTags()" primary>Convert Filenames To Tags</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
 </dui-window>
