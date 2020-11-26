@@ -22,10 +22,9 @@
           (click)="showTagExtrDialog()"
           >Tags from Filenames</dui-button
         >
-        <dui-button
+        <dui-button *ngIf="haveChanges"
           textured
           icon="check"
-          [disabled]="!haveChanges"
           (click)="saveChanges()"
           >Save Tags</dui-button
         >
@@ -43,7 +42,7 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist [datasource]="trackItems" (showDetail)="showDetailDialog($event)"></app-tracklist>
+    <app-tracklist [datasource]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
   <dui-dialog [(visible)]="savedInfoDialog" [minWidth]="300" #saved>
@@ -52,11 +51,12 @@
       <dui-button (click)="savedInfoDialog = false" closeDialog primary>Ok</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
+  <!-- Detail Dialog -->
   <dui-dialog [(visible)]="detailDialog" [minWidth]="800" #detail>
     <app-detail *ngIf="itemSelected" [item]="itemSelected"></app-detail>
     <dui-dialog-actions>
-      <dui-button closeDialog>Close</dui-button>
-      <dui-button closeDialog primary>Save</dui-button>
+      <dui-button (click)="closeDetailDialog()">Close</dui-button>
+      <dui-button (click)="saveChanges()" primary>Save</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <dui-dialog [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>

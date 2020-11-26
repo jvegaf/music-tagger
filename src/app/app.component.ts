@@ -37,9 +37,14 @@ export class AppComponent {
     this.els.ipcRenderer.send('open-folder');
   }
 
-  showDetailDialog(item: MusicTag) {
+  openDetailDialog(item: MusicTag) {
     this.itemSelected = item;
     this.detailDialog = true;
+  }
+
+  closeDetailDialog() {
+    this.itemSelected = null;
+    this.detailDialog = false;
   }
 
   showCleaner() {
@@ -68,8 +73,12 @@ export class AppComponent {
   }
 
   saveChanges() {
-    this.els.ipcRenderer.send('update-tags', this.trackItems);
+    const items = (this.itemSelected) ? [this.itemSelected] : this.trackItems;
+    this.els.ipcRenderer.send('update-tags', items);
     this.haveChanges = false;
+    this.closeDetailDialog()
   }
+
+
 
 }
