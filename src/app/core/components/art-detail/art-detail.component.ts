@@ -1,4 +1,4 @@
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,21 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArtDetailComponent implements OnInit {
 
+  imgSrc: SafeUrl | string = 'assets/album-art-placeholder.png';
 
-  constructor( private sanitizer: DomSanitizer) { }
+  constructor( private sanitizer: DomSanitizer) {}
 
-  mySrc: 
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-
-
-
-  coverArt(imgBuffer) {
+  coverArt(bufferArt: Buffer) {
     console.log('llamada coverArt');
-    const blob = new Blob( [imgBuffer], { type: "image/jpeg" });
+    const blob = new Blob( [bufferArt], { type: 'image/jpeg' });
     const artUrl = URL.createObjectURL(blob);
-    mySrc = this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + artUrl);
+    this.imgSrc = this.sanitizer.bypassSecurityTrustUrl(artUrl);
   }
 
 }
