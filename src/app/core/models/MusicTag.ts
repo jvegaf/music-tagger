@@ -8,7 +8,7 @@ export interface MusicTag {
   yearTag: number;
   bpmTag: number;
   keyTag: string;
-  imageTag?: ArtImage;
+  imageTag: ArtImage;
   filename: string;
   filepath: string;
 }
