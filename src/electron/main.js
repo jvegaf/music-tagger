@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
+const fetch = require('node-fetch');
 
 let mainWindow
 
@@ -64,9 +65,15 @@ ipcMain.on('update-tags', (event, items) => {
 ipcMain.on('fetch-cover', async (event, item) => {
   try {
     const result = await coverFinder.findCovers(item);
+    console.log(result);
     mainWindow.webContents.send('covers-fetched', result);
   }catch (err) {
     mainWindow.webContents.send('covers-fetch-error', err);
   }
+})
+
+ipcMain.on('imageUrl-to-buffer', async (event, url) => {
+  const response = await fetch(url);
+  const imgBuffer = await response.buffer();
 
 })

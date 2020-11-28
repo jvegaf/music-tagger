@@ -7,7 +7,7 @@ const scraper = new Scraper({
   tbs: {
     isz: "m", // medium size
     iar: "s", // square format
-    ift: "png"
+    ift: "jpg" // ift: "png"
   },
 });
 
