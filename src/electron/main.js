@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const id3 = require('./services/id3Service');
+const coverFinder = require('./services/coverFinderService');
 
 let mainWindow
 
@@ -58,4 +59,14 @@ ipcMain.on('clean-filenames', (event, args) => {
 ipcMain.on('update-tags', (event, items) => {
   items.forEach(item => id3.updateTagsOfItem(item));
   mainWindow.webContents.send('tags-saved');
+})
+
+ipcMain.on('fetch-cover', async (event, item) => {
+  try {
+    const result = await coverFinder.findCovers(item);
+    mainWindow.webContents.send('covers-fetched', result);
+  }catch (err) {
+    mainWindow.webContents.send('covers-fetch-error', err);
+  }
+
 })

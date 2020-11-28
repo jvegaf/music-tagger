@@ -1,15 +1,17 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ArtImage } from '../../models/ArtImage';
 
 @Component({
-  selector: 'app-art-detail',
-  templateUrl: './art-detail.component.html',
-  styleUrls: ['./art-detail.component.scss']
+  selector: 'app-detail-art',
+  templateUrl: './detail-art.component.html',
+  styleUrls: ['./detail-art.component.scss']
 })
-export class ArtDetailComponent implements OnInit {
+export class DetailArtComponent implements OnInit {
 
   imgSrc: SafeUrl | string = 'assets/album-art-placeholder.png';
+
+  @Output() clickCover = new EventEmitter();
 
   constructor( private sanitizer: DomSanitizer) {}
 
@@ -21,4 +23,7 @@ export class ArtDetailComponent implements OnInit {
     this.imgSrc = this.sanitizer.bypassSecurityTrustUrl(artUrl);
   }
 
+  artClicked() {
+    this.clickCover.emit();
+  }
 }

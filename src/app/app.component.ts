@@ -2,6 +2,7 @@ import { TagsService } from './core/services/tags.service';
 import { Component } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
+import { OptionArt } from './core/models/OptionArt';
 
 @Component({
   selector: 'app-root',
@@ -19,18 +20,42 @@ export class AppComponent {
   detailDialog = false;
   cleanerDialog = false;
   tagsExtrDialog = false;
-  savedInfoDialog = false;
+  infoDialog = false;
+  artFetchDialog = false;
   trackItems = [];
+  haveResult = false;
+  fetchResult: OptionArt[];
   sampleItem: MusicTag;
+  infoDialogMessage: string;
+  infoDialogButtons: boolean;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
     this.els.ipcRenderer.on('tags-extracted', (event, data) => {
       this.haveData = true;
       this.trackItems = data;
     });
+
     this.els.ipcRenderer.on('tags-saved', () => {
-      this.savedInfoDialog = true;
+      this.showInfo('Tags Saved', true);
     });
+
+    this.els.ipcRenderer.on('covers-fetched', (event, result) => {
+      this.fetchResult = result as OptionArt[];
+      console.log('result');
+      console.log(result);
+      this.haveResult = true;
+      this.artFetchDialog = true;
+    });
+
+    this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
+      this.infoDialogMessage = error.name;
+    });
+  }
+
+  private showInfo(message: string, showButton: boolean) {
+    this.infoDialogMessage = message;
+    this.infoDialogButtons = showButton;
+    this.infoDialog = true;
   }
 
   openFolder() {
@@ -76,9 +101,26 @@ export class AppComponent {
     const items = (this.itemSelected) ? [this.itemSelected] : this.trackItems;
     this.els.ipcRenderer.send('update-tags', items);
     this.haveChanges = false;
-    this.closeDetailDialog()
+    this.closeDetailDialog();
   }
 
+  showArtFetcherDialog() {
+    this.els.ipcRenderer.send('fetch-cover', this.itemSelected);
+    this.showInfo('Fetching Art Images...', true);
+  }
 
+  closeFetcherDialog() {
+    this.fetchResult = null;
+    this.haveResult = false;
+    this.artFetchDialog = false;
+    this.infoDialog = false;
+  }
 
+  onSelectArt(event: string) {
+    this.showInfo(`cover: ${event}`, true);
+  }
+
+  closeInfoDialog() {
+    this.infoDialog = false;
+  }
 }

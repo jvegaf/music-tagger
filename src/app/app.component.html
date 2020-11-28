@@ -45,20 +45,28 @@
     <app-tracklist [datasource]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
-  <dui-dialog [(visible)]="savedInfoDialog" [minWidth]="300" #saved>
-    <p>Tags Saved</p>
-    <dui-dialog-actions>
-      <dui-button (click)="savedInfoDialog = false" closeDialog primary>Ok</dui-button>
+  <dui-dialog [(visible)]="infoDialog" [minWidth]="300" #saved>
+    <p>{{infoDialogMessage}}</p>
+    <dui-dialog-actions *ngIf="infoDialogButtons">
+      <dui-button (click)="closeInfoDialog()" primary>Ok</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Detail Dialog -->
   <dui-dialog [(visible)]="detailDialog" [width]="800" #detail>
-    <app-detail *ngIf="itemSelected" [item]="itemSelected"></app-detail>
+    <app-detail *ngIf="itemSelected" [item]="itemSelected" (coverClick)="showArtFetcherDialog()"></app-detail>
     <dui-dialog-actions>
       <dui-button (click)="closeDetailDialog()">Close</dui-button>
       <dui-button (click)="saveChanges()" primary>Save</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
+  <!-- ArtFetcher Dialog -->
+  <dui-dialog [(visible)]="artFetchDialog" [width]="800" #fetcher>
+    <app-art-fetcher-view class="dialog-center" *ngIf="haveResult" [resultSet]="fetchResult" (selected)="onSelectArt($event)"></app-art-fetcher-view>
+    <dui-dialog-actions>
+      <dui-button (click)="closeFetcherDialog()">Cancel</dui-button>
+    </dui-dialog-actions>
+  </dui-dialog>
+  <!-- Cleaner Dialog -->
   <dui-dialog [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
     <app-cleaner-view (change)="setDirtyText($event)"></app-cleaner-view>
     <dui-dialog-actions>
@@ -66,6 +74,7 @@
       <dui-button (click)="cleanFilenames()" primary>Clean Files</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
+  <!-- Filename to Tag Dialog-->
   <dui-dialog
     *ngIf="sampleItem"
     [(visible)]="tagsExtrDialog"
