@@ -1,15 +1,15 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const fetch = require('node-fetch');
 
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
-    frame: process.platform === 'win32' ? true : false ,
+    frame: process.platform === 'win32' ? true : false,
     backgroundColor: "#80FFFFFF",
     webPreferences: {
       nodeIntegration: true,
@@ -67,13 +67,18 @@ ipcMain.on('fetch-cover', async (event, item) => {
     const result = await coverFinder.findCovers(item);
     console.log(result);
     mainWindow.webContents.send('covers-fetched', result);
-  }catch (err) {
+  } catch (err) {
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 })
 
 ipcMain.on('imageUrl-to-buffer', async (event, url) => {
-  const response = await fetch(url);
-  const imgBuffer = await response.buffer();
+  try {
+    const response = await fetch(url);
+    const imgBuff = await response.buffer();
+    mainWindow.webContents.send('buffer-image', imgBuff);
+  } catch (err) {
+    mainWindow.webContents.send('covers-fetch-error', err);
+  }
 
 })
