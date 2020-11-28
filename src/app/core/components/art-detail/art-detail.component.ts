@@ -1,5 +1,6 @@
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
+import { ArtImage } from '../../models/ArtImage';
 
 @Component({
   selector: 'app-art-detail',
@@ -14,9 +15,8 @@ export class ArtDetailComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  coverArt(bufferArt: Buffer) {
-    console.log('llamada coverArt');
-    const blob = new Blob( [bufferArt], { type: 'image/jpeg' });
+  coverArt(imageTag: ArtImage) {
+    const blob = new Blob( [imageTag.imageBuffer], { type: `image/${imageTag.mime}` });
     const artUrl = URL.createObjectURL(blob);
     this.imgSrc = this.sanitizer.bypassSecurityTrustUrl(artUrl);
   }

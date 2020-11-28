@@ -1,4 +1,4 @@
-import { ArtDetailComponent } from './../art-detail/art-detail.component';
+import { ArtDetailComponent } from '../art-detail/art-detail.component';
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MusicTag } from '../../models/MusicTag';
 
@@ -19,8 +19,8 @@ export class DetailComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     console.log('after-view');
     console.log(this.item);
-    if (this.item.imageTag) {
-      this.artDetailComp.coverArt(this.item.imageTag.imageBuffer);
+    if (this.item.imageTag.imageBuffer) {
+      this.artDetailComp.coverArt(this.item.imageTag);
     }
   }
 

@@ -1,6 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const id3 = require('./services/id3Service');
-const path = require('path');
 
 let mainWindow
 
@@ -15,7 +14,7 @@ function createWindow () {
       allowRunningInsecureContent: false,
       preload: __dirname + './../../node_modules/@marcj/angular-desktop-ui/preload.js',
       nativeWindowOpen: true,
-    }
+    },
   })
 
   mainWindow.setMenuBarVisibility(false);
