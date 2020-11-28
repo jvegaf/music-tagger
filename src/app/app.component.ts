@@ -51,8 +51,9 @@ export class AppComponent {
       this.showInfo(error.name, true);
     });
 
-    this.els.ipcRenderer.on('buffer-image', (event, buffer) => {
-      const item = this.tagsService.addCoverArtToTag(this.itemSelected, buffer);
+    this.els.ipcRenderer.on('buffer-image', (event, imgBuff) => {
+      const item = this.tagsService.addCoverArtToTag(this.itemSelected, imgBuff);
+      this.closeDetailDialog();
       this.closeInfoDialog();
       this.openDetailDialog(item);
     });
@@ -125,9 +126,9 @@ export class AppComponent {
   onSelectArt(imgUrl: string) {
     this.closeInfoDialog();
     this.closeFetcherDialog();
-    this.closeDetailDialog();
+    this.detailDialog = false;
     this.showInfo('Adding Cover to Tags....', false);
-    this.els.ipcRenderer.sendSync('imageUrl-to-buffer', imgUrl);
+    this.els.ipcRenderer.send('imageUrl-to-buffer', imgUrl);
   }
 
   closeInfoDialog() {

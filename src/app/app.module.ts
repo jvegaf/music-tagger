@@ -23,7 +23,6 @@ import { TracklistComponent } from './core/components/tracklist/tracklist.compon
 import { NgxElectronModule } from 'ngx-electron';
 import { DetailComponent } from './core/components/detail/detail.component';
 import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-view.component';
-import { DetailArtComponent } from './core/components/detail-art/detail-art.component';
 import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-fetcher-view.component';
 
 @NgModule({
@@ -32,7 +31,6 @@ import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-
     TracklistComponent,
     DetailComponent,
     CleanerViewComponent,
-    DetailArtComponent,
     ArtFetcherViewComponent
   ],
   imports: [

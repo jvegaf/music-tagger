@@ -52,8 +52,8 @@
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Detail Dialog -->
-  <dui-dialog [(visible)]="detailDialog" [width]="800" #detail>
-    <app-detail *ngIf="itemSelected" [item]="itemSelected" (coverClick)="showArtFetcherDialog()"></app-detail>
+  <dui-dialog [(visible)]="detailDialog" [width]="800">
+    <app-detail *ngIf="itemSelected" [item]="itemSelected" (clickCover)="showArtFetcherDialog()"></app-detail>
     <dui-dialog-actions>
       <dui-button (click)="closeDetailDialog()">Close</dui-button>
       <dui-button (click)="saveChanges()" primary>Save</dui-button>

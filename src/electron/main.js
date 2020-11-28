@@ -78,6 +78,7 @@ ipcMain.on('imageUrl-to-buffer', async (event, url) => {
     const imgBuff = await response.buffer();
     mainWindow.webContents.send('buffer-image', imgBuff);
   } catch (err) {
+    console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 

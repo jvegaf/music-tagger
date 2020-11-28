@@ -1,32 +1,31 @@
-import { DetailArtComponent } from '../detail-art/detail-art.component';
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input,  Output } from '@angular/core';
 import { MusicTag } from '../../models/MusicTag';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
-export class DetailComponent implements AfterViewInit {
+export class DetailComponent implements OnInit {
 
   @Input() item: MusicTag;
+  @Output() clickCover = new EventEmitter();
+  constructor(private sanitizer: DomSanitizer) { }
 
-  @ViewChild(DetailArtComponent)
-  artDetailComp: DetailArtComponent;
+  ngOnInit(): void {}
 
-  @Output() coverClick = new EventEmitter();
-  constructor() { }
-
-  ngAfterViewInit(): void {
-    console.log('after-view');
-    console.log(this.item);
+  coverArt() {
     if (this.item.imageTag?.imageBuffer) {
-      this.artDetailComp.coverArt(this.item.imageTag);
+      const blob = new Blob( [this.item.imageTag.imageBuffer], { type: `image/${this.item.imageTag.mime}` });
+      const artUrl = URL.createObjectURL(blob);
+      return  this.sanitizer.bypassSecurityTrustUrl(artUrl);
     }
+    return 'assets/album-art-placeholder.png';
   }
 
-  clickCover() {
-    this.coverClick.emit();
+  artClicked() {
+    this.clickCover.emit();
   }
 
 }
