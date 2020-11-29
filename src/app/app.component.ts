@@ -37,13 +37,12 @@ export class AppComponent {
 
     this.els.ipcRenderer.on('tags-saved', () => {
       this.closeInfoDialog();
+      this.closeDetailDialog();
       this.showInfo('Tags Saved', true);
     });
 
     this.els.ipcRenderer.on('covers-fetched', (event, result) => {
-      this.fetchResult = result as OptionArt[];
-      this.haveResult = true;
-      this.artFetchDialog = true;
+      this.openFetcherDialog(result as OptionArt[]);
     });
 
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
@@ -98,8 +97,7 @@ export class AppComponent {
   }
 
   filenamesToTags() {
-    const tags = this.tagsService.getTagsFromFilenames(this.trackItems);
-    this.trackItems = tags;
+    this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
     this.haveChanges = true;
     this.tagsExtrDialog = false;
   }
@@ -114,6 +112,11 @@ export class AppComponent {
   showArtFetcherDialog() {
     this.els.ipcRenderer.send('fetch-cover', this.itemSelected);
     this.showInfo('Fetching Art Images...', false);
+  }
+
+  openFetcherDialog(imgset: OptionArt[]) {
+    this.fetchResult = imgset;
+    this.artFetchDialog = true;
   }
 
   closeFetcherDialog() {

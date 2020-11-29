@@ -2,6 +2,18 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const fetch = require('node-fetch');
+const Scraper = require('electron-images-scraper');
+
+const scraper = new Scraper({
+  puppeteer: {
+    //headless: false,
+  },
+  tbs: {
+    isz: "m", // medium size
+    iar: "s", // square format
+    ift: "jpg" // ift: "png"
+  },
+});
 
 let mainWindow
 
@@ -9,7 +21,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
-    frame: process.platform === 'win32' ? true : false,
+    frame: process.platform === 'win32',
     backgroundColor: "#80FFFFFF",
     webPreferences: {
       nodeIntegration: true,
@@ -64,7 +76,7 @@ ipcMain.on('update-tags', (event, items) => {
 
 ipcMain.on('fetch-cover', async (event, item) => {
   try {
-    const result = await coverFinder.findCovers(item);
+    const result = await coverFinder.findCovers(scraper, item);
     console.log(result);
     mainWindow.webContents.send('covers-fetched', result);
   } catch (err) {

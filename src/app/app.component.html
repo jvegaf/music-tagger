@@ -52,7 +52,7 @@
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Detail Dialog -->
-  <dui-dialog [(visible)]="detailDialog" [width]="800">
+  <dui-dialog [(visible)]="detailDialog" [width]="600">
     <app-detail *ngIf="itemSelected" [item]="itemSelected" (clickCover)="showArtFetcherDialog()"></app-detail>
     <dui-dialog-actions>
       <dui-button (click)="closeDetailDialog()">Close</dui-button>
@@ -60,10 +60,10 @@
     </dui-dialog-actions>
   </dui-dialog>
   <!-- ArtFetcher Dialog -->
-  <dui-dialog [(visible)]="artFetchDialog" [width]="800" #fetcher>
-    <app-art-fetcher-view class="dialog-center" *ngIf="haveResult" [resultSet]="fetchResult" (selected)="onSelectArt($event)"></app-art-fetcher-view>
+  <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">
+    <app-art-fetcher-view [resultSet]="fetchResult" (selected)="onSelectArt($event)"></app-art-fetcher-view>
     <dui-dialog-actions>
-      <dui-button (click)="closeFetcherDialog()">Cancel</dui-button>
+      <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Cleaner Dialog -->
