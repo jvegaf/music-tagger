@@ -1,0 +1,3 @@
+<div id="art-group">
+  <img class="cover" *ngFor="let cover of resultSet" [src]="cover.url" width="250" height="250" (click)="onSelect(cover)">
+</div>

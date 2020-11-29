@@ -1,12 +1,14 @@
 import { MusicTag } from '../models/MusicTag';
 import { Injectable } from '@angular/core';
+import { ArtImage } from '../models/ArtImage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagsService {
 
-  constructor() { }
+  constructor() {
+  }
 
   getTagsFromFilenames(items: MusicTag[]): MusicTag[] {
     return items.map(item => {
@@ -25,6 +27,15 @@ export class TagsService {
       return item;
     }
     item.titleTag = elements[0];
+    return item;
+  }
+
+  addCoverArtToTag(itemSelected: MusicTag, imgBuffer: Buffer) {
+    const imageTag: ArtImage = {
+      description: '', imageBuffer: imgBuffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
+    };
+    const item = itemSelected;
+    item.imageTag = imageTag;
     return item;
   }
 }

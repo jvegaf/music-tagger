@@ -1,4 +1,4 @@
-SHELL = /bin/sh
+makeSHELL = /bin/sh
 
 .PHONY: preps
 preps:

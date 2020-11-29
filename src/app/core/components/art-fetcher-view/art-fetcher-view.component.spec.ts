@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArtDetailComponent } from './art-detail.component';
+import { ArtFetcherViewComponent } from './art-fetcher-view.component';
 
-describe('ArtDetailComponent', () => {
-  let component: ArtDetailComponent;
-  let fixture: ComponentFixture<ArtDetailComponent>;
+describe('ArtFetcherViewComponent', () => {
+  let component: ArtFetcherViewComponent;
+  let fixture: ComponentFixture<ArtFetcherViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ArtDetailComponent ]
+      declarations: [ ArtFetcherViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArtDetailComponent);
+    fixture = TestBed.createComponent(ArtFetcherViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
