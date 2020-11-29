@@ -1,0 +1,22 @@
+appId: io.music-tagger.app
+directories:
+  buildResources: './dist'
+  output: './release'
+files:
+  - dist/**/*
+  - src/electron/**/*
+  - node_modules/**/*
+linux:
+  category: Audio
+  target:
+    - deb
+    - AppImage
+    - rpm
+  executableName: music-tagger
+  artifactName: ${name}-${arch}.${ext}
+deb:
+  depends: ['libdbus-1-dev', 'libglib2.0-dev']
+win:
+  target: nsis
+  icon: src/assets/icons/favicon.ico
+  artifactName: ${name}-setup.${ext}
