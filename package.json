@@ -10,12 +10,12 @@
   "main": "src/electron/main.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "serve": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build && electron ."
+    "start": "ng build && electron ."
   },
   "private": true,
   "dependencies": {
