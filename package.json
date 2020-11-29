@@ -1,6 +1,6 @@
 {
   "name": "music-tagger",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create and modify the tags of your music files",
   "homepage": "https://github.com/jvegaf/music-tagger",
   "author": {
@@ -15,9 +15,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build && electron .",
-    "electron:pack": "ng build --prod && electron-builder -lw --ia32 --x64",
-    "postinstall": "electron-builder install-app-deps"
+    "electron": "ng build && electron ."
   },
   "private": true,
   "dependencies": {
@@ -49,7 +47,6 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "electron": "^7.1.9",
-    "electron-builder": "^22.9.1",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
