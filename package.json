@@ -15,7 +15,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "ng build && electron ."
+    "start": "ng build --prod && electron-forge start",
+    "package": "ng build --prod && electron-forge package",
+    "make": "ng build --prod && electron-forge make"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +32,7 @@
     "@angular/router": "~9.0.1",
     "@marcj/angular-desktop-ui": "^0.3.11",
     "electron-images-scraper": "^1.0.1",
+    "electron-squirrel-startup": "^1.0.0",
     "ngx-electron": "^2.2.0",
     "node-fetch": "^2.6.1",
     "node-id3": "^0.2.1",
@@ -42,6 +45,11 @@
     "@angular/cli": "~9.0.2",
     "@angular/compiler-cli": "~9.0.1",
     "@angular/language-service": "~9.0.1",
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
@@ -58,5 +66,35 @@
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
     "typescript": "~3.7.5"
+  },
+  "config": {
+    "forge": {
+      "out": "release",
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "music_tagger"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "options": {
+              "maintainer": "Jose Vega",
+              "homepage": "https://github.com/jvegaf/music-tagger",
+              "icon": "src/assets/icons/music-tagger.png"
+            }
+          }
+        }
+      ]
+    }
   }
 }
