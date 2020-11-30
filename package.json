@@ -17,7 +17,8 @@
     "e2e": "ng e2e",
     "start": "ng build --prod && electron-forge start",
     "package": "ng build --prod && electron-forge package",
-    "make": "ng build --prod && electron-forge make"
+    "build:make": "ng build --prod && electron-forge make",
+    "make": "electron-forge make"
   },
   "private": true,
   "dependencies": {
@@ -68,33 +69,6 @@
     "typescript": "~3.7.5"
   },
   "config": {
-    "forge": {
-      "out": "release",
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "music_tagger"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {
-            "options": {
-              "maintainer": "Jose Vega",
-              "homepage": "https://github.com/jvegaf/music-tagger",
-              "icon": "src/assets/icons/music-tagger.png"
-            }
-          }
-        }
-      ]
-    }
+    "forge": "./forge.config.js"
   }
 }

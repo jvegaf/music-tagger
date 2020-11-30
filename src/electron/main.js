@@ -15,6 +15,8 @@ const scraper = new Scraper({
   },
 });
 
+if (require('electron-squirrel-startup')) return app.quit();
+
 let mainWindow
 
 function createWindow() {
