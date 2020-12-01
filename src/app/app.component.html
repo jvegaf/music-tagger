@@ -55,6 +55,7 @@
   <dui-dialog [(visible)]="detailDialog" [width]="600">
     <app-detail *ngIf="itemSelected" [item]="itemSelected" (clickCover)="showArtFetcherDialog()"></app-detail>
     <dui-dialog-actions>
+      <dui-button style="margin-right: 200px;" (click)="findTagsOnline()">Find Tags online</dui-button>
       <dui-button (click)="closeDetailDialog()">Close</dui-button>
       <dui-button (click)="saveChanges()" primary>Save</dui-button>
     </dui-dialog-actions>

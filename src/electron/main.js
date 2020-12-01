@@ -2,18 +2,8 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const fetch = require('node-fetch');
-const Scraper = require('electron-images-scraper');
+const tagsfinder = require('./services/spotiTagsService');
 
-const scraper = new Scraper({
-  puppeteer: {
-    //headless: false,
-  },
-  tbs: {
-    isz: "m", // medium size
-    iar: "s", // square format
-    ift: "jpg" // ift: "png"
-  },
-});
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -78,8 +68,7 @@ ipcMain.on('update-tags', (event, items) => {
 
 ipcMain.on('fetch-cover', async (event, item) => {
   try {
-    const result = await coverFinder.findCovers(scraper, item);
-    console.log(result);
+    const result = await coverFinder.findCovers(item);
     mainWindow.webContents.send('covers-fetched', result);
   } catch (err) {
     mainWindow.webContents.send('covers-fetch-error', err);
@@ -94,6 +83,16 @@ ipcMain.on('imageUrl-to-buffer', async (event, url) => {
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
+  }
+})
+
+ipcMain.on('find-tags', async (event, item) => {
+  // const data = await tagsfinder.findTagsByTitleArtist(item);
+  console.log(item);
+  try {
+    const data2 = await tagsfinder.findTags(item);
+  } catch (e) {
+    console.log(e);
   }
 
 })

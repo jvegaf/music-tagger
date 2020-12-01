@@ -15,7 +15,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "start": "ng build --prod && electron-forge start",
+    "build:start": "ng build --prod && electron-forge start",
+    "start": "electron-forge start",
     "package": "ng build --prod && electron-forge package",
     "build:make": "ng build --prod && electron-forge make",
     "make": "electron-forge make"
@@ -38,6 +39,7 @@
     "node-fetch": "^2.6.1",
     "node-id3": "^0.2.1",
     "rxjs": "~6.5.4",
+    "spotify-web-api-node": "^5.0.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },

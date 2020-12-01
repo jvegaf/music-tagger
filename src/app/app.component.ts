@@ -137,4 +137,8 @@ export class AppComponent {
   closeInfoDialog() {
     this.infoDialog = false;
   }
+
+  findTagsOnline() {
+    this.els.ipcRenderer.send('find-tags', this.itemSelected);
+  }
 }
