@@ -1,11 +1,13 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
+require('dotenv').config();
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const fetch = require('node-fetch');
-const tagsfinder = require('./services/spotiTagsService');
-
+const spotiService = require('./services/spotifyService');
+const mxmService = require('./services/musixMatchService');
 
 if (require('electron-squirrel-startup')) return app.quit();
+
 
 let mainWindow
 
@@ -87,10 +89,10 @@ ipcMain.on('imageUrl-to-buffer', async (event, url) => {
 })
 
 ipcMain.on('find-tags', async (event, item) => {
-  // const data = await tagsfinder.findTagsByTitleArtist(item);
   console.log(item);
   try {
-    const data2 = await tagsfinder.findTags(item);
+    const data = await mxmService.findTags(item);
+    console.log(data)
   } catch (e) {
     console.log(e);
   }
