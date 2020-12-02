@@ -44,14 +44,13 @@ app.on('activate', () => {
   }
 })
 
-ipcMain.on('open-folder', async () => {
-  dialog
+ipcMain.handle('open-folder', async () => {
+  return await dialog
     .showOpenDialog(mainWindow, {
       properties: ['openDirectory'],
     })
     .then(async (result) => {
-      let tags = await id3.getTagsFromPath(result.filePaths[0]);
-      mainWindow.webContents.send('tags-extracted', tags);
+      return await id3.getTagsFromPath(result.filePaths[0]);
     })
     .catch((err) => {
       console.log(err);
@@ -68,32 +67,28 @@ ipcMain.on('update-tags', (event, items) => {
   mainWindow.webContents.send('tags-saved');
 })
 
-ipcMain.on('fetch-cover', async (event, item) => {
+ipcMain.handle('fetch-cover', async (event, item) => {
   try {
-    const result = await coverFinder.findCovers(item);
-    mainWindow.webContents.send('covers-fetched', result);
+    return await coverFinder.findCovers(item);
   } catch (err) {
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 })
 
-ipcMain.on('imageUrl-to-buffer', async (event, url) => {
+ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
   try {
     const response = await fetch(url);
-    const imgBuff = await response.buffer();
-    mainWindow.webContents.send('buffer-image', imgBuff);
+    return await response.buffer();
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 })
 
-ipcMain.on('find-tags', async (event, item) => {
+ipcMain.handle('find-tags', async (event, item) => {
   try {
-    const data = await mxmService.findTags(item);
-    mainWindow.webContents.send('tags-founded', data);
+    return await mxmService.findTags(item);
   } catch (e) {
     console.log(e);
   }
-
 })

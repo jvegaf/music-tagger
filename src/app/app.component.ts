@@ -1,8 +1,9 @@
 import { TagsService } from './core/services/tags.service';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
 import { OptionArt } from './core/models/OptionArt';
+import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,11 @@ import { OptionArt } from './core/models/OptionArt';
 })
 export class AppComponent {
 
+  @ViewChild(TracklistComponent)
+  private tracklistComponent: TracklistComponent;
+
   title = 'Music Tagger';
-  itemSelected: MusicTag;
+  itemSelected: number;
   dirtyString = '';
   haveData = false;
   haveChanges = false;
@@ -22,45 +26,23 @@ export class AppComponent {
   tagsExtrDialog = false;
   infoDialog = false;
   artFetchDialog = false;
-  trackItems = [];
-  haveResult = false;
+  trackItems: MusicTag[] = [];
   fetchResult: OptionArt[];
   sampleItem: MusicTag;
   infoDialogMessage: string;
   infoDialogButtons: boolean;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
-    this.els.ipcRenderer.on('tags-extracted', (event, data) => {
-      this.haveData = true;
-      this.trackItems = data;
-    });
-
     this.els.ipcRenderer.on('tags-saved', () => {
       this.closeInfoDialog();
-      this.closeDetailDialog();
+      this.detailDialog = false;
+      this.tracklistComponent.refresh(this.trackItems);
       this.showInfo('Tags Saved', true);
-    });
-
-    this.els.ipcRenderer.on('covers-fetched', (event, result) => {
-      this.openFetcherDialog(result as OptionArt[]);
     });
 
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
       this.closeInfoDialog();
       this.showInfo(error.name, true);
-    });
-
-    this.els.ipcRenderer.on('buffer-image', (event, imgBuff) => {
-      const item = this.tagsService.addCoverArtToTag(this.itemSelected, imgBuff);
-      this.closeDetailDialog();
-      this.closeInfoDialog();
-      this.openDetailDialog(item);
-    });
-
-    this.els.ipcRenderer.on('tags-founded', (event, item) => {
-      this.closeDetailDialog();
-      this.closeInfoDialog();
-      this.openDetailDialog(item);
     });
   }
 
@@ -71,17 +53,15 @@ export class AppComponent {
   }
 
   openFolder() {
-    this.els.ipcRenderer.send('open-folder');
+    this.els.ipcRenderer.invoke('open-folder').then(tagItems => {
+      this.trackItems = tagItems;
+      this.haveData = true;
+    });
   }
 
-  openDetailDialog(item: MusicTag) {
-    this.itemSelected = item;
+  openDetailDialog(itemIndex: number) {
+    this.itemSelected = itemIndex;
     this.detailDialog = true;
-  }
-
-  closeDetailDialog() {
-    this.itemSelected = null;
-    this.detailDialog = false;
   }
 
   showCleaner() {
@@ -114,16 +94,17 @@ export class AppComponent {
     this.showInfo('Saving Changes ...', false);
   }
 
-  saveChanges(item: MusicTag) {
-    const items = [item];
+  saveChanges() {
+    const items = [this.trackItems[this.itemSelected]];
     this.els.ipcRenderer.send('update-tags', items);
-    this.haveChanges = false;
     this.showInfo('Saving Changes ...', false);
   }
 
-  showArtFetcherDialog(selectedItem: any) {
-    this.els.ipcRenderer.send('fetch-cover', this.itemSelected);
+  showArtFetcherDialog(selectedItem: MusicTag) {
     this.showInfo('Fetching Art Images...', false);
+    this.els.ipcRenderer.invoke('fetch-cover', selectedItem).then(result => {
+      this.openFetcherDialog(result as OptionArt[]);
+    });
   }
 
   openFetcherDialog(imgset: OptionArt[]) {
@@ -133,25 +114,33 @@ export class AppComponent {
 
   closeFetcherDialog() {
     this.fetchResult = null;
-    this.haveResult = false;
     this.artFetchDialog = false;
     this.infoDialog = false;
   }
 
-  onSelectArt(imgUrl: string) {
+  onSelectArt(item: MusicTag, imgUrl: string) {
     this.closeInfoDialog();
     this.closeFetcherDialog();
     this.detailDialog = false;
     this.showInfo('Adding Cover to Tags....', false);
-    this.els.ipcRenderer.send('imageUrl-to-buffer', imgUrl);
+    this.els.ipcRenderer.invoke('imageUrl-to-buffer', imgUrl).then((imgBuffer) => {
+      this.trackItems[this.itemSelected] = this.tagsService.addCoverArtToTag(this.trackItems[this.itemSelected], imgBuffer);
+      this.detailDialog = false;
+      this.closeInfoDialog();
+      this.detailDialog = true;
+      // this.openDetailDialog(this.itemSelected);
+    }).catch(e => console.log(e));
   }
 
   closeInfoDialog() {
     this.infoDialog = false;
   }
 
-  findTagsOnline(item: MusicTag) {
-    this.els.ipcRenderer.send('find-tags', this.itemSelected);
+  findTagsOnline() {
     this.showInfo('Finding Track metadata...', true);
+    this.els.ipcRenderer.invoke('find-tags', this.trackItems[this.itemSelected]).then( newItem => {
+      this.trackItems[this.itemSelected] = newItem;
+      this.infoDialog = false;
+    });
   }
 }

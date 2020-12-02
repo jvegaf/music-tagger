@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
   Output,
-  EventEmitter,
+  EventEmitter, ChangeDetectorRef,
 } from '@angular/core';
 
 @Component({
@@ -16,17 +16,21 @@ export class TracklistComponent implements OnInit {
 
   @Input() datasource: MusicTag[];
 
-  @Output() showDetail = new EventEmitter<string>();
+  @Output() showDetail = new EventEmitter<number>();
 
   selectedItems = [];
 
-  constructor() { }
+  constructor(private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
 
-  itemClicked(event) {
-    this.showDetail.emit(event);
+  itemClicked(item: MusicTag) {
+    this.showDetail.emit(item.fileIndex);
   }
 
+  refresh(data: MusicTag[]) {
+    this.datasource = data;
+    this.changeDetectorRefs.detectChanges();
+  }
 }
