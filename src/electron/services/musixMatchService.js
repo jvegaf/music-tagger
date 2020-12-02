@@ -6,23 +6,23 @@ const init = {
 
 const msx = Musixmatch(init);
 
-// module.exports.findTags = async (item) => {
-//   const filename = item.artistTag + ' - ' + item.titleTag;
-//   msx.trackSearch({q: filename, page: 1, page_size: 3})
-//     .then(function (data) {
-//       console.log('desde musixmatchService');
-//       console.log(data.track_list[0]);
-//       return data;
-//     }).catch(function (err) {
-//     console.log(err);
-//   })
-// };
-
 module.exports.findTags = async (item) => {
-  return msx.matcherTrack({q_artist:item.artistTag, q_track:item.titleTag})
-    .then(function(data){
-      return data.track
-    }).catch(function(err){
+  return msx.matcherTrack({q_artist: item.artistTag, q_track: item.titleTag})
+    .then(function (data) {
+      item.artistTag = data.track.artist_name;
+      item.titleTag = data.track.track_name;
+      item.albumTag = data.track.album_name;
+      item.genreTag = data.track.primary_genres.music_genre_list[0].music_genre.music_genre_name || '';
+      console.log();
+      return msx.album({album_id: data.track.album_id})
+        .then(function (data) {
+          item.yearTag = data.album.album_release_date.split('-')[0];
+          return item;
+        }).catch(function (err) {
+          console.log(err);
+        })
+    }).catch(function (err) {
       console.log(err);
     })
 };
+

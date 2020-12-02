@@ -56,6 +56,12 @@ export class AppComponent {
       this.closeInfoDialog();
       this.openDetailDialog(item);
     });
+
+    this.els.ipcRenderer.on('tags-founded', (event, item) => {
+      this.closeDetailDialog();
+      this.closeInfoDialog();
+      this.openDetailDialog(item);
+    });
   }
 
   private showInfo(message: string, showButton: boolean) {
@@ -102,14 +108,20 @@ export class AppComponent {
     this.tagsExtrDialog = false;
   }
 
-  saveChanges() {
-    const items = (this.itemSelected) ? [this.itemSelected] : this.trackItems;
+  saveAllChanges() {
+    this.els.ipcRenderer.send('update-tags', this.trackItems);
+    this.haveChanges = false;
+    this.showInfo('Saving Changes ...', false);
+  }
+
+  saveChanges(item: MusicTag) {
+    const items = [item];
     this.els.ipcRenderer.send('update-tags', items);
     this.haveChanges = false;
     this.showInfo('Saving Changes ...', false);
   }
 
-  showArtFetcherDialog() {
+  showArtFetcherDialog(selectedItem: any) {
     this.els.ipcRenderer.send('fetch-cover', this.itemSelected);
     this.showInfo('Fetching Art Images...', false);
   }
@@ -138,7 +150,8 @@ export class AppComponent {
     this.infoDialog = false;
   }
 
-  findTagsOnline() {
+  findTagsOnline(item: MusicTag) {
     this.els.ipcRenderer.send('find-tags', this.itemSelected);
+    this.showInfo('Finding Track metadata...', true);
   }
 }

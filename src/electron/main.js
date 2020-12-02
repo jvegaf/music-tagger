@@ -89,10 +89,9 @@ ipcMain.on('imageUrl-to-buffer', async (event, url) => {
 })
 
 ipcMain.on('find-tags', async (event, item) => {
-  console.log(item);
   try {
     const data = await mxmService.findTags(item);
-    console.log(data)
+    mainWindow.webContents.send('tags-founded', data);
   } catch (e) {
     console.log(e);
   }
