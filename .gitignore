@@ -47,5 +47,3 @@ testem.log
 Thumbs.db
 
 yarn.lock
-
-.env
