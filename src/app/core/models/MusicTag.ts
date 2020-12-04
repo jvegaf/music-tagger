@@ -1,5 +1,5 @@
 import { ArtImage } from './ArtImage';
-export interface MusicTag {
+export class MusicTag {
   fileIndex: number;
   titleTag: string;
   artistTag: string;
@@ -11,4 +11,19 @@ export interface MusicTag {
   imageTag: ArtImage;
   filename: string;
   filepath: string;
+
+
+  constructor(fileIndex: number, titleTag: string, artistTag: string, albumTag: string, genreTag: string, yearTag: number, bpmTag: number, keyTag: string, imageTag: ArtImage, filename: string, filepath: string) {
+    this.fileIndex = fileIndex;
+    this.titleTag = titleTag;
+    this.artistTag = artistTag;
+    this.albumTag = albumTag;
+    this.genreTag = genreTag;
+    this.yearTag = yearTag;
+    this.bpmTag = bpmTag;
+    this.keyTag = keyTag;
+    this.imageTag = imageTag;
+    this.filename = filename;
+    this.filepath = filepath;
+  }
 }

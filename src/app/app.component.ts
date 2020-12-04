@@ -1,9 +1,8 @@
 import { TagsService } from './core/services/tags.service';
-import { Component, ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
 import { OptionArt } from './core/models/OptionArt';
-import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +11,6 @@ import { TracklistComponent } from './core/components/tracklist/tracklist.compon
   providers: [ TagsService ]
 })
 export class AppComponent {
-
-  @ViewChild(TracklistComponent)
-  private tracklistComponent: TracklistComponent;
 
   title = 'Music Tagger';
   itemSelected: number;
@@ -33,15 +29,8 @@ export class AppComponent {
   infoDialogButtons: boolean;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
-    this.els.ipcRenderer.on('tags-saved', () => {
-      this.closeInfoDialog();
-      this.detailDialog = false;
-      this.tracklistComponent.refresh(this.trackItems);
-      this.showInfo('Tags Saved', true);
-    });
-
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
-      this.closeInfoDialog();
+      this.infoDialog = false;
       this.showInfo(error.name, true);
     });
   }
@@ -54,7 +43,7 @@ export class AppComponent {
 
   openFolder() {
     this.els.ipcRenderer.invoke('open-folder').then(tagItems => {
-      this.trackItems = tagItems;
+      this.trackItems = this.tagsService.getDataSource(tagItems);
       this.haveData = true;
     });
   }
@@ -62,10 +51,6 @@ export class AppComponent {
   openDetailDialog(itemIndex: number) {
     this.itemSelected = itemIndex;
     this.detailDialog = true;
-  }
-
-  showCleaner() {
-    this.cleanerDialog = true;
   }
 
   showTagExtrDialog() {
@@ -78,8 +63,10 @@ export class AppComponent {
   }
 
   cleanFilenames() {
-    this.els.ipcRenderer.send('clean-filenames', { items: this.trackItems, dirtyText: this.dirtyString });
-    this.cleanerDialog = false;
+    this.els.ipcRenderer.invoke('clean-filenames', { items: this.trackItems, dirtyText: this.dirtyString }).then(tags => {
+      this.trackItems = tags;
+      this.cleanerDialog = false;
+    });
   }
 
   filenamesToTags() {
@@ -89,15 +76,22 @@ export class AppComponent {
   }
 
   saveAllChanges() {
-    this.els.ipcRenderer.send('update-tags', this.trackItems);
-    this.haveChanges = false;
     this.showInfo('Saving Changes ...', false);
+    this.els.ipcRenderer.invoke('save-all-tags', this.trackItems).then( items => {
+      this.trackItems = items;
+      this.haveChanges = false;
+      this.showInfo('Tags Saved', true);
+    });
   }
 
   saveChanges() {
-    const items = [this.trackItems[this.itemSelected]];
-    this.els.ipcRenderer.send('update-tags', items);
     this.showInfo('Saving Changes ...', false);
+    this.els.ipcRenderer.invoke('save-tags', this.trackItems[this.itemSelected]).then(item => {
+      this.trackItems[this.itemSelected] = item;
+      this.infoDialog = false;
+      this.detailDialog = false;
+      this.showInfo('Tags Saved', true);
+    });
   }
 
   showArtFetcherDialog(selectedItem: MusicTag) {
@@ -118,28 +112,22 @@ export class AppComponent {
     this.infoDialog = false;
   }
 
-  onSelectArt(item: MusicTag, imgUrl: string) {
-    this.closeInfoDialog();
+  onSelectArt(imgUrl: string) {
+    this.infoDialog = false;
     this.closeFetcherDialog();
     this.detailDialog = false;
     this.showInfo('Adding Cover to Tags....', false);
-    this.els.ipcRenderer.invoke('imageUrl-to-buffer', imgUrl).then((imgBuffer) => {
-      this.trackItems[this.itemSelected] = this.tagsService.addCoverArtToTag(this.trackItems[this.itemSelected], imgBuffer);
-      this.detailDialog = false;
-      this.closeInfoDialog();
+    this.tagsService.addCoverArtToTag(this.trackItems, this.itemSelected, imgUrl).then(tagItems => {
+      this.trackItems = tagItems;
+      this.infoDialog = false;
       this.detailDialog = true;
-      // this.openDetailDialog(this.itemSelected);
-    }).catch(e => console.log(e));
-  }
-
-  closeInfoDialog() {
-    this.infoDialog = false;
+    });
   }
 
   findTagsOnline() {
     this.showInfo('Finding Track metadata...', true);
     this.els.ipcRenderer.invoke('find-tags', this.trackItems[this.itemSelected]).then( newItem => {
-      this.trackItems[this.itemSelected] = newItem;
+      this.trackItems = this.tagsService.updateTags(this.trackItems, newItem);
       this.infoDialog = false;
     });
   }

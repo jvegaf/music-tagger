@@ -11,6 +11,8 @@ const scraper = new Scraper({
   },
 });
 
+console.log(scraper);
+
 
 module.exports.findCovers = async (musicTag) => {
   const query = makeQuery(musicTag);

@@ -13,7 +13,7 @@
           textured
           icon="edit"
           [disabled]="!haveData"
-          (click)="showCleaner()"
+          (click)="cleanerDialog = true"
         >Clean Filenames
         </dui-button
         >
@@ -46,14 +46,13 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist [datasource]="trackItems" (showDetail)="openDetailDialog($event)"
-                   #tracklistComponent></app-tracklist>
+    <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
-  <dui-dialog [(visible)]="infoDialog" [minWidth]="300" #saved>
+  <dui-dialog [(visible)]="infoDialog" [minWidth]="300">
     <p>{{infoDialogMessage}}</p>
     <dui-dialog-actions *ngIf="infoDialogButtons">
-      <dui-button (click)="closeInfoDialog()" primary>Ok</dui-button>
+      <dui-button primary (click)="infoDialog = false;">Ok</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Detail Dialog -->
@@ -69,7 +68,7 @@
   <!-- ArtFetcher Dialog -->
   <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">
     <app-art-fetcher-view [resultSet]="fetchResult"
-                          (selected)="onSelectArt(trackItems[itemSelected], $event)"></app-art-fetcher-view>
+                          (selected)="onSelectArt($event)"></app-art-fetcher-view>
     <dui-dialog-actions>
       <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>
     </dui-dialog-actions>

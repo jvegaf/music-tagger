@@ -1,6 +1,6 @@
 {
   "name": "music-tagger",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Create and modify the tags of your music files",
   "homepage": "https://github.com/jvegaf/music-tagger",
   "author": {
@@ -19,7 +19,8 @@
     "start": "electron-forge start",
     "package": "ng build --prod && electron-forge package",
     "build:make": "ng build --prod && electron-forge make",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "publish": ""
   },
   "private": true,
   "dependencies": {

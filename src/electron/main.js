@@ -62,7 +62,12 @@ ipcMain.on('clean-filenames', (event, args) => {
   mainWindow.webContents.send('tags-extracted', tags);
 })
 
-ipcMain.on('update-tags', (event, items) => {
+ipcMain.handle('save-tags', (event, item) => {
+  id3.updateTagsOfItem(item);
+  return true;
+})
+
+ipcMain.on('save-all-tags', (event, items) => {
   items.forEach(item => id3.updateTagsOfItem(item));
   mainWindow.webContents.send('tags-saved');
 })

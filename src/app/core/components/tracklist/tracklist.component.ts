@@ -1,10 +1,10 @@
 import { MusicTag } from '../../models/MusicTag';
 import {
   Component,
-  Input,
   OnInit,
+  Input,
   Output,
-  EventEmitter, ChangeDetectorRef,
+  EventEmitter,
 } from '@angular/core';
 
 @Component({
@@ -14,23 +14,16 @@ import {
 })
 export class TracklistComponent implements OnInit {
 
-  @Input() datasource: MusicTag[];
+  @Input() items: MusicTag[];
 
   @Output() showDetail = new EventEmitter<number>();
 
-  selectedItems = [];
-
-  constructor(private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
   itemClicked(item: MusicTag) {
     this.showDetail.emit(item.fileIndex);
-  }
-
-  refresh(data: MusicTag[]) {
-    this.datasource = data;
-    this.changeDetectorRefs.detectChanges();
   }
 }
