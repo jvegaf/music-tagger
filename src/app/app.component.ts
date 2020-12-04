@@ -1,8 +1,9 @@
 import { TagsService } from './core/services/tags.service';
-import { Component} from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
 import { OptionArt } from './core/models/OptionArt';
+import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,9 @@ export class AppComponent {
   sampleItem: MusicTag;
   infoDialogMessage: string;
   infoDialogButtons: boolean;
+
+  @ViewChild(TracklistComponent)
+  tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
@@ -127,5 +131,18 @@ export class AppComponent {
       this.trackItems = this.tagsService.updateTags(this.trackItems, newItem);
       this.infoDialog = false;
     });
+  }
+
+  findAllTagsOnline() {
+    if (this.tracklistComponent.selectedItems.length < 1) { return; }
+    this.showInfo('Finding All Track metadata...', true);
+    const selectedItems = this.tracklistComponent.selectedItems.map(item => item.fileIndex);
+    selectedItems.map(itemIndex => {
+      this.els.ipcRenderer.invoke('find-tags', this.trackItems[itemIndex]).then( newItem => {
+        this.trackItems = this.tagsService.updateTags(this.trackItems, newItem);
+      });
+    });
+    this.haveChanges = true;
+    this.infoDialog = false;
   }
 }

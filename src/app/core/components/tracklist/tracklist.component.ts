@@ -18,6 +18,7 @@ export class TracklistComponent implements OnInit {
 
   @Output() showDetail = new EventEmitter<number>();
 
+  selectedItems = [];
   constructor() { }
 
   ngOnInit(): void {

@@ -7,7 +7,7 @@
     "name": "Jose Vega",
     "email": "josevega234@gmail.com"
   },
-  "main": "src/electron/main.js",
+  "main": "./src/electron/main.js",
   "scripts": {
     "ng": "ng",
     "serve": "ng serve",
