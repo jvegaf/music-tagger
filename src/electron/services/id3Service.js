@@ -83,6 +83,7 @@ exports.updateTagsOfItem = (item) => {
     image: item.imageTag
   }
 
-  let result = NodeId3.update(tags, fileBuffer);
-  fs.writeFileSync(fullPath, result);
+  return NodeId3.update(tags, fullPath);
+  //fs.writeFileSync(fullPath, result);
+
 };
