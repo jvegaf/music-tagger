@@ -1,13 +1,14 @@
 import { MusicTag } from '../models/MusicTag';
 import { Injectable } from '@angular/core';
 import { ArtImage } from '../models/ArtImage';
+import { ElectronService } from 'ngx-electron';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagsService {
 
-  constructor() {
+  constructor(private els: ElectronService) {
   }
 
   getTagsFromFilenames(items: MusicTag[]): MusicTag[] {
@@ -30,12 +31,46 @@ export class TagsService {
     return item;
   }
 
-  addCoverArtToTag(itemSelected: MusicTag, imgBuffer: Buffer) {
-    const imageTag: ArtImage = {
-      description: '', imageBuffer: imgBuffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
-    };
-    const item = itemSelected;
-    item.imageTag = imageTag;
-    return item;
+  async addCoverArtToTag(tracklist: MusicTag[], itemSelected: number, imgUrl: string): Promise<MusicTag[]> {
+    return await this.els.ipcRenderer.invoke('imageUrl-to-buffer', imgUrl).then(buffer => {
+      tracklist[itemSelected].imageTag = {
+        description: '', imageBuffer: buffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
+      };
+      return tracklist;
+    });
+  }
+
+  getDataSource(tagItems: any): MusicTag[] {
+    return tagItems.map(item => {
+      return new MusicTag(
+        item.fileIndex,
+        item.titleTag,
+        item.artistTag,
+        item.albumTag,
+        item.genreTag,
+        item.yearTag,
+        item.bpmTag,
+        item.keyTag,
+        item.imageTag,
+        item.filename,
+        item.filepath
+      );
+    });
+  }
+
+  updateTags(trackItems: MusicTag[], newItem: any): MusicTag[] {
+    return trackItems.map(tag => {
+      if (tag.fileIndex === newItem.fileIndex) {
+        tag.titleTag = newItem.titleTag;
+        tag.artistTag = newItem.artistTag;
+        tag.albumTag = newItem.albumTag;
+        tag.genreTag = newItem.genreTag;
+        tag.yearTag = newItem.yearTag;
+        tag.bpmTag = newItem.bpmTag;
+        tag.keyTag = newItem.keyTag;
+        tag.imageTag = newItem.imageTag;
+      }
+      return tag;
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { ArtImageType } from './ArtImageType';
-export interface ArtImage {
+export class ArtImage {
   mime: string;
   type: ArtImageType;
   description: string;

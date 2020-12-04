@@ -4,7 +4,8 @@
     <dui-window-toolbar>
       <dui-button-group>
         <dui-button textured icon="folder" (click)="openFolder()"
-          >Open Folder</dui-button
+        >Open Folder
+        </dui-button
         >
       </dui-button-group>
       <dui-button-group>
@@ -12,21 +13,24 @@
           textured
           icon="edit"
           [disabled]="!haveData"
-          (click)="showCleaner()"
-          >Clean Filenames</dui-button
+          (click)="cleanerDialog = true"
+        >Clean Filenames
+        </dui-button
         >
         <dui-button
           textured
           icon="flag"
           [disabled]="!haveData"
           (click)="showTagExtrDialog()"
-          >Tags from Filenames</dui-button
+        >Tags from Filenames
+        </dui-button
         >
         <dui-button *ngIf="haveChanges"
-          textured
-          icon="check"
-          (click)="saveChanges()"
-          >Save Tags</dui-button
+                    textured
+                    icon="check"
+                    (click)="saveAllChanges()"
+        >Save Tags
+        </dui-button
         >
 
       </dui-button-group>
@@ -42,32 +46,35 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist [datasource]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
+    <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
-  <dui-dialog [(visible)]="infoDialog" [minWidth]="300" #saved>
+  <dui-dialog [(visible)]="infoDialog" [minWidth]="300">
     <p>{{infoDialogMessage}}</p>
     <dui-dialog-actions *ngIf="infoDialogButtons">
-      <dui-button (click)="closeInfoDialog()" primary>Ok</dui-button>
+      <dui-button primary (click)="infoDialog = false;">Ok</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Detail Dialog -->
-  <dui-dialog [(visible)]="detailDialog" [width]="600">
-    <app-detail *ngIf="itemSelected" [item]="itemSelected" (clickCover)="showArtFetcherDialog()"></app-detail>
+  <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">
+    <app-detail [item]="trackItems[itemSelected]" (clickCover)="showArtFetcherDialog(trackItems[itemSelected])"
+                #detailComponent></app-detail>
     <dui-dialog-actions>
-      <dui-button (click)="closeDetailDialog()">Close</dui-button>
+      <dui-button style="margin-right: 200px;" (click)="findTagsOnline()">Find Tags online</dui-button>
+      <dui-button closeDialog>Close</dui-button>
       <dui-button (click)="saveChanges()" primary>Save</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- ArtFetcher Dialog -->
   <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">
-    <app-art-fetcher-view [resultSet]="fetchResult" (selected)="onSelectArt($event)"></app-art-fetcher-view>
+    <app-art-fetcher-view [resultSet]="fetchResult"
+                          (selected)="onSelectArt($event)"></app-art-fetcher-view>
     <dui-dialog-actions>
       <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Cleaner Dialog -->
-  <dui-dialog [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
+  <dui-dialog *ngIf="cleanerDialog" [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
     <app-cleaner-view (change)="setDirtyText($event)"></app-cleaner-view>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>

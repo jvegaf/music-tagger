@@ -1,4 +1,4 @@
-<dui-table style="height: 100%;" multiSelect [items]="datasource" [selectable]="true" (dbclick)="itemClicked($event)">
+<dui-table style="height: 100%;" [items]="items" [selectable]="true" (dbclick)="itemClicked($event)">
   <dui-table-column name="hasCover" header="Art" [width]="30">
     <ng-container *duiTableCell="let musicTag">
       <dui-icon style="margin-bottom: 25px;" *ngIf="musicTag.imageTag" name="record"></dui-icon>

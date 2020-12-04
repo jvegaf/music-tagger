@@ -1,4 +1,4 @@
-export interface ArtImageType {
+export class ArtImageType {
   id: number;
   name: string;
 }

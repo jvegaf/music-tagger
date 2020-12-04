@@ -1,21 +1,13 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
+require('dotenv').config();
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const fetch = require('node-fetch');
-const Scraper = require('electron-images-scraper');
-
-const scraper = new Scraper({
-  puppeteer: {
-    //headless: false,
-  },
-  tbs: {
-    isz: "m", // medium size
-    iar: "s", // square format
-    ift: "jpg" // ift: "png"
-  },
-});
+const spotiService = require('./services/spotifyService');
+const mxmService = require('./services/musixMatchService');
 
 if (require('electron-squirrel-startup')) return app.quit();
+
 
 let mainWindow
 
@@ -52,14 +44,13 @@ app.on('activate', () => {
   }
 })
 
-ipcMain.on('open-folder', async () => {
-  dialog
+ipcMain.handle('open-folder', async () => {
+  return await dialog
     .showOpenDialog(mainWindow, {
       properties: ['openDirectory'],
     })
     .then(async (result) => {
-      let tags = await id3.getTagsFromPath(result.filePaths[0]);
-      mainWindow.webContents.send('tags-extracted', tags);
+      return await id3.getTagsFromPath(result.filePaths[0]);
     })
     .catch((err) => {
       console.log(err);
@@ -71,29 +62,38 @@ ipcMain.on('clean-filenames', (event, args) => {
   mainWindow.webContents.send('tags-extracted', tags);
 })
 
-ipcMain.on('update-tags', (event, items) => {
+ipcMain.handle('save-tags', (event, item) => {
+  id3.updateTagsOfItem(item);
+  return true;
+})
+
+ipcMain.on('save-all-tags', (event, items) => {
   items.forEach(item => id3.updateTagsOfItem(item));
   mainWindow.webContents.send('tags-saved');
 })
 
-ipcMain.on('fetch-cover', async (event, item) => {
+ipcMain.handle('fetch-cover', async (event, item) => {
   try {
-    const result = await coverFinder.findCovers(scraper, item);
-    console.log(result);
-    mainWindow.webContents.send('covers-fetched', result);
+    return await coverFinder.findCovers(item);
   } catch (err) {
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 })
 
-ipcMain.on('imageUrl-to-buffer', async (event, url) => {
+ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
   try {
     const response = await fetch(url);
-    const imgBuff = await response.buffer();
-    mainWindow.webContents.send('buffer-image', imgBuff);
+    return await response.buffer();
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
   }
+})
 
+ipcMain.handle('find-tags', async (event, item) => {
+  try {
+    return await mxmService.findTags(item);
+  } catch (e) {
+    console.log(e);
+  }
 })

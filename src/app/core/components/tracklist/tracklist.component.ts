@@ -1,8 +1,8 @@
 import { MusicTag } from '../../models/MusicTag';
 import {
   Component,
-  Input,
   OnInit,
+  Input,
   Output,
   EventEmitter,
 } from '@angular/core';
@@ -14,19 +14,16 @@ import {
 })
 export class TracklistComponent implements OnInit {
 
-  @Input() datasource: MusicTag[];
+  @Input() items: MusicTag[];
 
-  @Output() showDetail = new EventEmitter<string>();
-
-  selectedItems = [];
+  @Output() showDetail = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  itemClicked(event) {
-    this.showDetail.emit(event);
+  itemClicked(item: MusicTag) {
+    this.showDetail.emit(item.fileIndex);
   }
-
 }

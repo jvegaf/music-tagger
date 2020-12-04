@@ -31,7 +31,6 @@ release
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
-.idea
 
 # misc
 /.sass-cache
@@ -48,6 +47,6 @@ testem.log
 Thumbs.db
 
 package-lock.json
-
-.vscode/
 yarn.lock
+
+.env
