@@ -1,6 +1,6 @@
 const Musixmatch = require('musixmatch');
 const init = {
-  apikey: process.env.MM_K,
+  apikey: 'f353de95d37930383ffcd70586f6403d',
   corsURL: '',
 }
 

@@ -19,6 +19,13 @@ module.exports.findCovers = async (musicTag) => {
   return await scraper.scrape(query, 4);
 };
 
+module.exports.getCoverUrl = async (musicTag) => {
+  const query = makeQuery(musicTag);
+  const result = await scraper.scrape(query, 1);
+  console.log(result[0].url);
+  return result[0].url;
+};
+
 const makeQuery = (musicTag) => {
   const query = musicTag.artistTag + "+" + musicTag.titleTag + "+cover+art";
   return query.replace(/\s/g, "+");

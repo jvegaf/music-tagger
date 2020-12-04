@@ -7,9 +7,7 @@ module.exports = {
       'name': '@electron-forge/maker-squirrel',
       'config': {
         'name': 'music_tagger',
-        'loadingGif': path.join('src', 'assets', 'splash-screen.gif'),
-        'setupIcon': path.join('src', 'assets', 'icons','music-tagger.ico'),
-        'skipUpdateIcon': true,
+        'loadingGif': path.join('src', 'assets', 'splash-screen.gif')
       }
     },
     {

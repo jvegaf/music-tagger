@@ -67,9 +67,9 @@ ipcMain.handle('save-tags', (event, item) => {
   return true;
 })
 
-ipcMain.on('save-all-tags', (event, items) => {
+ipcMain.handle('save-all-tags', (event, items) => {
   items.forEach(item => id3.updateTagsOfItem(item));
-  mainWindow.webContents.send('tags-saved');
+  return true;
 })
 
 ipcMain.handle('fetch-cover', async (event, item) => {
@@ -82,8 +82,7 @@ ipcMain.handle('fetch-cover', async (event, item) => {
 
 ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
   try {
-    const response = await fetch(url);
-    return await response.buffer();
+    return await getImageBuffer(url);
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
@@ -92,8 +91,19 @@ ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
 
 ipcMain.handle('find-tags', async (event, item) => {
   try {
-    return await mxmService.findTags(item);
+    const newItem =  await mxmService.findTags(item);
+    const coverUrl = await coverFinder.getCoverUrl(newItem);
+    const buffer = await getImageBuffer(coverUrl);
+    newItem.imageTag = {
+      description: '', imageBuffer: buffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
+    };
+    return newItem;
   } catch (e) {
     console.log(e);
   }
 })
+
+async function getImageBuffer(url) {
+  const response = await fetch(url);
+  return await response.buffer();
+}

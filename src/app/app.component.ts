@@ -78,7 +78,6 @@ export class AppComponent {
   saveAllChanges() {
     this.showInfo('Saving Changes ...', false);
     this.els.ipcRenderer.invoke('save-all-tags', this.trackItems).then( items => {
-      this.trackItems = items;
       this.haveChanges = false;
       this.showInfo('Tags Saved', true);
     });
@@ -87,10 +86,8 @@ export class AppComponent {
   saveChanges() {
     this.showInfo('Saving Changes ...', false);
     this.els.ipcRenderer.invoke('save-tags', this.trackItems[this.itemSelected]).then(item => {
-      this.trackItems[this.itemSelected] = item;
       this.infoDialog = false;
       this.detailDialog = false;
-      this.showInfo('Tags Saved', true);
     });
   }
 
