@@ -1,13 +1,17 @@
 const path = require('path');
 
 module.exports = {
-  'packagerConfig': {},
+  'packagerConfig': {
+    'icon': path.join('src', 'assets', 'icons','win','icon.ico')
+  },
   'makers': [
     {
       'name': '@electron-forge/maker-squirrel',
       'config': {
         'name': 'music_tagger',
-        'loadingGif': path.join('src', 'assets', 'splash-screen.gif')
+        'loadingGif': path.join('src', 'assets', 'splash-screen.gif'),
+        'setupIcon': path.join('src', 'assets', 'icons','win','icon.ico'),
+        'skipUpdateIcon': true
       }
     },
     {

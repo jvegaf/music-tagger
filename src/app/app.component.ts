@@ -4,6 +4,7 @@ import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
 import { OptionArt } from './core/models/OptionArt';
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
+import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -33,10 +34,16 @@ export class AppComponent {
   tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
+    this.els.ipcRenderer.on('processing', (event) => {
+      this.infoDialog = false;
+      this.showInfo('Processing, Please Wait', false);
+    });
+
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
       this.infoDialog = false;
       this.showInfo(error.name, true);
     });
+
   }
 
   private showInfo(message: string, showButton: boolean) {
@@ -49,6 +56,7 @@ export class AppComponent {
     this.els.ipcRenderer.invoke('open-folder').then(tagItems => {
       this.trackItems = this.tagsService.getDataSource(tagItems);
       this.haveData = true;
+      this.infoDialog = false;
     });
   }
 
@@ -83,7 +91,7 @@ export class AppComponent {
     this.showInfo('Saving Changes ...', false);
     this.els.ipcRenderer.invoke('save-all-tags', this.trackItems).then( items => {
       this.haveChanges = false;
-      this.showInfo('Tags Saved', true);
+      this.infoDialog = false;
     });
   }
 

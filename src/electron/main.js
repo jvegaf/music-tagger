@@ -50,6 +50,7 @@ ipcMain.handle('open-folder', async () => {
       properties: ['openDirectory'],
     })
     .then(async (result) => {
+      mainWindow.webContents.send('processing');
       return await id3.getTagsFromPath(result.filePaths[0]);
     })
     .catch((err) => {
@@ -92,11 +93,13 @@ ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
 ipcMain.handle('find-tags', async (event, item) => {
   try {
     const newItem =  await mxmService.findTags(item);
-    const coverUrl = await coverFinder.getCoverUrl(newItem);
-    const buffer = await getImageBuffer(coverUrl);
-    newItem.imageTag = {
-      description: '', imageBuffer: buffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
-    };
+    if (item.imageTag === undefined){
+      const coverUrl = await coverFinder.getCoverUrl(newItem);
+      const buffer = await getImageBuffer(coverUrl);
+      newItem.imageTag = {
+        description: '', imageBuffer: buffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
+      };
+    }
     return newItem;
   } catch (e) {
     console.log(e);
