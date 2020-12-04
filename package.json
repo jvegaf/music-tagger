@@ -20,7 +20,7 @@
     "package": "ng build --prod && electron-forge package",
     "build:make": "ng build --prod && electron-forge make",
     "make": "electron-forge make",
-    "publish": ""
+    "publish": "ng build --prod && electron-forge publish"
   },
   "private": true,
   "dependencies": {
