@@ -27,6 +27,6 @@ module.exports.getCoverUrl = async (musicTag) => {
 };
 
 const makeQuery = (musicTag) => {
-  const query = musicTag.artistTag + "+" + musicTag.titleTag + "+cover+art";
+  const query = musicTag.artistTag + "+" + musicTag.titleTag + musicTag.albumTag + "+cover+art";
   return query.replace(/\s/g, "+");
 }
