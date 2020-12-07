@@ -3,9 +3,14 @@ require('dotenv').config();
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const finderServ = require('./services/onlineFinderService');
+const path = require('path');
 
 if (require('electron-squirrel-startup')) return app.quit();
 
+const titleBar = () => {
+  if (process.platform === 'darwin') return 'hidden';
+  return 'default';
+}
 
 let mainWindow
 
@@ -13,7 +18,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
-    frame: process.platform === 'win32',
+    frame: process.platform !== 'linux',
     backgroundColor: "#80FFFFFF",
     webPreferences: {
       nodeIntegration: true,
@@ -21,6 +26,8 @@ function createWindow() {
       preload: __dirname + './../../node_modules/@marcj/angular-desktop-ui/preload.js',
       nativeWindowOpen: true,
     },
+    titleBarStyle: titleBar(),
+    icon: path.join(process.cwd(),'src', 'assets','icons', 'png', '64x64.png')
   })
 
   mainWindow.setMenuBarVisibility(false);

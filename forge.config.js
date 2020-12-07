@@ -1,8 +1,15 @@
 const path = require('path');
 
+const appIcon = () => {
+  switch (process.platform) {
+    case 'win32': return path.join('src', 'assets', 'icons','win','icon.ico');
+    case 'darwin': return path.join('src', 'assets', 'icons','mac','icon.icns');
+  }
+}
+
 module.exports = {
   'packagerConfig': {
-    'icon': path.join('src', 'assets', 'icons','win','icon.ico')
+    'icon': appIcon()
   },
   'makers': [
     {
