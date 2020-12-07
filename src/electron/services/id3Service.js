@@ -11,6 +11,9 @@ exports.updateTags = (items) => {
   return true;
 }
 
+exports.saveTags = (item) => {
+  updateTagsOfItem(item);
+}
 
 exports.getTagsFromPath = (folderPath) => {
   const files = readSync(folderPath).filter((file) => path.extname(file).toLowerCase() === '.mp3');

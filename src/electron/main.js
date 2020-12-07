@@ -90,10 +90,8 @@ ipcMain.handle('imageTag-from-Url', async (event, url) => {
 
 ipcMain.on('find-tags', async (event, items) => {
   try {
-    const newItems = await Promise.all(items.map( async (item, index) => {
-      mainWindow.webContents.send('processing', index);
-      return await finderServ.findTags(item);
-    }));
+    const newItems = await finderServ.findTagsOfItems(items);
+    id3.updateTags(newItems);
     event.reply('online-tags-founded', newItems);
   } catch (e) {
     console.log(e);

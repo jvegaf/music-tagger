@@ -16,7 +16,7 @@ export class TracklistComponent implements OnInit {
 
   @Input() items: MusicTag[];
 
-  @Output() showDetail = new EventEmitter<number>();
+  @Output() showDetail = new EventEmitter<MusicTag>();
 
   selectedItems = [];
   constructor() { }
@@ -24,7 +24,20 @@ export class TracklistComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  selectPrev(): void {
+    if (this.selectedItems.length > 1) { return; }
+    const index = this.selectedItems[0].fileIndex - 1;
+    this.selectedItems = [this.items[index]];
+  }
+
+  selectNext(): void {
+    if (this.selectedItems.length > 1) { return; }
+    const index = this.selectedItems[0].fileIndex + 1;
+    if (index === this.items.length) { return ; }
+    this.selectedItems = [this.items[index]];
+  }
+
   itemClicked(item: MusicTag) {
-    this.showDetail.emit(item.fileIndex);
+    this.showDetail.emit(item);
   }
 }

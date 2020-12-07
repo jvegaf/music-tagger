@@ -36,7 +36,6 @@ export class AppComponent {
     this.els.ipcRenderer.on('online-tags-founded', (event, items) => {
       console.log(items);
       this.trackItems = this.tagsService.updateTags(this.trackItems, items);
-      this.haveChanges = true;
       this.infoDialog = false;
     });
 
@@ -78,13 +77,17 @@ export class AppComponent {
     }
   }
 
-  openDetailDialog(itemIndex: number) {
-    this.itemSelected = itemIndex;
+  openDetailDialog() {
     this.detailDialog = true;
   }
 
   showTagExtrDialog() {
-    this.sampleItem = this.tagsService.convertFilenameToTags(this.trackItems[0]);
+    if (this.tracklistComponent.selectedItems.length === 0) {
+      this.sampleItem = this.tagsService.convertFilenameToTags(this.trackItems[0]);
+      this.tagsExtrDialog = true;
+      return;
+    }
+    this.sampleItem = this.tagsService.convertFilenameToTags(this.tracklistComponent.selectedItems[0]);
     this.tagsExtrDialog = true;
   }
 
@@ -113,19 +116,13 @@ export class AppComponent {
     this.tagsExtrDialog = false;
   }
 
-  saveAllChanges() {
+  saveChanges() {
     this.showInfo('Saving Changes ...', false);
     if (this.tracklistComponent.selectedItems.length < 1) {
       this.els.ipcRenderer.send('save-tags', this.trackItems);
       return;
     }
     this.els.ipcRenderer.send('save-tags', this.tracklistComponent.selectedItems);
-  }
-
-  saveChanges() {
-    this.showInfo('Saving Changes ...', false);
-    const items = [this.trackItems[this.itemSelected]];
-    this.els.ipcRenderer.send('save-tags', items);
   }
 
   showArtFetcherDialog(selectedItem: MusicTag) {
@@ -151,8 +148,7 @@ export class AppComponent {
     this.closeFetcherDialog();
     this.detailDialog = false;
     this.showInfo('Adding Cover to Tags....', false);
-    this.tagsService.addCoverArtToTag(this.trackItems, this.itemSelected, imgUrl).then(tagItems => {
-      this.trackItems = tagItems;
+    this.tagsService.addCoverArtToTag(this.tracklistComponent.selectedItems[0], imgUrl).then(() => {
       this.infoDialog = false;
       this.detailDialog = true;
     });

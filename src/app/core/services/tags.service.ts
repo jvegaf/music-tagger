@@ -30,10 +30,10 @@ export class TagsService {
     return item;
   }
 
-  async addCoverArtToTag(tracklist: MusicTag[], itemSelected: number, imgUrl: string): Promise<MusicTag[]> {
+  async addCoverArtToTag(item: MusicTag, imgUrl: string): Promise<void> {
     return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
-      tracklist[itemSelected].imageTag = imgTag;
-      return tracklist;
+      item.imageTag = imgTag;
+      return;
     });
   }
 

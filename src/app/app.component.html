@@ -28,7 +28,7 @@
         <dui-button *ngIf="haveChanges"
                     textured
                     icon="check"
-                    (click)="saveAllChanges()"
+                    (click)="saveChanges()"
         >Save Tags
         </dui-button
         >
@@ -54,7 +54,7 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog($event)"></app-tracklist>
+    <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog()"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
   <ng-container *ngIf="infoDialog">
@@ -67,13 +67,13 @@
   </ng-container>
   <!-- Detail Dialog -->
   <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">
-    <app-detail [item]="trackItems[itemSelected]" (clickCover)="showArtFetcherDialog(trackItems[itemSelected])"
+    <app-detail [item]="tracklistComponent.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComponent.selectedItems[0])"
                 #detailComponent></app-detail>
     <dui-dialog-actions>
       <dui-button style="margin-right: 50px;" (click)="findTagsOnline()">Find Tags online</dui-button>
-      <dui-button icon="arrow-small-left" (click)="openDetailDialog(itemSelected-1)">
+      <dui-button icon="arrow-small-left" (click)="tracklistComponent.selectPrev()">
       </dui-button>
-      <dui-button style="margin-right: 50px;" icon="arrow-small-right" (click)="openDetailDialog(itemSelected+1)">
+      <dui-button style="margin-right: 50px;" icon="arrow-small-right" (click)="tracklistComponent.selectNext()">
       </dui-button>
       <dui-button closeDialog>Close</dui-button>
       <dui-button (click)="saveChanges()" primary>Save</dui-button>
