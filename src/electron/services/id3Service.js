@@ -1,38 +1,45 @@
+exports.updateTags = (items) => {
+  items.forEach(item => updateTagsOfItem(item));
+  return true;
+}
+
 const NodeId3 = require('node-id3');
 const fs = require('fs');
+const readSync = require('recursive-readdir-sync');
 const path = require('path');
 
 
 exports.getTagsFromPath = (folderPath) => {
-  const filenames = fs.readdirSync(folderPath);
-  return getTagsOfFiles(folderPath, filenames);
+  const files = readSync(folderPath).filter((file) => path.extname(file).toLowerCase() === '.mp3');
+  return getTagsOfFiles(files);
 }
 
 exports.cleanFilenames = (items, value) => {
   return items.map(item => {
-    if (item.filename.indexOf(value) !== -1) {
-      const newName = item.filename.replace(value, '');
-      const oldFile = path.join(item.filepath, item.filename);
-      let newfile = path.join(item.filepath, newName);
-      fs.renameSync(oldFile, newfile);
-      item.filename = newName;
+    if (item.filepath.indexOf(value) !== -1) {
+      const newName = item.filepath.replace(value, '');
+      fs.renameSync(item.filepath, newName);
+      item.filename = getFilename(newName);
       return item;
     }
   });
 }
 
-const getTagsOfFiles = (folderPath, files) => {
+const getTagsOfFiles = (files) => {
   return files.map((file, index) => {
-    let item = getTagsOfFile(folderPath, file);
+    let item = getTagsOfFile(file);
     item.fileIndex = index;
     return item;
   });
 };
 
-const getTagsOfFile = (folderPath, filename) => {
+const getFilename = (file) => {
+  return file.replace(/^.*[\\\/]/, '');
+}
+
+const getTagsOfFile = (file) => {
   let item = {};
-  const filepath = path.join(folderPath, filename);
-  const buffer = fs.readFileSync(filepath);
+  const buffer = fs.readFileSync(file);
 
   let tags = NodeId3.read(buffer);
   if (tags === false){
@@ -48,8 +55,8 @@ const getTagsOfFile = (folderPath, filename) => {
   item.imageTag = tags.image;
 
 
-  item.filepath = folderPath;
-  item.filename = filename;
+  item.filepath = file;
+  item.filename = getFilename(file);
   return item;
 }
 
@@ -69,9 +76,8 @@ const getTagsOfFile = (folderPath, filename) => {
  * cambiar en lugar de que devuelva booleano,
  * que devuelva el item actualizado
  */
-exports.updateTagsOfItem = (item) => {
-  const fullPath = path.join(item.filepath, item.filename);
-  let fileBuffer = fs.readFileSync(fullPath);
+const updateTagsOfItem = (item) => {
+  const fileBuffer = fs.readFileSync(item.filepath);
   let tags = {
     title: item.titleTag,
     artist: item.artistTag,
@@ -83,7 +89,7 @@ exports.updateTagsOfItem = (item) => {
     image: item.imageTag
   }
 
-  return NodeId3.update(tags, fullPath);
-  //fs.writeFileSync(fullPath, result);
-
+  const result = NodeId3.update(tags, fileBuffer);
+  fs.writeFileSync(item.filepath, result);
+  console.log(`saved ${item.titleTag}`);
 };

@@ -4,13 +4,12 @@ import { ElectronService } from 'ngx-electron';
 import { MusicTag } from './core/models/MusicTag';
 import { OptionArt } from './core/models/OptionArt';
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
-import { zip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ TagsService ]
+  providers: [TagsService]
 })
 export class AppComponent {
 
@@ -34,9 +33,24 @@ export class AppComponent {
   tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
-    this.els.ipcRenderer.on('processing', (event) => {
+    this.els.ipcRenderer.on('online-tags-founded', (event, items) => {
+      console.log(items);
+      this.trackItems = this.tagsService.updateTags(this.trackItems, items);
+      this.haveChanges = true;
       this.infoDialog = false;
-      this.showInfo('Processing, Please Wait', false);
+    });
+
+    this.els.ipcRenderer.on('processing', (event, itemInd) => {
+      const totalItems = this.tracklistComponent.selectedItems.length < 1 ?
+        this.trackItems.length : this.tracklistComponent.selectedItems.length;
+      this.infoDialogMessage = `Processing ${itemInd} of ${totalItems}`;
+      console.log(this.infoDialogMessage);
+    });
+
+    this.els.ipcRenderer.on('tags-saved', (event) => {
+      this.haveChanges = false;
+      this.infoDialog = false;
+      this.detailDialog = false;
     });
 
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
@@ -47,9 +61,9 @@ export class AppComponent {
   }
 
   private showInfo(message: string, showButton: boolean) {
+    this.infoDialog = true;
     this.infoDialogMessage = message;
     this.infoDialogButtons = showButton;
-    this.infoDialog = true;
   }
 
   async openFolder() {
@@ -79,39 +93,39 @@ export class AppComponent {
   }
 
   cleanFilenames() {
-    this.els.ipcRenderer.invoke('clean-filenames', { items: this.trackItems, dirtyText: this.dirtyString }).then(tags => {
+    this.els.ipcRenderer.invoke('clean-filenames', {items: this.trackItems, dirtyText: this.dirtyString}).then(tags => {
       this.trackItems = tags;
       this.cleanerDialog = false;
     });
   }
 
   filenamesToTags() {
-    this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
+    if (this.tracklistComponent.selectedItems.length < 1){
+      this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
+      this.haveChanges = true;
+      this.tagsExtrDialog = false;
+      return;
+    }
+    this.tracklistComponent.selectedItems = this.tracklistComponent.selectedItems.map(item => {
+      return this.tagsService.convertFilenameToTags(item);
+    });
     this.haveChanges = true;
     this.tagsExtrDialog = false;
   }
 
-  async saveAllChanges() {
+  saveAllChanges() {
     this.showInfo('Saving Changes ...', false);
-    try {
-      const result = await this.els.ipcRenderer.invoke('save-all-tags', this.trackItems);
-      this.haveChanges = false;
-      this.infoDialog = false;
-    } catch (e) {
-      this.infoDialog = false;
-      console.log(e);
+    if (this.tracklistComponent.selectedItems.length < 1) {
+      this.els.ipcRenderer.send('save-tags', this.trackItems);
+      return;
     }
+    this.els.ipcRenderer.send('save-tags', this.tracklistComponent.selectedItems);
   }
 
-  async saveChanges() {
+  saveChanges() {
     this.showInfo('Saving Changes ...', false);
-    try {
-      const result = await this.els.ipcRenderer.invoke('save-tags', this.trackItems[this.itemSelected]);
-      this.infoDialog = false;
-      this.detailDialog = false;
-    } catch (e) {
-      console.log(e);
-    }
+    const items = [this.trackItems[this.itemSelected]];
+    this.els.ipcRenderer.send('save-tags', items);
   }
 
   showArtFetcherDialog(selectedItem: MusicTag) {
@@ -146,22 +160,16 @@ export class AppComponent {
 
   findTagsOnline() {
     this.showInfo('Finding Track metadata...', true);
-    this.els.ipcRenderer.invoke('find-tags', this.trackItems[this.itemSelected]).then( newItem => {
-      this.trackItems = this.tagsService.updateTags(this.trackItems, newItem);
-      this.infoDialog = false;
-    });
+    const items = [this.tracklistComponent.selectedItems];
+    this.els.ipcRenderer.send('find-tags', items);
   }
 
   findAllTagsOnline() {
-    if (this.tracklistComponent.selectedItems.length < 1) { return; }
-    this.showInfo('Finding All Track metadata...', true);
-    const selectedItems = this.tracklistComponent.selectedItems.map(item => item.fileIndex);
-    selectedItems.map(itemIndex => {
-      this.els.ipcRenderer.invoke('find-tags', this.trackItems[itemIndex]).then( newItem => {
-        this.trackItems = this.tagsService.updateTags(this.trackItems, newItem);
-      });
-    });
-    this.haveChanges = true;
-    this.infoDialog = false;
+    this.showInfo('Finding Selected Tracks metadata...', false);
+    if (this.tracklistComponent.selectedItems.length < 1) {
+      this.els.ipcRenderer.send('find-tags', this.trackItems);
+      return;
+    }
+    this.els.ipcRenderer.send('find-tags', this.tracklistComponent.selectedItems);
   }
 }

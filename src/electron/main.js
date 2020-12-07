@@ -2,9 +2,7 @@ const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 require('dotenv').config();
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
-const fetch = require('node-fetch');
-const spotiService = require('./services/spotifyService');
-const mxmService = require('./services/musixMatchService');
+const finderServ = require('./services/onlineFinderService');
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -50,7 +48,6 @@ ipcMain.handle('open-folder', async () => {
       properties: ['openDirectory'],
     })
     .then(async (result) => {
-      mainWindow.webContents.send('processing');
       return await id3.getTagsFromPath(result.filePaths[0]);
     })
     .catch((err) => {
@@ -62,21 +59,9 @@ ipcMain.on('clean-filenames', (event, args) => {
   const tags = id3.cleanFilenames(args.items, args.dirtyText);
   mainWindow.webContents.send('tags-extracted', tags);
 })
-
-ipcMain.handle('save-tags', (event, item) => {
-  id3.updateTagsOfItem(item);
-  return true;
-})
-
-ipcMain.handle('save-all-tags', async (event, items) => {
-  try {
-    return await items.map(item => {
-      return id3.updateTagsOfItem(item);
-    });
-  } catch (e) {
-    console.log(e);
-  }
-
+ipcMain.on('save-tags',  (event, items) => {
+  const result = id3.updateTags(items);
+  event.reply('tags-saved');
 })
 
 ipcMain.handle('fetch-cover', async (event, item) => {
@@ -87,26 +72,24 @@ ipcMain.handle('fetch-cover', async (event, item) => {
   }
 })
 
-ipcMain.handle('imageUrl-to-buffer', async (event, url) => {
+ipcMain.handle('imageTag-from-Url', async (event, url) => {
   try {
-    return await getImageBuffer(url);
+    return await getImageTag(url);
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
   }
 })
 
-ipcMain.handle('find-tags', async (event, item) => {
+ipcMain.on('find-tags', async (event, items) => {
   try {
-    const newItem = await mxmService.findTags(item);
-    console.log(newItem);
-    return newItem;
+    const newItems = await Promise.all(items.map( async (item, index) => {
+      mainWindow.webContents.send('processing', index);
+      return await finderServ.findTags(item);
+    }));
+    event.reply('online-tags-founded', newItems);
   } catch (e) {
     console.log(e);
   }
-})
 
-async function getImageBuffer(url) {
-  const response = await fetch(url);
-  return await response.buffer();
-}
+})

@@ -1,6 +1,5 @@
 import { MusicTag } from '../models/MusicTag';
 import { Injectable } from '@angular/core';
-import { ArtImage } from '../models/ArtImage';
 import { ElectronService } from 'ngx-electron';
 
 @Injectable({
@@ -32,10 +31,8 @@ export class TagsService {
   }
 
   async addCoverArtToTag(tracklist: MusicTag[], itemSelected: number, imgUrl: string): Promise<MusicTag[]> {
-    return await this.els.ipcRenderer.invoke('imageUrl-to-buffer', imgUrl).then(buffer => {
-      tracklist[itemSelected].imageTag = {
-        description: '', imageBuffer: buffer, mime: 'jpeg', type: {id: 3, name: 'front cover'}
-      };
+    return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
+      tracklist[itemSelected].imageTag = imgTag;
       return tracklist;
     });
   }
@@ -58,7 +55,7 @@ export class TagsService {
     });
   }
 
-  updateTags(trackItems: MusicTag[], newItem: any): MusicTag[] {
+  updateTag(trackItems: MusicTag[], newItem: MusicTag): MusicTag[] {
     return trackItems.map(tag => {
       if (tag.fileIndex === newItem.fileIndex) {
         tag.titleTag = newItem.titleTag;
@@ -72,5 +69,10 @@ export class TagsService {
       }
       return tag;
     });
+  }
+
+  updateTags(trackItems: MusicTag[], newItems: MusicTag[]): MusicTag[] {
+      newItems.forEach(item => trackItems = this.updateTag(trackItems, item));
+      return trackItems;
   }
 }
