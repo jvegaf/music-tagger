@@ -159,13 +159,7 @@ export class AppComponent {
   }
 
   findTagsOnline() {
-    this.showInfo('Finding Track metadata...', true);
-    const items = [this.tracklistComponent.selectedItems];
-    this.els.ipcRenderer.send('find-tags', items);
-  }
-
-  findAllTagsOnline() {
-    this.showInfo('Finding Selected Tracks metadata...', false);
+    this.showInfo('Finding Music Tags Online...', false);
     if (this.tracklistComponent.selectedItems.length < 1) {
       this.els.ipcRenderer.send('find-tags', this.trackItems);
       return;
