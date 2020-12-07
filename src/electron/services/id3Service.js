@@ -1,12 +1,15 @@
+const NodeId3 = require('node-id3');
+const fetch = require('node-fetch');
+const fs = require('fs');
+const readSync = require('recursive-readdir-sync');
+const path = require('path');
+
+
+
 exports.updateTags = (items) => {
   items.forEach(item => updateTagsOfItem(item));
   return true;
 }
-
-const NodeId3 = require('node-id3');
-const fs = require('fs');
-const readSync = require('recursive-readdir-sync');
-const path = require('path');
 
 
 exports.getTagsFromPath = (folderPath) => {
@@ -93,3 +96,12 @@ const updateTagsOfItem = (item) => {
   fs.writeFileSync(item.filepath, result);
   console.log(`saved ${item.titleTag}`);
 };
+
+exports.getImageTag = async (url) => {
+  const response = await fetch(url);
+  const mimeType = response.headers.get('content-type');
+  const imgBuffer = await response.buffer();
+  return {
+    description: '', imageBuffer: imgBuffer, mime: mimeType, type: {id: 3, name: 'front cover'}
+  };
+}

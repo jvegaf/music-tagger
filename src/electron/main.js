@@ -74,7 +74,7 @@ ipcMain.handle('fetch-cover', async (event, item) => {
 
 ipcMain.handle('imageTag-from-Url', async (event, url) => {
   try {
-    return await getImageTag(url);
+    return await id3.getImageTag(url);
   } catch (err) {
     console.log(err);
     mainWindow.webContents.send('covers-fetch-error', err);
