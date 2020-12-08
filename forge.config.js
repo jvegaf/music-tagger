@@ -34,7 +34,12 @@ module.exports = {
         'options': {
           'maintainer': 'Jose Vega',
           'homepage': 'https://github.com/jvegaf/music-tagger',
-          'icon': 'src/assets/icons/mac/icon.icns'
+          'icon': 'src/assets/icons/mac/icon.icns',
+          'categories': [
+            'AudioVideo',
+            'Audio',
+            'AudioVideoEditing'
+          ]
         }
       }
     }
