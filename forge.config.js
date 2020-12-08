@@ -3,6 +3,7 @@ const path = require('path');
 const appIcon = () => {
   switch (process.platform) {
     case 'win32': return path.join('src', 'assets', 'icons','win','icon.ico');
+    case 'linux': return path.join('src', 'assets', 'icons','png','1024x1024.png');
     case 'darwin': return path.join('src', 'assets', 'icons','mac','icon.icns');
   }
 }
@@ -33,7 +34,7 @@ module.exports = {
         'options': {
           'maintainer': 'Jose Vega',
           'homepage': 'https://github.com/jvegaf/music-tagger',
-          'icon': 'src/assets/icons/music-tagger.png'
+          'icon': 'src/assets/icons/mac/icon.icns'
         }
       }
     }
