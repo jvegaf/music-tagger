@@ -57,14 +57,7 @@
     <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog()"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
-  <ng-container *ngIf="infoDialog">
-    <dui-dialog [(visible)]="infoDialog" [minWidth]="300">
-      <p>{{infoDialogMessage}}</p>
-      <dui-dialog-actions *ngIf="infoDialogButtons">
-        <dui-button primary (click)="infoDialog = false;">Ok</dui-button>
-      </dui-dialog-actions>
-    </dui-dialog>
-  </ng-container>
+  <app-info-dialog [visible]="infoDialog" [infoMessage]="infoMessage"></app-info-dialog>
   <!-- Detail Dialog -->
   <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">
     <app-detail [item]="tracklistComponent.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComponent.selectedItems[0])"

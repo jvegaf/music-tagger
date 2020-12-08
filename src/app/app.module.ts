@@ -24,6 +24,7 @@ import { NgxElectronModule } from 'ngx-electron';
 import { DetailComponent } from './core/components/detail/detail.component';
 import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-view.component';
 import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-fetcher-view.component';
+import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-
     TracklistComponent,
     DetailComponent,
     CleanerViewComponent,
-    ArtFetcherViewComponent
+    ArtFetcherViewComponent,
+    InfoDialogComponent
   ],
   imports: [
     BrowserModule,

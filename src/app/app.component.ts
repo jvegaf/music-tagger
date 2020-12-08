@@ -22,13 +22,12 @@ export class AppComponent {
   cleanerDialog = false;
   tagsExtrDialog = false;
   infoDialog = false;
+  infoMessage: string;
   artFetchDialog = false;
   trackItems: MusicTag[] = [];
   fetchResult: OptionArt[];
-  sampleItem: MusicTag;
-  infoDialogMessage: string;
-  infoDialogButtons: boolean;
 
+  sampleItem: MusicTag;
   @ViewChild(TracklistComponent)
   tracklistComponent: TracklistComponent;
 
@@ -36,7 +35,7 @@ export class AppComponent {
     this.els.ipcRenderer.on('online-tags-founded', (event, item) => {
       this.trackItems = this.tagsService.updateTag(this.trackItems, item);
       this.itemsToProcess--;
-      this.infoDialogMessage = `${this.itemsToProcess} pending to finish`;
+      this.infoMessage = `${this.itemsToProcess} pending to finish`;
       if (this.itemsToProcess < 1) { this.infoDialog = false; }
     });
 
@@ -48,20 +47,19 @@ export class AppComponent {
 
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
       this.infoDialog = false;
-      this.showInfo(error.name, true);
+      this.showInfo(error.name);
     });
 
   }
 
-  private showInfo(message: string, showButton: boolean) {
+  private showInfo(message: string) {
     this.infoDialog = true;
-    this.infoDialogMessage = message;
-    this.infoDialogButtons = showButton;
+    this.infoMessage = message;
   }
 
   async openFolder() {
+    this.showInfo('opening folder');
     try {
-      this.showInfo('opening folder', false);
       const tagItems = await this.els.ipcRenderer.invoke('open-folder');
       this.trackItems = this.tagsService.getDataSource(tagItems);
       this.haveData = true;
@@ -111,7 +109,7 @@ export class AppComponent {
   }
 
   saveChanges() {
-    this.showInfo('Saving Changes ...', false);
+    this.showInfo('Saving Changes ...');
     if (this.tracklistComponent.selectedItems.length < 1) {
       this.trackItems.forEach(item => {
         this.els.ipcRenderer.send('save-tags', item);
@@ -124,7 +122,7 @@ export class AppComponent {
   }
 
   showArtFetcherDialog(selectedItem: MusicTag) {
-    this.showInfo('Fetching Art Images...', false);
+    this.showInfo('Fetching Art Images...');
     this.els.ipcRenderer.invoke('fetch-cover', selectedItem).then(result => {
       this.openFetcherDialog(result as OptionArt[]);
     });
@@ -145,7 +143,7 @@ export class AppComponent {
     this.infoDialog = false;
     this.closeFetcherDialog();
     this.detailDialog = false;
-    this.showInfo('Adding Cover to Tags....', false);
+    this.showInfo('Adding Cover Art to Tags....');
     this.tagsService.addCoverArtToTag(this.tracklistComponent.selectedItems[0], imgUrl).then(() => {
       this.infoDialog = false;
       this.detailDialog = true;
@@ -153,7 +151,7 @@ export class AppComponent {
   }
 
   findTagsOnline() {
-    this.showInfo('Finding Music Tags Online...', false);
+    this.showInfo('Finding Music Tags Online...');
     if (this.tracklistComponent.selectedItems.length < 1) {
       // this.els.ipcRenderer.send('find-tags', this.trackItems);
       return;
