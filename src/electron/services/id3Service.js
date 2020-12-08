@@ -5,12 +5,6 @@ const readSync = require('recursive-readdir-sync');
 const path = require('path');
 
 
-
-exports.updateTags = (items) => {
-  items.forEach(item => updateTagsOfItem(item));
-  return true;
-}
-
 exports.saveTags = (item) => {
   updateTagsOfItem(item);
 }

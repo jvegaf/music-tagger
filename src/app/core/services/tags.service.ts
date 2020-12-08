@@ -70,9 +70,4 @@ export class TagsService {
       return tag;
     });
   }
-
-  updateTags(trackItems: MusicTag[], newItems: MusicTag[]): MusicTag[] {
-      newItems.forEach(item => trackItems = this.updateTag(trackItems, item));
-      return trackItems;
-  }
 }

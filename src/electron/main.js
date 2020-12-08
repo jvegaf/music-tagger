@@ -66,8 +66,8 @@ ipcMain.on('clean-filenames', (event, args) => {
   const tags = id3.cleanFilenames(args.items, args.dirtyText);
   mainWindow.webContents.send('tags-extracted', tags);
 })
-ipcMain.on('save-tags',  (event, items) => {
-  const result = id3.updateTags(items);
+ipcMain.on('save-tags',  (event, item) => {
+  const result = id3.saveTags(item);
   event.reply('tags-saved');
 })
 
@@ -88,11 +88,11 @@ ipcMain.handle('imageTag-from-Url', async (event, url) => {
   }
 })
 
-ipcMain.on('find-tags', async (event, items) => {
+ipcMain.on('find-tags', async (event, item) => {
   try {
-    const newItems = await finderServ.findTagsOfItems(items);
-    id3.updateTags(newItems);
-    event.reply('online-tags-founded', newItems);
+    const newItem = await finderServ.findTags(item);
+    id3.saveTags(newItem);
+    event.reply('online-tags-founded', newItem);
   } catch (e) {
     console.log(e);
   }

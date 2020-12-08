@@ -14,7 +14,7 @@ import { TracklistComponent } from './core/components/tracklist/tracklist.compon
 export class AppComponent {
 
   title = 'Music Tagger';
-  itemSelected: number;
+  itemsToProcess: number;
   dirtyString = '';
   haveData = false;
   haveChanges = false;
@@ -33,17 +33,11 @@ export class AppComponent {
   tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
-    this.els.ipcRenderer.on('online-tags-founded', (event, items) => {
-      console.log(items);
-      this.trackItems = this.tagsService.updateTags(this.trackItems, items);
-      this.infoDialog = false;
-    });
-
-    this.els.ipcRenderer.on('processing', (event, itemInd) => {
-      const totalItems = this.tracklistComponent.selectedItems.length < 1 ?
-        this.trackItems.length : this.tracklistComponent.selectedItems.length;
-      this.infoDialogMessage = `Processing ${itemInd} of ${totalItems}`;
-      console.log(this.infoDialogMessage);
+    this.els.ipcRenderer.on('online-tags-founded', (event, item) => {
+      this.trackItems = this.tagsService.updateTag(this.trackItems, item);
+      this.itemsToProcess--;
+      this.infoDialogMessage = `${this.itemsToProcess} pending to finish`;
+      if (this.itemsToProcess < 1) { this.infoDialog = false; }
     });
 
     this.els.ipcRenderer.on('tags-saved', (event) => {
@@ -103,7 +97,7 @@ export class AppComponent {
   }
 
   filenamesToTags() {
-    if (this.tracklistComponent.selectedItems.length < 1){
+    if (this.tracklistComponent.selectedItems.length < 1) {
       this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
       this.haveChanges = true;
       this.tagsExtrDialog = false;
@@ -119,10 +113,14 @@ export class AppComponent {
   saveChanges() {
     this.showInfo('Saving Changes ...', false);
     if (this.tracklistComponent.selectedItems.length < 1) {
-      this.els.ipcRenderer.send('save-tags', this.trackItems);
+      this.trackItems.forEach(item => {
+        this.els.ipcRenderer.send('save-tags', item);
+      });
       return;
     }
-    this.els.ipcRenderer.send('save-tags', this.tracklistComponent.selectedItems);
+    this.tracklistComponent.selectedItems.forEach(item => {
+      this.els.ipcRenderer.send('save-tags', item);
+    });
   }
 
   showArtFetcherDialog(selectedItem: MusicTag) {
@@ -157,9 +155,12 @@ export class AppComponent {
   findTagsOnline() {
     this.showInfo('Finding Music Tags Online...', false);
     if (this.tracklistComponent.selectedItems.length < 1) {
-      this.els.ipcRenderer.send('find-tags', this.trackItems);
+      // this.els.ipcRenderer.send('find-tags', this.trackItems);
       return;
     }
-    this.els.ipcRenderer.send('find-tags', this.tracklistComponent.selectedItems);
+    this.itemsToProcess = this.tracklistComponent.selectedItems.length;
+    this.tracklistComponent.selectedItems.forEach(item => {
+      this.els.ipcRenderer.send('find-tags', item);
+    });
   }
 }
