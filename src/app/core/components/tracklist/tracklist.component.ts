@@ -19,25 +19,38 @@ export class TracklistComponent implements OnInit {
   @Output() showDetail = new EventEmitter<MusicTag>();
 
   selectedItems = [];
+  selectedIndex: number;
+  sortedItems: MusicTag[];
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
   selectPrev(): void {
-    if (this.selectedItems.length > 1) { return; }
-    const index = this.selectedItems[0].fileIndex - 1;
-    this.selectedItems = [this.items[index]];
+    if (this.selectedIndex > 0) this.selectedIndex--;
+    this.selectedItems = [this.sortedItems[this.selectedIndex]];
   }
 
   selectNext(): void {
-    if (this.selectedItems.length > 1) { return; }
-    const index = this.selectedItems[0].fileIndex + 1;
-    if (index === this.items.length) { return ; }
-    this.selectedItems = [this.items[index]];
+    if (this.selectedIndex < this.sortedItems.length) this.selectedIndex++;
+    this.selectedItems = [this.sortedItems[this.selectedIndex]];
   }
 
   itemClicked(item: MusicTag) {
     this.showDetail.emit(item);
+  }
+
+  sortedChange(items: MusicTag[]){
+    this.sortedItems = items;
+  }
+
+  selectedChange(){
+    for (let i=0; i<this.sortedItems.length; i++){
+      if (this.selectedItems[0].fileIndex === this.sortedItems[i].fileIndex){
+        this.selectedIndex = i;
+        break;
+      }
+    }
   }
 }

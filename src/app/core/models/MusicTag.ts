@@ -9,6 +9,7 @@ export class MusicTag {
   bpmTag: number;
   keyTag: string;
   imageTag: ArtImage;
+  hasCover: boolean;
   filename: string;
   filepath: string;
 
@@ -23,6 +24,7 @@ export class MusicTag {
     this.bpmTag = bpmTag;
     this.keyTag = keyTag;
     this.imageTag = imageTag;
+    this.hasCover = this.imageTag !== undefined
     this.filename = filename;
     this.filepath = filepath;
   }

@@ -1,15 +1,32 @@
-<dui-table style="height: 100%;" multiSelect [items]="items" [selectable]="true" [(selected)]="selectedItems" (dbclick)="itemClicked($event)">
+<dui-table style="height: 100%;"
+           (sortedChange)="sortedChange($event)"
+           borderless="true"
+           multiSelect [items]="items"
+           (selectedChange)="selectedChange()"
+           [selectable]="true"
+           [(selected)]="selectedItems"
+           (dbclick)="itemClicked($event)">
+  <dui-dropdown duiTableCustomRowContextMenu>
+    <dui-dropdown-item>Play</dui-dropdown-item>
+    <dui-dropdown-splitter></dui-dropdown-splitter>
+    <dui-dropdown-item>Tags from Filename</dui-dropdown-item>
+    <dui-dropdown-item>Filename from Tags</dui-dropdown-item>
+    <dui-dropdown-splitter></dui-dropdown-splitter>
+    <dui-dropdown-item>Clean Filename</dui-dropdown-item>
+    <dui-dropdown-splitter></dui-dropdown-splitter>
+    <dui-dropdown-item>Delete Track</dui-dropdown-item>
+  </dui-dropdown>
   <dui-table-column name="hasCover" header="Art" [width]="30">
-    <ng-container *duiTableCell="let musicTag">
-      <dui-icon style="margin-bottom: 25px;" *ngIf="musicTag.imageTag" name="record"></dui-icon>
+    <ng-container *duiTableCell="let row">
+      <dui-icon style="margin-bottom: 25px;" *ngIf="row.hasCover" name="record"></dui-icon>
     </ng-container>
   </dui-table-column>
-  <dui-table-column name="titleTag" header="Title" [width]="300"></dui-table-column>
+  <dui-table-column name="titleTag" header="Title" [width]="400"></dui-table-column>
   <dui-table-column name="artistTag" header="Artist" [width]="300"></dui-table-column>
   <dui-table-column name="albumTag" header="Album" [width]="250"></dui-table-column>
-  <dui-table-column name="genreTag" header="Genre" [width]="100"></dui-table-column>
-  <dui-table-column name="bpmTag" header="BPM" [width]="70"></dui-table-column>
-  <dui-table-column name="yearTag" header="Year" [width]="80"></dui-table-column>
+  <dui-table-column name="genreTag" header="Genre" [width]="80"></dui-table-column>
+  <dui-table-column name="bpmTag" header="BPM" [width]="50"></dui-table-column>
+  <dui-table-column name="yearTag" header="Year" [width]="50"></dui-table-column>
   <dui-table-column name="keyTag" header="Key" [width]="40"></dui-table-column>
   <dui-table-column name="filename" header="Filename" [width]="700"></dui-table-column>
 </dui-table>
