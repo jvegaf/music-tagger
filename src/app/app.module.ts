@@ -25,6 +25,7 @@ import { DetailComponent } from './core/components/detail/detail.component';
 import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-view.component';
 import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-fetcher-view.component';
 import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.component';
+import { TextFieldContextMenuDirective } from './core/directives/text-field-context-menu.directive';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.c
     DetailComponent,
     CleanerViewComponent,
     ArtFetcherViewComponent,
-    InfoDialogComponent
+    InfoDialogComponent,
+    TextFieldContextMenuDirective
   ],
   imports: [
     BrowserModule,
