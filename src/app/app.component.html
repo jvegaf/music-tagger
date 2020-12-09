@@ -81,11 +81,11 @@
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Cleaner Dialog -->
-  <dui-dialog *ngIf="cleanerDialog" [(visible)]="cleanerDialog" [minWidth]="800" #cleaner>
-    <app-cleaner-view (change)="setDirtyText($event)"></app-cleaner-view>
+  <dui-dialog *ngIf="cleanerDialog" [(visible)]="cleanerDialog" [minWidth]="800">
+    <app-cleaner-view #cleaner></app-cleaner-view>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
-      <dui-button (click)="cleanFilenames()" primary>Clean Files</dui-button>
+      <dui-button (click)="cleanFilenames(cleaner.dirtyText)" primary>Clean Files</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Filename to Tag Dialog-->

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-cleaner-view',
@@ -7,14 +7,14 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class CleanerViewComponent implements OnInit {
 
-  @Output() dirtyText = new EventEmitter<string>();
+  dirtyText = '';
 
   constructor() {}
 
   ngOnInit(): void { }
 
   setDirtyText(event) {
-    this.dirtyText.emit(event);
+    this.dirtyText = event;
   }
 
 }

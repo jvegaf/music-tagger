@@ -15,7 +15,6 @@ export class AppComponent {
 
   title = 'Music Tagger';
   itemsToProcess: number;
-  dirtyString = '';
   haveData = false;
   haveChanges = false;
   detailDialog = false;
@@ -48,6 +47,10 @@ export class AppComponent {
     this.els.ipcRenderer.on('covers-fetch-error', (event, error) => {
       this.infoDialog = false;
       this.showInfo(error.name);
+    });
+
+    this.els.ipcRenderer.on('track-items-to-clean', (event, selectedText) => {
+      this.cleanFilenames(selectedText);
     });
 
   }
@@ -84,14 +87,12 @@ export class AppComponent {
     this.tagsExtrDialog = true;
   }
 
-  setDirtyText(event) {
-    this.dirtyString = event.target.value;
-  }
-
-  cleanFilenames() {
-    this.els.ipcRenderer.invoke('clean-filenames', {items: this.trackItems, dirtyText: this.dirtyString}).then(tags => {
+  cleanFilenames(dirtyString: string) {
+    this.showInfo('Cleaning Filenames');
+    this.els.ipcRenderer.invoke('clean-filenames', {items: this.trackItems, dirtyText: dirtyString}).then(tags => {
       this.trackItems = tags;
       this.cleanerDialog = false;
+      this.infoDialog = false;
     });
   }
 

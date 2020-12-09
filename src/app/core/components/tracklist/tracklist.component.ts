@@ -29,16 +29,18 @@ export class TracklistComponent implements OnInit {
 
   selectPrev(): void {
     if (this.selectedIndex > 0) this.selectedIndex--;
-    this.selectedItems = [this.sortedItems[this.selectedIndex]];
+    const index = this.sortedItems[this.selectedIndex].fileIndex;
+    this.selectedItems = [this.items[index]];
   }
 
   selectNext(): void {
     if (this.selectedIndex < this.sortedItems.length) this.selectedIndex++;
-    this.selectedItems = [this.sortedItems[this.selectedIndex]];
+    const index = this.sortedItems[this.selectedIndex].fileIndex;
+    this.selectedItems = [this.items[index]];
   }
 
-  itemClicked(item: MusicTag) {
-    this.showDetail.emit(item);
+  itemClicked() {
+    this.showDetail.emit();
   }
 
   sortedChange(items: MusicTag[]){

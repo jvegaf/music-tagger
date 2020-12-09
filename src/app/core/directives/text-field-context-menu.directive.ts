@@ -1,6 +1,7 @@
 import { Directive, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { fromEvent, Subscription } from 'rxjs';
+import { MenuItem } from 'electron';
 
 // tslint:disable-next-line: directive-selector
 @Directive({ selector: 'dui-input' })
@@ -8,7 +9,7 @@ export class TextFieldContextMenuDirective implements OnInit, OnDestroy {
 
   private _subscription: Subscription;
 
-  constructor(private elementRef: ElementRef, private electronService: ElectronService) {
+  constructor(private elementRef: ElementRef, private els: ElectronService) {
   }
 
   ngOnInit() {
@@ -20,7 +21,7 @@ export class TextFieldContextMenuDirective implements OnInit, OnDestroy {
         let node: HTMLElement = e.target as HTMLElement;
         while (node) {
           if (node.nodeName.match(/^(dui-input)$/i) || node.isContentEditable) {
-            menu.popup({window: this.electronService.remote.getCurrentWindow()});
+            menu.popup({window: this.els.remote.getCurrentWindow()});
             break;
           }
           node = node.parentNode as HTMLElement;
@@ -33,16 +34,29 @@ export class TextFieldContextMenuDirective implements OnInit, OnDestroy {
   }
 
   private buildMenu() {
-    const menu = new this.electronService.remote.Menu();
-    const MenuItem = this.electronService.remote.MenuItem;
-    menu.append(new MenuItem({role: 'undo'}));
-    menu.append(new MenuItem({role: 'redo'}));
+    const menu = new this.els.remote.Menu();
+    const MenuItem = this.els.remote.MenuItem;
+    menu.append(this.cleanItem());
     menu.append(new MenuItem({type: 'separator'}));
     menu.append(new MenuItem({role: 'cut'}));
     menu.append(new MenuItem({role: 'copy'}));
     menu.append(new MenuItem({role: 'paste'}));
     menu.append(new MenuItem({type: 'separator'}));
     menu.append(new MenuItem({role: 'selectAll'}));
+    menu.append(new MenuItem({type: 'separator'}));
+    menu.append(new MenuItem({role: 'undo'}));
+    menu.append(new MenuItem({role: 'redo'}));
     return menu;
+  }
+
+  private cleanItem(): MenuItem {
+    const MenuItem = this.els.remote.MenuItem;
+    const selectedText = this.elementRef.nativeElement._selected();
+    return new MenuItem({
+      label: 'Clean Selected',
+      click: () => {
+        this.els.ipcRenderer.send('clean-from-menu', selectedText);
+      }
+    });
   }
 }
