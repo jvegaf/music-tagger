@@ -55,6 +55,7 @@ ipcMain.handle('open-folder', async () => {
       properties: ['openDirectory'],
     })
     .then(async (result) => {
+      if (result.canceled) {return null;}
       return await id3.getTagsFromPath(result.filePaths[0]);
     })
     .catch((err) => {
@@ -67,7 +68,7 @@ ipcMain.on('clean-filenames', (event, args) => {
   mainWindow.webContents.send('tags-extracted', tags);
 })
 ipcMain.on('save-tags',  (event, item) => {
-  const result = id3.saveTags(item);
+  id3.saveTags(item);
   event.reply('tags-saved');
 })
 

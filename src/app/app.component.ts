@@ -39,7 +39,7 @@ export class AppComponent {
       if (this.itemsToProcess < 1) { this.infoDialog = false; }
     });
 
-    this.els.ipcRenderer.on('tags-saved', (event) => {
+    this.els.ipcRenderer.on('tags-saved', () => {
       this.haveChanges = false;
       this.infoDialog = false;
       this.detailDialog = false;
@@ -61,6 +61,7 @@ export class AppComponent {
     this.showInfo('opening folder');
     try {
       const tagItems = await this.els.ipcRenderer.invoke('open-folder');
+      if (tagItems === null) { this.infoDialog = false; return; }
       this.trackItems = this.tagsService.getDataSource(tagItems);
       this.haveData = true;
       this.infoDialog = false;
