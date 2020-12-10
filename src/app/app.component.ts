@@ -183,6 +183,5 @@ export class AppComponent {
   private removeFile() {
     this.els.ipcRenderer.send('remove-file', this.tracklistComponent.selectedItems[0]);
     this.trackItems = this.tagsService.removeItem(this.tracklistComponent.selectedItems[0], this.trackItems);
-    console.log(this.trackItems);
   }
 }

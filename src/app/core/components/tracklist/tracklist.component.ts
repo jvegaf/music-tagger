@@ -19,6 +19,7 @@ export class TracklistComponent implements OnInit {
   @Output() showDetail = new EventEmitter<MusicTag>();
   @Output() menuActions = new EventEmitter<string>();
 
+
   selectedItems = [];
   selectedIndex: number;
   sortedItems: number[];

@@ -1,6 +1,7 @@
 import {MusicTag} from '../models/MusicTag';
 import {Injectable} from '@angular/core';
 import {ElectronService} from 'ngx-electron';
+import {log} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -73,12 +74,12 @@ export class TagsService {
         tag.filepath = item.filepath;
       }
       return tag;
-    })
+    });
   }
 
-  removeItem(item: MusicTag, trackItems: MusicTag[]) {
-    return trackItems.map(tag => {
-      if (tag.fileIndex !== item.fileIndex){
+  removeItem(item: MusicTag, tracklist: MusicTag[]): MusicTag[] {
+    return tracklist.map(tag => {
+      if (tag !== item){
         return tag;
       }
     });

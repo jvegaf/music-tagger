@@ -113,6 +113,5 @@ ipcMain.on('remove-file', (event, item) =>{
     if (err) {
       console.error(err)
     }
-    console.log('removed !');
   });
 });
