@@ -2,7 +2,7 @@
            (sortedChange)="sortedChange($event)"
            borderless="true"
            multiSelect [items]="items"
-           (selectedChange)="selectedChange()"
+           (selectedChange)="selectedChange($event)"
            [selectable]="true"
            [(selected)]="selectedItems"
            (dbclick)="itemClicked()">
@@ -16,7 +16,7 @@
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="actionTrigged('showCleaner')">Clean Filenames</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item disabled>Delete Track</dui-dropdown-item>
+    <dui-dropdown-item (click)="actionTrigged('removeFile')">Delete Track</dui-dropdown-item>
   </dui-dropdown>
   <dui-table-column name="hasCover" header="Art" [width]="30">
     <ng-container *duiTableCell="let row">
@@ -30,5 +30,6 @@
   <dui-table-column name="bpmTag" header="BPM" [width]="50"></dui-table-column>
   <dui-table-column name="yearTag" header="Year" [width]="50"></dui-table-column>
   <dui-table-column name="keyTag" header="Key" [width]="40"></dui-table-column>
-  <dui-table-column name="filename" header="Filename" [width]="700"></dui-table-column>
+  <dui-table-column name="filename" header="File Name" [width]="700"></dui-table-column>
+  <dui-table-column name="filepath" header="Path" [width]="700" hidden></dui-table-column>
 </dui-table>

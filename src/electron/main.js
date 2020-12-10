@@ -4,6 +4,7 @@ const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const finderServ = require('./services/onlineFinderService');
 const path = require('path');
+const fs = require('fs');
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -104,4 +105,14 @@ ipcMain.on('find-tags', async (event, item) => {
 ipcMain.on('clean-from-menu', (event, selectedText) =>{
   console.log(selectedText);
   mainWindow.webContents.send('clean-selection', selectedText);
+});
+
+ipcMain.on('remove-file', (event, item) =>{
+  console.log(`removing ${item.filepath}`);
+  fs.unlink(item.filepath, (err) => {
+    if (err) {
+      console.error(err)
+    }
+    console.log('removed !');
+  });
 });

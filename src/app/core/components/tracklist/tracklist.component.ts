@@ -59,30 +59,26 @@ export class TracklistComponent implements OnInit {
     }
 
     if (this.sortedItems === undefined){
-      this.order(itemsSorted);
+      this.sortedItems = this.order(itemsSorted);
       return;
     }
 
-    if (itemsSorted[0].fileIndex !== this.sortedItems[0]) {
-      console.log('sorted changed');
-      this.order(itemsSorted);
-    }
+    console.log('sorted changed');
+    this.sortedItems = this.order(itemsSorted);
   }
 
   private order(itemsSorted: MusicTag[]) {
-    this.sortedItems = itemsSorted.map(item => {
+    return itemsSorted.map(item => {
+      if (item === undefined){return;}
       return item.fileIndex;
     });
   }
 
-  selectedChange() {
-    if (this.selectedItems.length === 1 && this.selectedItems[0].fileIndex !== this.sortedItems[0]) {
-      for (let i = 0; i < this.sortedItems.length; i++) {
-        if (this.selectedItems[0].fileIndex === this.sortedItems[i]) {
-          this.selectedIndex = i;
-          break;
-        }
-      }
-    }
+  selectedChange(selected) {
+    if (selected.length < 1 || selected.length > 1){return;}
+    if (selected[0] === undefined){return;}
+    console.log('selected with fileIndex');
+    console.log(selected[0].fileIndex);
+    this.selectedIndex = this.sortedItems.indexOf(selected[0].fileIndex);
   }
 }

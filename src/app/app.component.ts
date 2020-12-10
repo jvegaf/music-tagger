@@ -174,6 +174,15 @@ export class AppComponent {
       case 'findTags':
         this.findTagsOnline();
         break;
+      case 'removeFile':
+        this.removeFile();
+        break;
     }
+  }
+
+  private removeFile() {
+    this.els.ipcRenderer.send('remove-file', this.tracklistComponent.selectedItems[0]);
+    this.trackItems = this.tagsService.removeItem(this.tracklistComponent.selectedItems[0], this.trackItems);
+    console.log(this.trackItems);
   }
 }

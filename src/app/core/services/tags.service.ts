@@ -75,4 +75,12 @@ export class TagsService {
       return tag;
     })
   }
+
+  removeItem(item: MusicTag, trackItems: MusicTag[]) {
+    return trackItems.map(tag => {
+      if (tag.fileIndex !== item.fileIndex){
+        return tag;
+      }
+    });
+  }
 }
