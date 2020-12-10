@@ -7,14 +7,16 @@
            [(selected)]="selectedItems"
            (dbclick)="itemClicked()">
   <dui-dropdown duiTableCustomRowContextMenu>
-    <dui-dropdown-item>Play</dui-dropdown-item>
+    <dui-dropdown-item disabled>Play</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item>Tags from Filename</dui-dropdown-item>
-    <dui-dropdown-item>Filename from Tags</dui-dropdown-item>
+    <dui-dropdown-item (click)="actionTrigged('tagsFromFilename')" >Tags from Filename</dui-dropdown-item>
+    <dui-dropdown-item disabled>Filename from Tags</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item>Clean Filename</dui-dropdown-item>
+    <dui-dropdown-item (click)="actionTrigged('findTags')">Find Tags Online</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item>Delete Track</dui-dropdown-item>
+    <dui-dropdown-item (click)="actionTrigged('showCleaner')">Clean Filenames</dui-dropdown-item>
+    <dui-dropdown-splitter></dui-dropdown-splitter>
+    <dui-dropdown-item disabled>Delete Track</dui-dropdown-item>
   </dui-dropdown>
   <dui-table-column name="hasCover" header="Art" [width]="30">
     <ng-container *duiTableCell="let row">

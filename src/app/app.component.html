@@ -54,7 +54,7 @@
     </dui-window-toolbar>
   </dui-window-header>
   <dui-window-content>
-    <app-tracklist [items]="trackItems" (showDetail)="openDetailDialog()"></app-tracklist>
+    <app-tracklist [items]="trackItems" (menuActions)="trackItemsAction($event)" (showDetail)="openDetailDialog()"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
   <app-info-dialog [visible]="infoDialog" [infoMessage]="infoMessage"></app-info-dialog>

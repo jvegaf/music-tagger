@@ -1,6 +1,6 @@
-import { MusicTag } from '../models/MusicTag';
-import { Injectable } from '@angular/core';
-import { ElectronService } from 'ngx-electron';
+import {MusicTag} from '../models/MusicTag';
+import {Injectable} from '@angular/core';
+import {ElectronService} from 'ngx-electron';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +24,18 @@ export class TagsService {
     if (elements.length > 1) {
       item.artistTag = elements[0];
       item.titleTag = elements.slice(1).join('');
+      this.els.ipcRenderer.send('save-tags', item);
       return item;
     }
     item.titleTag = elements[0];
+    this.els.ipcRenderer.send('save-tags', item);
     return item;
   }
 
   async addCoverArtToTag(item: MusicTag, imgUrl: string): Promise<void> {
     return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
       item.imageTag = imgTag;
+      item.hasCover = true;
       return;
     });
   }
@@ -55,19 +58,21 @@ export class TagsService {
     });
   }
 
-  updateTag(trackItems: MusicTag[], newItem: MusicTag): MusicTag[] {
-    return trackItems.map(tag => {
-      if (tag.fileIndex === newItem.fileIndex) {
-        tag.titleTag = newItem.titleTag;
-        tag.artistTag = newItem.artistTag;
-        tag.albumTag = newItem.albumTag;
-        tag.genreTag = newItem.genreTag;
-        tag.yearTag = newItem.yearTag;
-        tag.bpmTag = newItem.bpmTag;
-        tag.keyTag = newItem.keyTag;
-        tag.imageTag = newItem.imageTag;
+  updateTrackItems(trackItems: MusicTag[], item: any): MusicTag[] {
+    return trackItems.map(tag =>{
+      if(tag.fileIndex === item.fileIndex) {
+        tag.titleTag = item.titleTag;
+        tag.artistTag = item.artistTag;
+        tag.genreTag = item.genreTag;
+        tag.yearTag = item.yearTag;
+        tag.bpmTag = item.bpmTag;
+        tag.keyTag = item.keyTag;
+        tag.imageTag = item.imageTag;
+        tag.hasCover = item.hasCover;
+        tag.filename = item.filename;
+        tag.filepath = item.filepath;
       }
       return tag;
-    });
+    })
   }
 }

@@ -63,9 +63,12 @@ ipcMain.handle('open-folder', async () => {
     });
 });
 
-ipcMain.handle('clean-filenames', (event, args) => {
-  return id3.cleanFilenames(args.items, args.dirtyText);
+ipcMain.on('clean-filename', (event, args) => {
+  const resultItem =  id3.cleanFilename(args.item, args.selection);
+  console.log(`${resultItem.filename} cleaned`);
+  event.reply('tag-completed', resultItem);
 })
+
 ipcMain.on('save-tags',  (event, item) => {
   id3.saveTags(item);
   event.reply('tags-saved');
@@ -92,7 +95,7 @@ ipcMain.on('find-tags', async (event, item) => {
   try {
     const newItem = await finderServ.findTags(item);
     id3.saveTags(newItem);
-    event.reply('online-tags-founded', newItem);
+    event.reply('tag-completed', newItem);
   } catch (e) {
     console.log(e);
   }
@@ -100,5 +103,5 @@ ipcMain.on('find-tags', async (event, item) => {
 
 ipcMain.on('clean-from-menu', (event, selectedText) =>{
   console.log(selectedText);
-  mainWindow.webContents.send('track-items-to-clean', selectedText);
+  mainWindow.webContents.send('clean-selection', selectedText);
 });

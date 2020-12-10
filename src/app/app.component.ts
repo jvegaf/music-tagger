@@ -31,11 +31,12 @@ export class AppComponent {
   tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService, private tagsService: TagsService) {
-    this.els.ipcRenderer.on('online-tags-founded', (event, item) => {
-      this.trackItems = this.tagsService.updateTag(this.trackItems, item);
+    this.els.ipcRenderer.on('tag-completed', (event, item) => {
+      this.trackItems = this.tagsService.updateTrackItems(this.trackItems, item);
       this.itemsToProcess--;
-      this.infoMessage = `${this.itemsToProcess} pending to finish`;
-      if (this.itemsToProcess < 1) { this.infoDialog = false; }
+      this.infoDialog = true;
+      this.infoMessage = `Left ${this.itemsToProcess} Tracks for end Task`;
+      if (this.itemsToProcess < 1) { this.infoDialog = false; this.cleanerDialog = false; }
     });
 
     this.els.ipcRenderer.on('tags-saved', () => {
@@ -49,10 +50,9 @@ export class AppComponent {
       this.showInfo(error.name);
     });
 
-    this.els.ipcRenderer.on('track-items-to-clean', (event, selectedText) => {
+    this.els.ipcRenderer.on('clean-selection', (event, selectedText) => {
       this.cleanFilenames(selectedText);
     });
-
   }
 
   private showInfo(message: string) {
@@ -87,26 +87,26 @@ export class AppComponent {
     this.tagsExtrDialog = true;
   }
 
-  cleanFilenames(dirtyString: string) {
+  cleanFilenames(textSelected: string) {
+    this.itemsToProcess = this.trackItems.length;
+    this.detailDialog = false;
     this.showInfo('Cleaning Filenames');
-    this.els.ipcRenderer.invoke('clean-filenames', {items: this.trackItems, dirtyText: dirtyString}).then(tags => {
-      this.trackItems = tags;
-      this.cleanerDialog = false;
-      this.infoDialog = false;
+    this.trackItems.forEach(item => {
+      this.els.ipcRenderer.send('clean-filename', {item: item, selection: textSelected});
     });
   }
 
   filenamesToTags() {
     if (this.tracklistComponent.selectedItems.length < 1) {
       this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
-      this.haveChanges = true;
+      // this.haveChanges = true;
       this.tagsExtrDialog = false;
       return;
     }
     this.tracklistComponent.selectedItems = this.tracklistComponent.selectedItems.map(item => {
       return this.tagsService.convertFilenameToTags(item);
     });
-    this.haveChanges = true;
+    // this.haveChanges = true;
     this.tagsExtrDialog = false;
   }
 
@@ -153,7 +153,6 @@ export class AppComponent {
   }
 
   findTagsOnline() {
-    this.showInfo('Finding Music Tags Online...');
     if (this.tracklistComponent.selectedItems.length < 1) {
       // this.els.ipcRenderer.send('find-tags', this.trackItems);
       return;
@@ -162,5 +161,19 @@ export class AppComponent {
     this.tracklistComponent.selectedItems.forEach(item => {
       this.els.ipcRenderer.send('find-tags', item);
     });
+  }
+
+  trackItemsAction(action: string) {
+    switch (action) {
+      case 'showCleaner':
+        this.cleanerDialog = true;
+        break;
+      case 'tagsFromFilename':
+        this.filenamesToTags();
+        break;
+      case 'findTags':
+        this.findTagsOnline();
+        break;
+    }
   }
 }

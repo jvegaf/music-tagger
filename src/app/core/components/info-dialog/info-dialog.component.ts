@@ -13,7 +13,9 @@ export class InfoDialogComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.message = changes.infoMessage.currentValue;
+    if (changes.infoMessage !== undefined){
+      this.message = changes.infoMessage.currentValue;
+    }
   }
 
 

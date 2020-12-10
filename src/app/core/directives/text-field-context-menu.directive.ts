@@ -8,7 +8,6 @@ import { MenuItem } from 'electron';
 export class TextFieldContextMenuDirective implements OnInit, OnDestroy {
 
   private _subscription: Subscription;
-
   constructor(private elementRef: ElementRef, private els: ElectronService) {
   }
 
@@ -51,11 +50,10 @@ export class TextFieldContextMenuDirective implements OnInit, OnDestroy {
 
   private cleanItem(): MenuItem {
     const MenuItem = this.els.remote.MenuItem;
-    const selectedText = this.elementRef.nativeElement._selected();
     return new MenuItem({
       label: 'Clean Selected',
       click: () => {
-        this.els.ipcRenderer.send('clean-from-menu', selectedText);
+        this.els.ipcRenderer.send('clean-from-menu', window.getSelection().toString());
       }
     });
   }

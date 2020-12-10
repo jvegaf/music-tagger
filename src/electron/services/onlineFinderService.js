@@ -8,6 +8,7 @@ exports.findTags = async (item) => {
     const artUrl = await spotiService.findCoverArt(newItem);
     if (artUrl !== null) {
       newItem.imageTag = await id3Service.getImageTag(artUrl);
+      newItem.hasCover = true;
     }
     return newItem;
   } catch (e) {

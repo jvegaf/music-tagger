@@ -14,15 +14,14 @@ exports.getTagsFromPath = (folderPath) => {
   return getTagsOfFiles(files);
 }
 
-exports.cleanFilenames = (items, value) => {
-  return items.map(item => {
-    if (item.filepath.indexOf(value) !== -1) {
-      const newName = item.filepath.replace(value, '');
-      fs.renameSync(item.filepath, newName);
-      item.filename = getFilename(newName);
-      return item;
-    }
-  });
+exports.cleanFilename = (item, value) => {
+  if (item.filepath.indexOf(value) !== -1) {
+    const newName = item.filepath.replace(value, '');
+    fs.renameSync(item.filepath, newName);
+    item.filepath = newName;
+    item.filename = getFilename(newName);
+  }
+  return item;
 }
 
 const getTagsOfFiles = (files) => {
