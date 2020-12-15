@@ -32,7 +32,9 @@
               "node_modules/@marcj/angular-desktop-ui/src/scss/icon.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/wavesurfer.js/dist/wavesurfer.js"
+            ]
           },
           "configurations": {
             "production": {

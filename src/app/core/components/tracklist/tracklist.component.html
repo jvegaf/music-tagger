@@ -25,6 +25,11 @@
   </dui-table-column>
   <dui-table-column name="titleTag" header="Title" [width]="400"></dui-table-column>
   <dui-table-column name="artistTag" header="Artist" [width]="300"></dui-table-column>
+  <dui-table-column name="player" header="Preview" [width]="400">
+    <ng-container *duiTableCell="let row">
+      <app-cell-player [id]="row.id" [filePath]="row.filepath"></app-cell-player>
+    </ng-container>
+  </dui-table-column>
   <dui-table-column name="albumTag" header="Album" [width]="250"></dui-table-column>
   <dui-table-column name="genreTag" header="Genre" [width]="80"></dui-table-column>
   <dui-table-column name="bpmTag" header="BPM" [width]="50"></dui-table-column>
