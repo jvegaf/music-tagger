@@ -45,6 +45,7 @@
     "rxjs": "~6.5.4",
     "spotify-web-api-node": "^5.0.0",
     "tslib": "^1.10.0",
+    "wavesurfer.js": "^4.3.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
