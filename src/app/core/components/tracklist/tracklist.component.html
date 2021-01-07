@@ -18,11 +18,6 @@
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="actionTrigged('removeFile')">Delete Track</dui-dropdown-item>
   </dui-dropdown>
-  <dui-table-column name="player" header="Preview" [width]="400">
-    <ng-container *duiTableCell="let row">
-      <app-cell-player [id]="row.id" [filePath]="row.filepath"></app-cell-player>
-    </ng-container>
-  </dui-table-column>
   <dui-table-column name="hasCover" header="Art" [width]="30">
     <ng-container *duiTableCell="let row">
       <dui-icon style="margin-bottom: 25px;" *ngIf="row.hasCover" name="record"></dui-icon>

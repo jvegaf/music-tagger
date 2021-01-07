@@ -26,7 +26,6 @@ import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-vie
 import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-fetcher-view.component';
 import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.component';
 import { TextFieldContextMenuDirective } from './core/directives/text-field-context-menu.directive';
-import { CellPlayerComponent } from './core/components/cell-player/cell-player.component';
 
 @NgModule({
   declarations: [
@@ -36,8 +35,7 @@ import { CellPlayerComponent } from './core/components/cell-player/cell-player.c
     CleanerViewComponent,
     ArtFetcherViewComponent,
     InfoDialogComponent,
-    TextFieldContextMenuDirective,
-    CellPlayerComponent
+    TextFieldContextMenuDirective
   ],
   imports: [
     BrowserModule,
