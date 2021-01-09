@@ -1,58 +1,5 @@
 <dui-window [closable]="true" [maximizable]="true" [minimizable]="true">
-  <dui-window-header>
-    {{ title }}
-    <dui-window-toolbar>
-      <dui-button-group>
-        <dui-button textured icon="folder" (click)="openFolder()"
-        >Open Folder
-        </dui-button
-        >
-      </dui-button-group>
-      <dui-button-group>
-        <dui-button
-          textured
-          icon="edit"
-          [disabled]="!haveData"
-          (click)="cleanerDialog = true"
-        >Clean Filenames
-        </dui-button
-        >
-        <dui-button
-          textured
-          icon="flag"
-          [disabled]="!haveData"
-          (click)="showTagExtrDialog()"
-        >Tags from Filenames
-        </dui-button
-        >
-        <dui-button *ngIf="haveChanges"
-                    textured
-                    icon="check"
-                    (click)="saveChanges()"
-        >Save Tags
-        </dui-button
-        >
-      </dui-button-group>
-      <dui-button-group float="float">
-        <dui-button *ngIf="haveData"
-                    textured
-                    icon="download"
-                    (click)="findTagsOnline()"
-        >Find Tags Online
-        </dui-button
-        >
-      </dui-button-group>
-      <dui-button-group float="right">
-        <dui-input
-          textured
-          icon="search"
-          placeholder="Search"
-          round
-          clearer
-        ></dui-input>
-      </dui-button-group>
-    </dui-window-toolbar>
-  </dui-window-header>
+  <app-header (Actions)="headerAction($event)"></app-header>
   <dui-window-content>
     <app-tracklist [items]="trackItems" (menuActions)="trackItemsAction($event)" (showDetail)="openDetailDialog()"></app-tracklist>
   </dui-window-content>

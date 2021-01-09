@@ -1,4 +1,4 @@
-import {MusicTag} from '../../models/MusicTag';
+  import {MusicTag} from '../../models/MusicTag';
 import {
   Component,
   OnInit,

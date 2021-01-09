@@ -184,4 +184,9 @@ export class AppComponent {
     this.els.ipcRenderer.send('remove-file', this.tracklistComponent.selectedItems[0]);
     this.trackItems = this.tagsService.removeItem(this.tracklistComponent.selectedItems[0], this.trackItems);
   }
+
+  headerAction($event: string) {
+    // noinspection JSIgnoredPromiseFromCall
+    if ($event === 'add') { this.openFolder(); }
+  }
 }
