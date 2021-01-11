@@ -1,85 +1,53 @@
-  import {MusicTag} from '../../models/MusicTag';
+import {Track} from '../../models/Track';
 import {
   Component,
   OnInit,
-  Input,
   Output,
   EventEmitter,
 } from '@angular/core';
+import {TracksService} from '../../services/tracks.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-tracklist',
   templateUrl: './tracklist.component.html',
-  styleUrls: ['./tracklist.component.scss']
+  styleUrls: ['./tracklist.component.scss'],
+  providers: [TracksService]
 })
 export class TracklistComponent implements OnInit {
 
-  @Input() items: MusicTag[];
+  @Output() showDetail = new EventEmitter<Track>();
 
-  @Output() showDetail = new EventEmitter<MusicTag>();
-  @Output() menuActions = new EventEmitter<string>();
-
-
+  tracks: Track[] = [];
+  tracks$: Observable<Track[]>;
   selectedItems = [];
   selectedIndex: number;
-  sortedItems: number[];
 
-  constructor() {
+  constructor(private trackServ: TracksService) {
   }
 
   ngOnInit(): void {
-  }
-
-  selectPrev(): void {
-    if (this.selectedIndex > 0) {
-      this.selectedIndex--;
-    }
-    const index = this.sortedItems[this.selectedIndex];
-    this.selectedItems = [this.items[index]];
-  }
-
-  selectNext(): void {
-    if (this.selectedIndex < this.sortedItems.length) {
-      this.selectedIndex++;
-    }
-    const index = this.sortedItems[this.selectedIndex];
-    this.selectedItems = [this.items[index]];
+    this.tracks$ = this.trackServ.getTracks$();
+    this.tracks$.subscribe(tracks => this.tracks = tracks);
   }
 
   itemClicked() {
     this.showDetail.emit();
   }
 
-  actionTrigged(selected: string){
-    this.menuActions.emit(selected);
+  extractTags_onClick() {
+    this.trackServ.extractTags(this.selectedItems);
   }
 
-  sortedChange(itemsSorted: MusicTag[]) {
-    if (itemsSorted.length < 1) {
-      return;
-    }
-
-    if (this.sortedItems === undefined){
-      this.sortedItems = this.order(itemsSorted);
-      return;
-    }
-
-    console.log('sorted changed');
-    this.sortedItems = this.order(itemsSorted);
+  findTags_onClick() {
+    this.trackServ.findOnlineTags(this.selectedItems);
   }
 
-  private order(itemsSorted: MusicTag[]) {
-    return itemsSorted.map(item => {
-      if (item === undefined){return;}
-      return item.fileIndex;
-    });
+  cleaner_onClick() {
+
   }
 
-  selectedChange(selected) {
-    if (selected.length < 1 || selected.length > 1){return;}
-    if (selected[0] === undefined){return;}
-    console.log('selected with fileIndex');
-    console.log(selected[0].fileIndex);
-    this.selectedIndex = this.sortedItems.indexOf(selected[0].fileIndex);
+  delete_onClick() {
+    this.trackServ.removeTracks(this.selectedItems);
   }
 }

@@ -7,8 +7,7 @@ exports.findTags = async (item) => {
     const newItem = await mxmService.findTags(item);
     const artUrl = await spotiService.findCoverArt(newItem);
     if (artUrl !== null) {
-      newItem.imageTag = await id3Service.getImageTag(artUrl);
-      newItem.hasCover = true;
+      newItem.image = await id3Service.getImageTag(artUrl);
     }
     return newItem;
   } catch (e) {

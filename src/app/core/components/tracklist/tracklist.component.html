@@ -1,35 +1,28 @@
 <dui-table style="height: 100%;"
-           (sortedChange)="sortedChange($event)"
            borderless="true"
-           multiSelect [items]="items"
-           (selectedChange)="selectedChange($event)"
+           multiSelect [items]="tracks$"
            [selectable]="true"
            [(selected)]="selectedItems"
            (dbclick)="itemClicked()">
   <dui-dropdown duiTableCustomRowContextMenu>
     <dui-dropdown-item disabled>Play</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item (click)="actionTrigged('tagsFromFilename')" >Tags from Filename</dui-dropdown-item>
+    <dui-dropdown-item (click)="extractTags_onClick()" >Tags from Filename</dui-dropdown-item>
     <dui-dropdown-item disabled>Filename from Tags</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item (click)="actionTrigged('findTags')">Find Tags Online</dui-dropdown-item>
+    <dui-dropdown-item (click)="findTags_onClick()">Find Tags Online</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item (click)="actionTrigged('showCleaner')">Clean Filenames</dui-dropdown-item>
+    <dui-dropdown-item disabled (click)="cleaner_onClick()">Clean Filenames</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
-    <dui-dropdown-item (click)="actionTrigged('removeFile')">Delete Track</dui-dropdown-item>
+    <dui-dropdown-item (click)="delete_onClick()">Delete Track</dui-dropdown-item>
   </dui-dropdown>
-  <dui-table-column name="hasCover" header="Art" [width]="30">
-    <ng-container *duiTableCell="let row">
-      <dui-icon style="margin-bottom: 25px;" *ngIf="row.hasCover" name="record"></dui-icon>
-    </ng-container>
-    <dui-table-column name="titleTag" header="Title" [width]="400"></dui-table-column>
-    <dui-table-column name="artistTag" header="Artist" [width]="300"></dui-table-column>
-  </dui-table-column>
-  <dui-table-column name="albumTag" header="Album" [width]="250"></dui-table-column>
-  <dui-table-column name="genreTag" header="Genre" [width]="80"></dui-table-column>
-  <dui-table-column name="bpmTag" header="BPM" [width]="50"></dui-table-column>
-  <dui-table-column name="yearTag" header="Year" [width]="50"></dui-table-column>
-  <dui-table-column name="keyTag" header="Key" [width]="40"></dui-table-column>
-  <dui-table-column name="filename" header="File Name" [width]="700"></dui-table-column>
+  <dui-table-column name="title" header="Title" [width]="400"></dui-table-column>
+  <dui-table-column name="artist" header="Artist" [width]="300"></dui-table-column>
+  <dui-table-column name="album" header="Album" [width]="250"></dui-table-column>
+  <dui-table-column name="genre" header="Genre" [width]="80"></dui-table-column>
+  <dui-table-column name="bpm" header="BPM" [width]="50"></dui-table-column>
+  <dui-table-column name="year" header="Year" [width]="50"></dui-table-column>
+  <dui-table-column name="key" header="Key" [width]="40"></dui-table-column>
+  <dui-table-column name="filename" header="File Name" [width]="300"></dui-table-column>
   <dui-table-column name="filepath" header="Path" [width]="700" hidden></dui-table-column>
 </dui-table>

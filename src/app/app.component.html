@@ -1,32 +1,28 @@
 <dui-window [closable]="true" [maximizable]="true" [minimizable]="true">
   <app-header (Actions)="headerAction($event)"></app-header>
   <dui-window-content>
-    <app-tracklist [items]="trackItems" (menuActions)="trackItemsAction($event)" (showDetail)="openDetailDialog()"></app-tracklist>
+    <app-tracklist (menuActions)="trackItemsAction($event)" (showDetail)="openDetailDialog()"></app-tracklist>
   </dui-window-content>
   <!-- Info Dialog -->
   <app-info-dialog [visible]="infoDialog" [infoMessage]="infoMessage"></app-info-dialog>
   <!-- Detail Dialog -->
-  <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">
-    <app-detail [item]="tracklistComponent.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComponent.selectedItems[0])"
-                #detailComponent></app-detail>
-    <dui-dialog-actions>
-      <dui-button style="margin-right: 50px;" (click)="findTagsOnline()">Find Tags online</dui-button>
-      <dui-button icon="arrow-small-left" (click)="tracklistComponent.selectPrev()">
-      </dui-button>
-      <dui-button style="margin-right: 50px;" icon="arrow-small-right" (click)="tracklistComponent.selectNext()">
-      </dui-button>
-      <dui-button closeDialog>Close</dui-button>
-      <dui-button (click)="saveChanges()" primary>Save</dui-button>
-    </dui-dialog-actions>
-  </dui-dialog>
+<!--  <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">-->
+<!--    <app-detail [item]="tracklistComponent.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComponent.selectedItems[0])"-->
+<!--                #detailComponent></app-detail>-->
+<!--    <dui-dialog-actions>-->
+<!--      <dui-button style="margin-right: 50px;" (click)="findTagsOnline()">Find Tags online</dui-button>-->
+<!--      <dui-button closeDialog>Close</dui-button>-->
+<!--      <dui-button (click)="saveChanges()" primary>Save</dui-button>-->
+<!--    </dui-dialog-actions>-->
+<!--  </dui-dialog>-->
   <!-- ArtFetcher Dialog -->
-  <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">
-    <app-art-fetcher-view [resultSet]="fetchResult"
-                          (selected)="onSelectArt($event)"></app-art-fetcher-view>
-    <dui-dialog-actions>
-      <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>
-    </dui-dialog-actions>
-  </dui-dialog>
+<!--  <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">-->
+<!--    <app-art-fetcher-view [resultSet]="fetchResult"-->
+<!--                          (selected)="onSelectArt($event)"></app-art-fetcher-view>-->
+<!--    <dui-dialog-actions>-->
+<!--      <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>-->
+<!--    </dui-dialog-actions>-->
+<!--  </dui-dialog>-->
   <!-- Cleaner Dialog -->
   <dui-dialog *ngIf="cleanerDialog" [(visible)]="cleanerDialog" [minWidth]="800">
     <app-cleaner-view #cleaner></app-cleaner-view>
@@ -47,10 +43,10 @@
       <dui-input readonly [ngModel]="sampleItem.filename"></dui-input>
     </dui-form-row>
     <dui-form-row label="Title">
-      <dui-input readonly [ngModel]="sampleItem.titleTag"></dui-input>
+      <dui-input readonly [ngModel]="sampleItem.title"></dui-input>
     </dui-form-row>
     <dui-form-row label="Artist">
-      <dui-input readonly [ngModel]="sampleItem.artistTag"></dui-input>
+      <dui-input readonly [ngModel]="sampleItem.artist"></dui-input>
     </dui-form-row>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>

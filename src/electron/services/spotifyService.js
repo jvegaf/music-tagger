@@ -27,7 +27,7 @@ module.exports.findTags = async (item) => {
 };
 
 module.exports.findCoverArt = (item) => {
-  return api.searchTracks(`track:${item.titleTag} artist:${item.artistTag}`)
+  return api.searchTracks(`track:${item.title} artist:${item.artist}`)
     .then(function(data) {
       if (data === undefined) { return null; }
       if (data.body.tracks.items.length < 1) { return null; }

@@ -9,11 +9,6 @@ exports.saveTags = (item) => {
   updateTagsOfItem(item);
 }
 
-exports.getTagsFromPath = (folderPath) => {
-  const files = readSync(folderPath).filter((file) => path.extname(file).toLowerCase() === '.mp3');
-  return getTagsOfFiles(files);
-}
-
 exports.cleanFilename = (item, value) => {
   if (item.filepath.indexOf(value) !== -1) {
     const newName = item.filepath.replace(value, '');
@@ -24,19 +19,11 @@ exports.cleanFilename = (item, value) => {
   return item;
 }
 
-const getTagsOfFiles = (files) => {
-  return files.map((file, index) => {
-    let item = getTagsOfFile(file);
-    item.fileIndex = index;
-    return item;
-  });
-};
-
 const getFilename = (file) => {
-  return file.replace(/^.*[\\\/]/, '');
+  return file.replace(/^.*[\\\/]/, '').split('.')[0];
 }
 
-const getTagsOfFile = (file) => {
+exports.getTagsOfFile = (file) => {
   let item = {};
   const buffer = fs.readFileSync(file);
 
@@ -78,19 +65,19 @@ const getTagsOfFile = (file) => {
 const updateTagsOfItem = (item) => {
   const fileBuffer = fs.readFileSync(item.filepath);
   let tags = {
-    title: item.titleTag,
-    artist: item.artistTag,
-    album: item.albumTag,
-    year: item.yearTag,
-    genre: item.genreTag,
-    bpm: item.bpmTag,
-    initialKey: item.keyTag,
-    image: item.imageTag
+    title: item.title,
+    artist: item.artist,
+    album: item.album,
+    year: item.year,
+    genre: item.genre,
+    bpm: item.bpm,
+    initialKey: item.key,
+    image: item.image
   }
 
   const result = NodeId3.update(tags, fileBuffer);
   fs.writeFileSync(item.filepath, result);
-  console.log(`saved ${item.titleTag}`);
+  console.log(`saved ${item.title}`);
 };
 
 exports.getImageTag = async (url) => {

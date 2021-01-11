@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 require('dotenv').config();
 const id3 = require('./services/id3Service');
+const recursiveReadSync = require('recursive-readdir-sync');
 const coverFinder = require('./services/coverFinderService');
 const finderServ = require('./services/onlineFinderService');
 const path = require('path');
@@ -33,6 +34,7 @@ function createWindow() {
 
   mainWindow.setMenuBarVisibility(false);
   mainWindow.loadFile('dist/music-tagger/index.html')
+  mainWindow.maximize()
   // mainWindow.webContents.openDevTools()
 }
 
@@ -57,12 +59,18 @@ ipcMain.handle('open-folder', async () => {
     })
     .then(async (result) => {
       if (result.canceled) {return null;}
-      return await id3.getTagsFromPath(result.filePaths[0]);
+      return recursiveReadSync(result.filePaths[0])
+        .filter((file) => path.extname(file).toLowerCase() === '.mp3');
     })
     .catch((err) => {
       console.log(err);
     });
 });
+
+ipcMain.on('get-tags', (event, file) => {
+  const resultItem = id3.getTagsOfFile(file);
+  event.reply('tag-item', resultItem);
+})
 
 ipcMain.on('clean-filename', (event, args) => {
   const resultItem =  id3.cleanFilename(args.item, args.selection);
@@ -95,8 +103,8 @@ ipcMain.handle('imageTag-from-Url', async (event, url) => {
 ipcMain.on('find-tags', async (event, item) => {
   try {
     const newItem = await finderServ.findTags(item);
-    id3.saveTags(newItem);
-    event.reply('tag-completed', newItem);
+    // id3.saveTags(newItem);
+    event.reply('track-updated', newItem);
   } catch (e) {
     console.log(e);
   }
