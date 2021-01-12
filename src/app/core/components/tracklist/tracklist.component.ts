@@ -7,12 +7,13 @@ import {
 } from '@angular/core';
 import {TracksService} from '../../services/tracks.service';
 import {Observable} from 'rxjs';
+import {ArtworkService} from '../../services/artwork.service';
 
 @Component({
   selector: 'app-tracklist',
   templateUrl: './tracklist.component.html',
   styleUrls: ['./tracklist.component.scss'],
-  providers: [TracksService]
+  providers: [TracksService, ArtworkService]
 })
 export class TracklistComponent implements OnInit {
 
@@ -23,7 +24,7 @@ export class TracklistComponent implements OnInit {
   selectedItems = [];
   selectedIndex: number;
 
-  constructor(private trackServ: TracksService) {
+  constructor(private trackServ: TracksService, private artServ: ArtworkService) {
   }
 
   ngOnInit(): void {
@@ -49,5 +50,9 @@ export class TracklistComponent implements OnInit {
 
   delete_onClick() {
     this.trackServ.removeTracks(this.selectedItems);
+  }
+
+  getArtwork(track: Track) {
+    return this.artServ.getImgSource(track);
   }
 }

@@ -16,6 +16,11 @@
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="delete_onClick()">Delete Track</dui-dropdown-item>
   </dui-dropdown>
+  <dui-table-column name="artwork" [width]="150" header="ArtWork">
+    <ng-container *duiTableCell="let row">
+      <img [src]="getArtwork(row)" width="150" style="object-fit: contain" >
+    </ng-container>
+  </dui-table-column>
   <dui-table-column name="title" header="Title" [width]="400"></dui-table-column>
   <dui-table-column name="artist" header="Artist" [width]="300"></dui-table-column>
   <dui-table-column name="album" header="Album" [width]="250"></dui-table-column>
