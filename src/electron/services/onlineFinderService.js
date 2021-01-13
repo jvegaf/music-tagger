@@ -4,7 +4,7 @@ const mxmService = require('./musixMatchService');
 
 exports.findTags = async (item) => {
   try {
-    const newItem = await mxmService.findTags(item);
+    const newItem = await mxmService.findTags(item)
     const artUrl = await spotiService.findCoverArt(newItem);
     if (artUrl !== null) {
       newItem.image = await id3Service.getImageTag(artUrl);

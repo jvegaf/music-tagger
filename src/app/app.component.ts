@@ -1,20 +1,21 @@
-import { TagsService } from './core/services/tags.service';
 import { Component, ViewChild } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { Track } from './core/models/Track';
 import { OptionArt } from './core/models/OptionArt';
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
-import {TracksService} from './core/services/tracks.service';
+import { TracksService } from './core/services/tracks.service';
+import { TagsService } from './core/services/tags.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [TracksService]
+  providers: [TracksService, TagsService]
 })
 export class AppComponent {
 
   title = 'Music Tagger';
+  detailDialog = false;
   cleanerDialog = false;
   tagsExtrDialog = false;
   infoDialog = false;
@@ -27,7 +28,9 @@ export class AppComponent {
   @ViewChild(TracklistComponent)
   tracklistComponent: TracklistComponent;
 
-  constructor(private els: ElectronService, private tracksServ: TracksService) {
+  constructor(private els: ElectronService,
+              private tracksServ: TracksService,
+              private tagsService: TagsService) {
   }
 
   private showInfo(message: string) {
@@ -40,6 +43,11 @@ export class AppComponent {
   }
 
   openDetailDialog() {
+    this.detailDialog = true;
+  }
+
+  closeDetailDialog() {
+    this.detailDialog = false;
   }
 
   showTagExtrDialog() {
@@ -84,8 +92,10 @@ export class AppComponent {
 
   closeFetcherDialog() {
     this.fetchResult = null;
+    this.detailDialog = false;
     this.artFetchDialog = false;
     this.infoDialog = false;
+    this.detailDialog = true;
   }
 
   findTagsOnline() {
@@ -116,5 +126,19 @@ export class AppComponent {
   headerAction($event: string) {
     // noinspection JSIgnoredPromiseFromCall
     if ($event === 'add') { this.openFolder(); }
+  }
+
+  saveDetailChanges() {
+
+  }
+
+  onSelectArt(imgUrl: string) {
+    this.infoDialog = false;
+    this.closeFetcherDialog();
+    this.detailDialog = false;
+    this.showInfo('Adding Cover Art to Tags....');
+    this.tagsService.addArtworkToTrack(this.tracklistComponent.selectedItems[0], imgUrl).then(() => {
+      this.infoDialog = false;
+    });
   }
 }

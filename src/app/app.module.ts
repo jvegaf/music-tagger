@@ -28,6 +28,7 @@ import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.c
 import { TextFieldContextMenuDirective } from './core/directives/text-field-context-menu.directive';
 import { HeaderComponent } from './core/components/header/header.component';
 import { PlayerStatusComponent } from './core/components/player-status/player-status.component';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { PlayerStatusComponent } from './core/components/player-status/player-st
   imports: [
     BrowserModule,
     NgxElectronModule,
+    KeyboardShortcutsModule.forRoot(),
     FormsModule,
     DuiAppModule.forRoot(),
     DuiWindowModule.forRoot(),

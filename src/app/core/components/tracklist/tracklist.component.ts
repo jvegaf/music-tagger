@@ -4,10 +4,13 @@ import {
   OnInit,
   Output,
   EventEmitter,
+  AfterViewInit
 } from '@angular/core';
 import {TracksService} from '../../services/tracks.service';
 import {Observable} from 'rxjs';
 import {ArtworkService} from '../../services/artwork.service';
+import { ShortcutInput } from 'ng-keyboard-shortcuts';
+
 
 @Component({
   selector: 'app-tracklist',
@@ -15,21 +18,41 @@ import {ArtworkService} from '../../services/artwork.service';
   styleUrls: ['./tracklist.component.scss'],
   providers: [TracksService, ArtworkService]
 })
-export class TracklistComponent implements OnInit {
+export class TracklistComponent implements OnInit, AfterViewInit {
 
   @Output() showDetail = new EventEmitter<Track>();
 
-  tracks: Track[] = [];
+  sortedItems = [];
   tracks$: Observable<Track[]>;
   selectedItems = [];
   selectedIndex: number;
+  shortcuts: ShortcutInput[] = [];
 
   constructor(private trackServ: TracksService, private artServ: ArtworkService) {
   }
 
   ngOnInit(): void {
     this.tracks$ = this.trackServ.getTracks$();
-    this.tracks$.subscribe(tracks => this.tracks = tracks);
+  }
+
+  ngAfterViewInit(): void {
+    this.shortcuts.push(
+      {
+        key: 'ctrl + a',
+        preventDefault: true,
+        command: () => this.selectAll()
+      },
+      {
+        key: 'escape',
+        preventDefault: true,
+        command: () => this.unselect()
+      },
+      {
+        key: 'del',
+        preventDefault: true,
+        command: () => this.delete_onClick()
+      }
+    );
   }
 
   itemClicked() {
@@ -54,5 +77,17 @@ export class TracklistComponent implements OnInit {
 
   getArtwork(track: Track) {
     return this.artServ.getImgSource(track);
+  }
+
+  private selectAll() {
+    this.selectedItems = this.sortedItems;
+  }
+
+  sortedChange(event: any[]) {
+    this.sortedItems = event;
+  }
+
+  private unselect() {
+    this.selectedItems = [];
   }
 }

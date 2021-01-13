@@ -35,12 +35,11 @@ export class TagsService {
     return item;
   }
 
-  async addCoverArtToTag(item: Track, imgUrl: string): Promise<void> {
-    // return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
-    //   item.artwork = imgTag;
-    //   item.hasCover = true;
-    //   return;
-    // });
+  async addArtworkToTrack(item: Track, imgUrl: string): Promise<void> {
+    return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
+      item.artwork = imgTag;
+      return;
+    });
   }
 
   // getDataSource(tagItems: any): Track[] {
