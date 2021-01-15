@@ -7,15 +7,26 @@ import {Howl} from 'howler';
 export class AudioService {
 
   private audio: Howl;
+  private audioURL: string;
 
   constructor() {
   }
 
   play(fileUrl: string) {
+    if (fileUrl === this.audioURL) { return; }
+    if (this.audio?.playing()) { this.stop(); }
+    this.audioURL = fileUrl;
     this.audio = new Howl({
-      src: fileUrl,
+      src: this.audioURL,
       html5: true,
-      // continuar
+      autoplay: true,
+      onload: () => {
+        this.audio.seek(100);
+      }
     });
+  }
+
+  stop() {
+    this.audio.unload();
   }
 }

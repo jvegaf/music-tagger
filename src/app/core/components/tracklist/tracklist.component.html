@@ -7,7 +7,7 @@
            (dbclick)="itemClicked()">
   <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
   <dui-dropdown duiTableCustomRowContextMenu>
-    <dui-dropdown-item disabled>Play</dui-dropdown-item>
+    <dui-dropdown-item (click)="playTrack()">Play</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="extractTags_onClick()" >Tags from Filename</dui-dropdown-item>
     <dui-dropdown-item disabled>Filename from Tags</dui-dropdown-item>

@@ -10,13 +10,14 @@ import {TracksService} from '../../services/tracks.service';
 import {Observable} from 'rxjs';
 import {ArtworkService} from '../../services/artwork.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
+import { AudioService } from '../../services/audio.service';
 
 
 @Component({
   selector: 'app-tracklist',
   templateUrl: './tracklist.component.html',
   styleUrls: ['./tracklist.component.scss'],
-  providers: [TracksService, ArtworkService]
+  providers: [TracksService, ArtworkService, AudioService]
 })
 export class TracklistComponent implements OnInit, AfterViewInit {
 
@@ -28,7 +29,9 @@ export class TracklistComponent implements OnInit, AfterViewInit {
   selectedIndex: number;
   shortcuts: ShortcutInput[] = [];
 
-  constructor(private trackServ: TracksService, private artServ: ArtworkService) {
+  constructor(private trackServ: TracksService,
+              private artServ: ArtworkService,
+              private audioServ: AudioService) {
   }
 
   ngOnInit(): void {
@@ -51,6 +54,11 @@ export class TracklistComponent implements OnInit, AfterViewInit {
         key: 'del',
         preventDefault: true,
         command: () => this.delete_onClick()
+      },
+      {
+        key: 'space',
+        preventDefault: true,
+        command: () => this.playTrack()
       }
     );
   }
@@ -88,6 +96,11 @@ export class TracklistComponent implements OnInit, AfterViewInit {
   }
 
   private unselect() {
+    this.audioServ.stop();
     this.selectedItems = [];
+  }
+
+  playTrack() {
+    this.audioServ.play(this.selectedItems[0].filepath);
   }
 }
