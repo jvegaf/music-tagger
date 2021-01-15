@@ -60,9 +60,9 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
     DuiListModule,
     DuiTableModule,
     DuiButtonModule,
+    DuiSliderModule,
     DuiDialogModule,
     DuiEmojiModule,
-    DuiSliderModule,
   ],
   providers: [TagsService],
   bootstrap: [AppComponent]

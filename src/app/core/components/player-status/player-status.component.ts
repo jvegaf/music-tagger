@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./player-status.component.scss']
 })
 export class PlayerStatusComponent implements OnInit {
+  progress: any;
 
   constructor() { }
 
