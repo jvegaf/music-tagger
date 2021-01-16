@@ -12,21 +12,16 @@ export class PlayerStatusComponent implements OnInit {
 
   track$: Observable<Track>;
   track: Track;
-  progress$: Observable<number>;
-  progress: number;
+  audioServ: AudioService;
 
-  constructor(private audioServ: AudioService) {
+  constructor( audioServ: AudioService) {
+    this.audioServ = audioServ;
   }
 
 
   ngOnInit(): void {
     this.track$ = this.audioServ.getTrack$();
     this.track$.subscribe(track => this.track = track);
-    this.progress$ = this.audioServ.getProgress$();
-    this.progress$.subscribe(progress => {
-      this.progress = progress;
-      console.log(`progress: ${this.progress}`);
-    });
   }
 
   seekTo(position: number) {

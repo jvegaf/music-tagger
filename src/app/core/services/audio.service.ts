@@ -12,13 +12,11 @@ export class AudioService {
   private track$;
   track: Track;
   progress: number;
-  private progress$;
   private intervalObj;
 
 
   constructor() {
     this.track$ = new Subject<Track>();
-    this.progress$ = new Subject<number>();
   }
 
   play(track: Track) {
@@ -52,13 +50,8 @@ export class AudioService {
     return this.track$.asObservable();
   }
 
-  getProgress$(): Observable<number> {
-    return this.progress$.asObservable();
-  }
-
   seekTo(position: number) {
     this.progress = position;
-    this.progress$.next(this.progress);
     const time = this.audio.duration() * (position / 100);
     this.audio.seek(time);
   }
@@ -66,7 +59,6 @@ export class AudioService {
   updateProgress() {
     const seek = this.audio.seek();
     this.progress = ( seek as number / this.audio.duration() ) * 100;
-    this.progress$.next(this.progress);
   }
 
   seekBack() {

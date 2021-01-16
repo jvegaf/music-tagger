@@ -3,10 +3,12 @@ dui-window-header {
 }
 
 app-player-status {
+  z-index: 9;
   margin: auto;
 }
 
 dui-button-group {
+  margin-left: 15px !important;
   height: 100% !important;
   display: flex !important;
   align-items: center !important;

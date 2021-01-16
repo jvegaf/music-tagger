@@ -2,6 +2,6 @@
   <ng-container *ngIf="track">
     <div class="artist" >{{track.artist}}</div>
     <div class="title">{{track.title}}</div>
-    <dui-slider mini [min]="0" [max]="100" [ngModel]="progress" (change)="seekTo($event)"></dui-slider>
+    <dui-slider mini [min]="0" [max]="100" [ngModel]="audioServ.progress" (change)="seekTo($event)"></dui-slider>
   </ng-container>
 </div>
