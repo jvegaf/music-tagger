@@ -1,16 +1,24 @@
 #container {
-  height: 85px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-#status {
-  height: 85px;
+  height: 75px;
   width: 400px;
   background-color: #3c3c3c;
-  color: #d9d9c8;
+  color: #dedede;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.artist {
+  font-size: 85%;
+}
+
+dui-slider {
+  margin-top: 10px;
+  width: 90% !important;
 }

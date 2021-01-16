@@ -1,7 +1,13 @@
 dui-window-header {
-  height: 85px !important;
+  height: 105px !important;
+}
+
+app-player-status {
+  margin: auto;
 }
 
 dui-button-group {
-  height: 45px !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
 }

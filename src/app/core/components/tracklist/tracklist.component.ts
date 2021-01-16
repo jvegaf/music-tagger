@@ -1,4 +1,4 @@
-import {Track} from '../../models/Track';
+import { Track } from '../../models/Track';
 import {
   Component,
   OnInit,
@@ -6,9 +6,9 @@ import {
   EventEmitter,
   AfterViewInit
 } from '@angular/core';
-import {TracksService} from '../../services/tracks.service';
-import {Observable} from 'rxjs';
-import {ArtworkService} from '../../services/artwork.service';
+import { TracksService } from '../../services/tracks.service';
+import { Observable } from 'rxjs';
+import { ArtworkService } from '../../services/artwork.service';
 import { ShortcutInput } from 'ng-keyboard-shortcuts';
 import { AudioService } from '../../services/audio.service';
 
@@ -16,8 +16,7 @@ import { AudioService } from '../../services/audio.service';
 @Component({
   selector: 'app-tracklist',
   templateUrl: './tracklist.component.html',
-  styleUrls: ['./tracklist.component.scss'],
-  providers: [TracksService, ArtworkService, AudioService]
+  styleUrls: ['./tracklist.component.scss']
 })
 export class TracklistComponent implements OnInit, AfterViewInit {
 
@@ -28,6 +27,7 @@ export class TracklistComponent implements OnInit, AfterViewInit {
   selectedItems = [];
   selectedIndex: number;
   shortcuts: ShortcutInput[] = [];
+  private isPlaying = false;
 
   constructor(private trackServ: TracksService,
               private artServ: ArtworkService,
@@ -59,6 +59,16 @@ export class TracklistComponent implements OnInit, AfterViewInit {
         key: 'space',
         preventDefault: true,
         command: () => this.playTrack()
+      },
+      {
+        key: 'left',
+        preventDefault: true,
+        command: () => this.backSeekTrack()
+      },
+      {
+        key: 'right',
+        preventDefault: true,
+        command: () => this.advanceSeekTrack()
       }
     );
   }
@@ -97,10 +107,23 @@ export class TracklistComponent implements OnInit, AfterViewInit {
 
   private unselect() {
     this.audioServ.stop();
+    this.isPlaying = false;
     this.selectedItems = [];
   }
 
   playTrack() {
-    this.audioServ.play(this.selectedItems[0].filepath);
+    if (this.selectedItems.length < 1) { return; }
+    this.audioServ.play(this.selectedItems[0]);
+    this.isPlaying = true;
+  }
+
+  private backSeekTrack() {
+    if (!this.isPlaying) { return; }
+    this.audioServ.seekBack();
+  }
+
+  private advanceSeekTrack() {
+    if (!this.isPlaying) { return; }
+    this.audioServ.seekAdv();
   }
 }

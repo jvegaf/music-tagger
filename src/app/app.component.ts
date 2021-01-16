@@ -21,7 +21,6 @@ export class AppComponent {
   infoDialog = false;
   infoMessage: string;
   artFetchDialog = false;
-  trackItems: Track[] = [];
   fetchResult: OptionArt[];
 
   sampleItem: Track;

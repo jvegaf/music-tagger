@@ -1,4 +1,6 @@
 import { TagsService } from './core/services/tags.service';
+import { TracksService } from './core/services/tracks.service';
+import { ArtworkService } from './core/services/artwork.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import {NgModule} from '@angular/core';
@@ -29,6 +31,7 @@ import { TextFieldContextMenuDirective } from './core/directives/text-field-cont
 import { HeaderComponent } from './core/components/header/header.component';
 import { PlayerStatusComponent } from './core/components/player-status/player-status.component';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+import { AudioService } from './core/services/audio.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,11 @@ import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
     DuiDialogModule,
     DuiEmojiModule,
   ],
-  providers: [TagsService],
+  providers: [
+    TagsService,
+    TracksService,
+    AudioService,
+    ArtworkService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

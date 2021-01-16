@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.dialog-center {
+  width: 600px;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar dui-window-toolbar-container {
+  height: 75px !important;
+}
