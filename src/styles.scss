@@ -7,6 +7,18 @@
   justify-content: center;
 }
 
-.toolbar dui-window-toolbar-container {
-  height: 75px !important;
+
+dui-window-header {
+  height: 115px !important;
+}
+
+.toolbar {
+  height: 90px !important;
+  width: 100% !important;
+}
+
+dui-window-toolbar-container {
+  position: relative !important;
+  height: 100% !important;
+  padding: 0 !important;
 }

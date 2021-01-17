@@ -1,24 +1,25 @@
 #container {
-  height: 75px;
+  height: 100%;
   width: 400px;
-  background-color: #3c3c3c;
+  background-color: #252525;
   color: #dedede;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
 }
 
 .title {
   font-weight: bold;
   font-size: 120%;
+  margin-bottom: 14px;
 }
 
 .artist {
-  font-size: 85%;
+  margin-bottom: 13px;
 }
 
 dui-slider {
-  margin-top: 10px;
+  margin-bottom: 10px;
   width: 90% !important;
 }
