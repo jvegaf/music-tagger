@@ -15,7 +15,6 @@ const titleBar = () => {
 }
 
 let mainWindow
-
 function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
