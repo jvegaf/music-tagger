@@ -23,7 +23,9 @@ export class AppComponent {
   constructor(private els: ElectronService,
               private tracksServ: TracksService,
               private tagsService: TagsService) {
-    DuiApp.prototype.setPlatform('linux');
+    if (DuiApp.prototype.getPlatform() === 'win32') {
+      DuiApp.prototype.setPlatform('linux');
+    }
   }
 
   private showInfo(message: string) {
