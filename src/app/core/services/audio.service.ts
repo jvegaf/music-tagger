@@ -20,7 +20,7 @@ export class AudioService {
   }
 
   play(track: Track) {
-    if (track.id === this.track?.id) { return; }
+    if (track.id === this.track?.id && this.audio?.playing()) { this.stop(); return; }
     if (this.audio?.playing()) { this.stop(); }
     this.track = track;
     this.track$.next(this.track);
@@ -62,10 +62,12 @@ export class AudioService {
   }
 
   seekBack() {
+    if (!this.audio?.playing()) { return; }
     this.seekTo(this.progress - 10);
   }
 
   seekAdv() {
+    if (!this.audio?.playing()) { return; }
     this.seekTo(this.progress + 10);
   }
 }

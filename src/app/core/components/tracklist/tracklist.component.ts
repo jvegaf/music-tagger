@@ -27,7 +27,6 @@ export class TracklistComponent implements OnInit, AfterViewInit {
   selectedItems = [];
   selectedIndex: number;
   shortcuts: ShortcutInput[] = [];
-  private isPlaying = false;
 
   constructor(private trackServ: TracksService,
               private artServ: ArtworkService,
@@ -107,23 +106,19 @@ export class TracklistComponent implements OnInit, AfterViewInit {
 
   private unselect() {
     this.audioServ.stop();
-    this.isPlaying = false;
     this.selectedItems = [];
   }
 
   playTrack() {
     if (this.selectedItems.length < 1) { return; }
     this.audioServ.play(this.selectedItems[0]);
-    this.isPlaying = true;
   }
 
   private backSeekTrack() {
-    if (!this.isPlaying) { return; }
     this.audioServ.seekBack();
   }
 
   private advanceSeekTrack() {
-    if (!this.isPlaying) { return; }
     this.audioServ.seekAdv();
   }
 }
