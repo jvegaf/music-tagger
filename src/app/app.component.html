@@ -10,15 +10,15 @@
     <app-detail [item]="tracklistComp.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComp.selectedItems[0])"
                 #detailComponent></app-detail>
     <dui-dialog-actions>
-      <dui-button disabled style="margin-right: 50px;" (click)="findTagsOnline()">Find Tags online</dui-button>
+      <dui-button disabled style="margin-right: 50px;">Find Tags online</dui-button>
       <dui-button (click)="closeDetailDialog()">Close</dui-button>
-      <dui-button primary (click)="saveDetailChanges()">Save</dui-button>
+      <dui-button primary>Save</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- ArtFetcher Dialog -->
   <dui-dialog *ngIf="artFetchDialog" [(visible)]="artFetchDialog" [width]="700">
     <app-art-fetcher-view [resultSet]="fetchResult"
-                          (selected)="onSelectArt($event)"></app-art-fetcher-view>
+    ></app-art-fetcher-view>
     <dui-dialog-actions>
       <dui-button style="margin-right: 50px" (click)="closeFetcherDialog()">Cancel</dui-button>
     </dui-dialog-actions>
@@ -28,7 +28,7 @@
     <app-cleaner-view #cleaner></app-cleaner-view>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
-      <dui-button (click)="cleanFilenames(cleaner.dirtyText)" primary>Clean Files</dui-button>
+      <dui-button primary>Clean Files</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
   <!-- Filename to Tag Dialog-->
@@ -50,7 +50,7 @@
     </dui-form-row>
     <dui-dialog-actions>
       <dui-button closeDialog>Close</dui-button>
-      <dui-button (click)="filenamesToTags()" primary>Convert Filenames To Tags</dui-button>
+      <dui-button primary>Convert Filenames To Tags</dui-button>
     </dui-dialog-actions>
   </dui-dialog>
 </dui-window>
