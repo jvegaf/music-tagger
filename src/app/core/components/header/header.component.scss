@@ -1,7 +1,19 @@
-dui-window-header {
-  height: 85px !important;
+app-player-controls {
+  align-items: center;
+  width: 180px;
+  height: 60px;
 }
 
-dui-button-group {
-  height: 45px !important;
+app-player-status {
+  width: 400px;
+  height: 100%;
+}
+
+
+#buttons {
+  width: 180px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }

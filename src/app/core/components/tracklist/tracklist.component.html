@@ -7,7 +7,7 @@
            (dbclick)="itemClicked()">
   <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
   <dui-dropdown duiTableCustomRowContextMenu>
-    <dui-dropdown-item disabled>Play</dui-dropdown-item>
+    <dui-dropdown-item (click)="playTrack()">Play</dui-dropdown-item>
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="extractTags_onClick()" >Tags from Filename</dui-dropdown-item>
     <dui-dropdown-item disabled>Filename from Tags</dui-dropdown-item>
@@ -18,7 +18,7 @@
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="delete_onClick()">Delete Track</dui-dropdown-item>
   </dui-dropdown>
-  <dui-table-column name="artwork" [width]="150" header="ArtWork">
+  <dui-table-column name="artwork" class="artwork-cell" [width]="150" header="ArtWork">
     <ng-container *duiTableCell="let row">
       <!--suppress HtmlRequiredAltAttribute -->
       <img [src]="getArtwork(row)" width="150" style="object-fit: contain" >

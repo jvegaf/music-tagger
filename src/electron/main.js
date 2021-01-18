@@ -10,17 +10,17 @@ const fs = require('fs');
 if (require('electron-squirrel-startup')) return app.quit();
 
 const titleBar = () => {
-  if (process.platform === 'darwin') return 'hidden';
-  return 'default';
+  // if (process.platform !== 'darwin') { return 'default';}
+  return 'hidden';
 }
 
 let mainWindow
-
 function createWindow() {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 800,
-    frame: process.platform !== 'linux',
+    frame: false,
+    // frame: process.platform !== 'linux',
     backgroundColor: "#80FFFFFF",
     webPreferences: {
       nodeIntegration: true,

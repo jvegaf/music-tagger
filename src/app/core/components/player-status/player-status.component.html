@@ -1,5 +1,7 @@
 <div id="container">
-  <div id="status">
-    <p>player-status works!</p>
-  </div>
+  <ng-container *ngIf="track">
+    <div class="artist" >{{track.artist}}</div>
+    <div class="title">{{track.title}}</div>
+    <dui-slider mini [min]="0" [max]="100" [ngModel]="audioServ.progress" (change)="seekTo($event)"></dui-slider>
+  </ng-container>
 </div>

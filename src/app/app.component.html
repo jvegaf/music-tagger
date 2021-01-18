@@ -1,4 +1,4 @@
-<dui-window [closable]="true" [maximizable]="true" [minimizable]="true">
+<dui-window>
   <app-header (Actions)="headerAction($event)"></app-header>
   <dui-window-content>
     <app-tracklist (showDetail)="openDetailDialog()" #tracklistComp></app-tracklist>
@@ -7,7 +7,7 @@
   <app-info-dialog [visible]="infoDialog" [infoMessage]="infoMessage"></app-info-dialog>
   <!-- Detail Dialog -->
   <dui-dialog *ngIf="detailDialog" [(visible)]="detailDialog" [width]="600">
-    <app-detail [item]="tracklistComp.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComponent.selectedItems[0])"
+    <app-detail [item]="tracklistComp.selectedItems[0]" (clickCover)="showArtFetcherDialog(tracklistComp.selectedItems[0])"
                 #detailComponent></app-detail>
     <dui-dialog-actions>
       <dui-button disabled style="margin-right: 50px;" (click)="findTagsOnline()">Find Tags online</dui-button>

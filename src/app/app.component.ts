@@ -1,11 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { Track } from './core/models/Track';
-import { OptionArt } from './core/models/OptionArt';
-import { TracklistComponent } from './core/components/tracklist/tracklist.component';
-import { TracksService } from './core/services/tracks.service';
-import { TagsService } from './core/services/tags.service';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -21,16 +16,16 @@ export class AppComponent {
   infoDialog = false;
   infoMessage: string;
   artFetchDialog = false;
-  trackItems: Track[] = [];
   fetchResult: OptionArt[];
 
   sampleItem: Track;
-  @ViewChild(TracklistComponent)
-  tracklistComponent: TracklistComponent;
 
   constructor(private els: ElectronService,
               private tracksServ: TracksService,
               private tagsService: TagsService) {
+    if (DuiApp.prototype.getPlatform() === 'win32') {
+      DuiApp.prototype.setPlatform('linux');
+    }
   }
 
   private showInfo(message: string) {
@@ -65,17 +60,17 @@ export class AppComponent {
   }
 
   filenamesToTags() {
-  //   if (this.tracklistComponent.selectedItems.length < 1) {
-  //     this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
-  //     // this.haveChanges = true;
-  //     this.tagsExtrDialog = false;
-  //     return;
-  //   }
-  //   this.tracklistComponent.selectedItems = this.tracklistComponent.selectedItems.map(item => {
-  //     return this.tagsService.convertFilenameToTags(item);
-  //   });
-  //   // this.haveChanges = true;
-  //   this.tagsExtrDialog = false;
+    //   if (this.tracklistComponent.selectedItems.length < 1) {
+    //     this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
+    //     // this.haveChanges = true;
+    //     this.tagsExtrDialog = false;
+    //     return;
+    //   }
+    //   this.tracklistComponent.selectedItems = this.tracklistComponent.selectedItems.map(item => {
+    //     return this.tagsService.convertFilenameToTags(item);
+    //   });
+    //   // this.haveChanges = true;
+    //   this.tagsExtrDialog = false;
   }
 
   showArtFetcherDialog(selectedItem: Track) {
@@ -133,12 +128,18 @@ export class AppComponent {
   }
 
   onSelectArt(imgUrl: string) {
-    this.infoDialog = false;
-    this.closeFetcherDialog();
-    this.detailDialog = false;
-    this.showInfo('Adding Cover Art to Tags....');
-    this.tagsService.addArtworkToTrack(this.tracklistComponent.selectedItems[0], imgUrl).then(() => {
-      this.infoDialog = false;
-    });
+    // this.infoDialog = false;
+    // this.closeFetcherDialog();
+    // this.detailDialog = false;
+    // this.showInfo('Adding Cover Art to Tags....');
+    // this.tagsService.addArtworkToTrack(this.tracklistComponent.selectedItems[0], imgUrl).then(() => {
+    //   this.infoDialog = false;
+    // });
   }
+
 }
+import { OptionArt } from './core/models/OptionArt';
+import { TracksService } from './core/services/tracks.service';
+import { TagsService } from './core/services/tags.service';
+
+import { DuiApp } from '@marcj/angular-desktop-ui/src/components/app/index';
