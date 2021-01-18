@@ -50,6 +50,10 @@ export class TracksService {
     files.forEach(file => this.els.ipcRenderer.send('get-tags', file));
   }
 
+  addDropedItems(filepaths: string[]) {
+    filepaths.forEach(filepath => this.els.ipcRenderer.send('get-tags', filepath));
+  }
+
   findOnlineTags(tracks: Track[]) {
     tracks.forEach(track => this.els.ipcRenderer.send('find-tags', track));
   }

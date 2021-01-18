@@ -43,25 +43,23 @@ export class TracklistComponent implements OnInit, AfterViewInit {
       event.preventDefault();
       event.stopPropagation();
 
+      const filepaths = new Array<string>();
       // @ts-ignore
-      for (const f of event.dataTransfer.files) {
-        // Using the path attribute to get absolute file path
-        console.log('File Path of dragged files: ', f.path);
+      for (const file of event.dataTransfer.files) {
+        filepaths.push(file.path);
       }
+      this.trackServ.addDropedItems(filepaths);
     });
 
     document.addEventListener('dragover', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      console.log('DragOver');
     });
 
     document.addEventListener('dragenter', (event) => {
-      console.log('File is in the Drop Space');
     });
 
     document.addEventListener('dragleave', (event) => {
-      console.log('File has left the Drop Space');
     });
   }
 
