@@ -32,6 +32,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { PlayerStatusComponent } from './core/components/player-status/player-status.component';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { AudioService } from './core/services/audio.service';
+import { PlayerControlsComponent } from './core/components/player-controls/player-controls.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AudioService } from './core/services/audio.service';
     InfoDialogComponent,
     TextFieldContextMenuDirective,
     HeaderComponent,
-    PlayerStatusComponent
+    PlayerStatusComponent,
+    PlayerControlsComponent
   ],
   imports: [
     BrowserModule,

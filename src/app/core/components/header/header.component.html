@@ -1,9 +1,9 @@
 <dui-window-header>
   <dui-window-toolbar>
-    <dui-button-group>
-      <dui-button square (click)="onClick_Button('add')" icon="add"></dui-button>
-      <dui-icon style="margin-left: 150px" name="play" size="50" clickable="true"></dui-icon>
-    </dui-button-group>
+    <app-player-controls></app-player-controls>
     <app-player-status></app-player-status>
+    <div id="buttons">
+      <dui-button square (click)="onClick_Button('add')" icon="add"></dui-button>
+    </div>
   </dui-window-toolbar>
 </dui-window-header>

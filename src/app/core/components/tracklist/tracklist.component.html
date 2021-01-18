@@ -18,7 +18,7 @@
     <dui-dropdown-splitter></dui-dropdown-splitter>
     <dui-dropdown-item (click)="delete_onClick()">Delete Track</dui-dropdown-item>
   </dui-dropdown>
-  <dui-table-column name="artwork" [width]="150" header="ArtWork">
+  <dui-table-column name="artwork" class="artwork-cell" [width]="150" header="ArtWork">
     <ng-container *duiTableCell="let row">
       <!--suppress HtmlRequiredAltAttribute -->
       <img [src]="getArtwork(row)" width="150" style="object-fit: contain" >

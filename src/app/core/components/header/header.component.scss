@@ -1,17 +1,19 @@
+app-player-controls {
+  align-items: center;
+  width: 180px;
+  height: 60px;
+}
+
 app-player-status {
-  margin: auto;
+  width: 400px;
   height: 100%;
 }
 
-dui-window-header {
-  width: 100%;
-  padding: 0;
-}
 
-dui-button-group {
-  position: absolute !important;
-  margin-left: 15px !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
+#buttons {
+  width: 180px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
