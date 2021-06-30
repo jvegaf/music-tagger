@@ -2,11 +2,15 @@ makeSHELL = /bin/sh
 
 .PHONY: preps
 preps:
-	@yarn install
+	@npm install
 
 .PHONY: start
 start:
-	@yarn run electron
+	@npm run start
+
+.PHONY: dev
+start:
+	@npm run build:start
 
 .PHONY: clean
 clean:
@@ -14,7 +18,7 @@ clean:
 
 .PHONY: pack
 build: clean save-the-world
-	@yarn run electron:pack
+	@npm run electron:pack
 
 save-the-world:
 	@rm -rf release
