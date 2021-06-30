@@ -65,6 +65,7 @@ export class AppComponent {
     try {
       const tagItems = await this.els.ipcRenderer.invoke('open-folder');
       if (tagItems === null) { this.infoDialog = false; return; }
+      this.trackItems = null;
       this.trackItems = this.tagsService.getDataSource(tagItems);
       this.haveData = true;
       this.infoDialog = false;
@@ -99,14 +100,12 @@ export class AppComponent {
   filenamesToTags() {
     if (this.tracklistComponent.selectedItems.length < 1) {
       this.trackItems = this.tagsService.getTagsFromFilenames(this.trackItems);
-      // this.haveChanges = true;
       this.tagsExtrDialog = false;
       return;
     }
     this.tracklistComponent.selectedItems = this.tracklistComponent.selectedItems.map(item => {
       return this.tagsService.convertFilenameToTags(item);
     });
-    // this.haveChanges = true;
     this.tagsExtrDialog = false;
   }
 

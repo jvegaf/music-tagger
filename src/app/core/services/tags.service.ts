@@ -18,7 +18,7 @@ export class TagsService {
   }
 
   convertFilenameToTags(item: MusicTag): MusicTag {
-    const name = item.filename.slice(0, -4);
+    const name = item.filename.slice(0, -4).replace(/_/g, ' ');
     const elements = name.split('-').map(element => {
       return element.trim();
     });
