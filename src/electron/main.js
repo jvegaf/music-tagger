@@ -1,5 +1,4 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
-require('dotenv').config();
 const id3 = require('./services/id3Service');
 const coverFinder = require('./services/coverFinderService');
 const finderServ = require('./services/onlineFinderService');
