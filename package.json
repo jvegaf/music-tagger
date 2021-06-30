@@ -1,6 +1,6 @@
 {
   "name": "music-tagger",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Create and modify the tags of your music files",
   "homepage": "https://github.com/jvegaf/music-tagger",
   "author": {
