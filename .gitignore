@@ -8,6 +8,7 @@
 /bazel-out
 
 # dependencies
+package-lock.json
 /node_modules
 
 # profiling files
@@ -47,4 +48,3 @@ testem.log
 Thumbs.db
 
 yarn.lock
-package-lock.json
