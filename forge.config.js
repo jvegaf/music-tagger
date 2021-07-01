@@ -10,7 +10,7 @@ const appIcon = () => {
 
 module.exports = {
   'packagerConfig': {
-    'icon': appIcon()
+    'icon': appIcon(),
     'asar': true
   },
   'makers': [
