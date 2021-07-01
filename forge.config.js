@@ -11,6 +11,7 @@ const appIcon = () => {
 module.exports = {
   'packagerConfig': {
     'icon': appIcon()
+    'asar': true
   },
   'makers': [
     {
