@@ -41,22 +41,23 @@ module.exports = {
             'AudioVideoEditing'
           ]
         }
-      },
-      {
-        'name': '@electron-forge/maker-rpm',
-        'config': {
-          'options': {
-            'maintainer': 'Jose Vega',
-            'homepage': 'https://github.com/jvegaf/music-tagger',
-            'icon': 'src/assets/icons/mac/icon.icns',
-            'categories': [
-              'AudioVideo',
-              'Audio',
-              'AudioVideoEditing'
-            ]
-          }
+      }
+    },
+    {
+      'name': '@electron-forge/maker-rpm',
+      'config': {
+        'options': {
+          'maintainer': 'Jose Vega',
+          'homepage': 'https://github.com/jvegaf/music-tagger',
+          'icon': 'src/assets/icons/mac/icon.icns',
+          'categories': [
+            'AudioVideo',
+            'Audio',
+            'AudioVideoEditing'
+          ]
         }
       }
+    }
   ],
   'publishers': [
     {
