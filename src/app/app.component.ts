@@ -153,11 +153,11 @@ export class AppComponent {
 
   findTagsOnline() {
     if (this.tracklistComponent.selectedItems.length < 1) {
-      // this.els.ipcRenderer.send('find-tags', this.trackItems);
       return;
     }
     this.itemsToProcess = this.tracklistComponent.selectedItems.length;
     this.tracklistComponent.selectedItems.forEach(item => {
+      const track = this.checkTitleTag(item);
       this.els.ipcRenderer.send('find-tags', item);
     });
   }
@@ -177,6 +177,11 @@ export class AppComponent {
         this.removeFile();
         break;
     }
+  }
+
+  private checkTitleTag(musicTag: MusicTag): MusicTag {
+    if (musicTag.titleTag) return musicTag;
+    return this.tagsService.convertFilenameToTags(musicTag);
   }
 
   private removeFile() {

@@ -11,25 +11,10 @@
       <dui-button-group>
         <dui-button
           textured
-          icon="edit"
-          [disabled]="!haveData"
-          (click)="cleanerDialog = true"
-        >Clean Filenames
-        </dui-button
-        >
-        <dui-button
-          textured
           icon="flag"
           [disabled]="!haveData"
           (click)="showTagExtrDialog()"
         >Tags from Filenames
-        </dui-button
-        >
-        <dui-button *ngIf="haveChanges"
-                    textured
-                    icon="check"
-                    (click)="saveChanges()"
-        >Save Tags
         </dui-button
         >
       </dui-button-group>
