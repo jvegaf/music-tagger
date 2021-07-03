@@ -1,0 +1,116 @@
+{
+  "env": {
+      "browser": true,
+      "node": true,
+      "es6": true,
+      "es2017": true
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "eslint:recommended",
+        "prettier",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 10,
+        "project": [
+          "tsconfig.json",
+          "./src/tsconfig.app.json",
+          "./src/tsconfig.spec.json",
+          "./e2e/tsconfig.e2e.json"
+        ],
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "modules": true
+        }
+      },
+      "plugins": [
+        "@typescript-eslint",
+        "eslint-plugin-jsdoc",
+        "@angular-eslint/eslint-plugin"
+      ],
+      "rules": {
+        "@typescript-eslint/indent": [
+          "error", 2, {
+            "SwitchCase": 1,
+            "CallExpression": {"arguments": "first"},
+            "FunctionExpression": {"parameters": "first"},
+            "FunctionDeclaration": {"parameters": "first"}
+          }
+        ],
+        "@typescript-eslint/adjacent-overload-signatures": "error",
+        "@typescript-eslint/consistent-type-assertions": "error",
+        "@typescript-eslint/no-empty-function": 0,
+        "@typescript-eslint/no-explicit-any": [0, {
+          "fixToUnknown": true
+        }] ,
+        "@typescript-eslint/member-delimiter-style": [
+          "error",
+          {
+              "multiline": {
+                  "delimiter": "semi",
+                  "requireLast": true
+              },
+              "singleline": {
+                  "delimiter": "semi",
+                  "requireLast": false
+              }
+          }
+      ],
+        "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/no-unsafe-call": 0,
+        "@typescript-eslint/no-unsafe-member-access": 0,
+        "@typescript-eslint/no-unsafe-assignment": 0,
+        "@typescript-eslint/no-unsafe-return": 0,
+        "@typescript-eslint/no-floating-promises": 0,
+        "@typescript-eslint/quotes": [
+          "error",
+          "single",
+          {
+              "avoidEscape": true
+          }
+      ],
+      "@typescript-eslint/semi": [
+          "error",
+          "always"
+      ],
+        "@angular-eslint/use-injectable-provided-in": "error",
+        "@angular-eslint/no-attribute-decorator": "error",
+        "jsdoc/check-alignment": "error",
+        "jsdoc/check-indentation": "error",
+        "jsdoc/newline-after-description": "error",
+        "no-bitwise": "error",
+        "no-debugger": "error",
+        "no-duplicate-imports": "error",
+        "no-empty": "off",
+        "no-redeclare": "error",
+        "no-throw-literal": "error",
+        "no-trailing-spaces": "error",
+        "no-var": "error",
+        "prefer-const": "error",
+        "space-before-function-paren": [
+          "error",
+          {
+              "anonymous": "always",
+              "named": "never",
+              "asyncArrow": "always"
+          }
+      ]
+      }
+    },
+    {
+      "files": ["*.component.html"],
+      "parser": "@angular-eslint/template-parser",
+      "plugins": ["@angular-eslint/template"],
+      "rules": {
+          "@angular-eslint/template/banana-in-box": "error",
+          "@angular-eslint/template/no-negated-async": "error"
+      }
+    }
+  ]
+}
