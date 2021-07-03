@@ -1,7 +1,7 @@
 import { TagsService } from './core/services/tags.service';
 import { Component, ViewChild } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { MusicTag } from './core/models/MusicTag';
+import { Track } from './core/models/Track';
 import { OptionArt } from './core/models/OptionArt';
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 
@@ -23,10 +23,10 @@ export class AppComponent {
   infoDialog = false;
   infoMessage: string;
   artFetchDialog = false;
-  trackItems: MusicTag[] = [];
+  trackItems: Track[] = [];
   fetchResult: OptionArt[];
 
-  sampleItem: MusicTag;
+  sampleItem: Track;
   @ViewChild(TracklistComponent)
   tracklistComponent: TracklistComponent;
 
@@ -122,7 +122,7 @@ export class AppComponent {
     });
   }
 
-  showArtFetcherDialog(selectedItem: MusicTag) {
+  showArtFetcherDialog(selectedItem: Track) {
     this.showInfo('Fetching Art Images...');
     this.els.ipcRenderer.invoke('fetch-cover', selectedItem).then(result => {
       this.openFetcherDialog(result as OptionArt[]);
@@ -179,7 +179,7 @@ export class AppComponent {
     }
   }
 
-  private checkTitleTag(musicTag: MusicTag): MusicTag {
+  private checkTitleTag(musicTag: Track): Track {
     if (musicTag.titleTag) return musicTag;
     return this.tagsService.convertFilenameToTags(musicTag);
   }

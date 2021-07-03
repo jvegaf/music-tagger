@@ -1,4 +1,4 @@
-import {MusicTag} from '../../models/MusicTag';
+import {Track} from '../../models/Track';
 import {
   Component,
   OnInit,
@@ -14,9 +14,9 @@ import {
 })
 export class TracklistComponent implements OnInit {
 
-  @Input() items: MusicTag[];
+  @Input() items: Track[];
 
-  @Output() showDetail = new EventEmitter<MusicTag>();
+  @Output() showDetail = new EventEmitter<Track>();
   @Output() menuActions = new EventEmitter<string>();
 
 
@@ -54,7 +54,7 @@ export class TracklistComponent implements OnInit {
     this.menuActions.emit(selected);
   }
 
-  sortedChange(itemsSorted: MusicTag[]) {
+  sortedChange(itemsSorted: Track[]) {
     if (itemsSorted.length < 1) {
       return;
     }
@@ -68,7 +68,7 @@ export class TracklistComponent implements OnInit {
     this.sortedItems = this.order(itemsSorted);
   }
 
-  private order(itemsSorted: MusicTag[]) {
+  private order(itemsSorted: Track[]) {
     return itemsSorted.map(item => {
       if (item === undefined){return;}
       return item.fileIndex;

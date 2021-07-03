@@ -1,7 +1,7 @@
 import { ArtImage } from './ArtImage';
 import { v4 } from 'uuid';
 
-export class MusicTag {
+export class Track {
   id: string;
   fileIndex: number;
   titleTag: string;

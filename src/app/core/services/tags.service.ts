@@ -1,4 +1,4 @@
-import {MusicTag} from '../models/MusicTag';
+import {Track} from '../models/Track';
 import {Injectable} from '@angular/core';
 import {ElectronService} from 'ngx-electron';
 import {log} from 'util';
@@ -11,13 +11,13 @@ export class TagsService {
   constructor(private els: ElectronService) {
   }
 
-  getTagsFromFilenames(items: MusicTag[]): MusicTag[] {
+  getTagsFromFilenames(items: Track[]): Track[] {
     return items.map(item => {
       return this.convertFilenameToTags(item);
     });
   }
 
-  convertFilenameToTags(item: MusicTag): MusicTag {
+  convertFilenameToTags(item: Track): Track {
     const name = item.filename.slice(0, -4).replace(/_/g, ' ');
     const elements = name.split('-').map(element => {
       return element.trim();
@@ -33,7 +33,7 @@ export class TagsService {
     return item;
   }
 
-  async addCoverArtToTag(item: MusicTag, imgUrl: string): Promise<void> {
+  async addCoverArtToTag(item: Track, imgUrl: string): Promise<void> {
     return await this.els.ipcRenderer.invoke('imageTag-from-Url', imgUrl).then(imgTag => {
       item.imageTag = imgTag;
       item.hasCover = true;
@@ -41,9 +41,9 @@ export class TagsService {
     });
   }
 
-  getDataSource(tagItems: any): MusicTag[] {
+  getDataSource(tagItems: any): Track[] {
     return tagItems.map(item => {
-      return new MusicTag(
+      return new Track(
         item.fileIndex,
         item.titleTag,
         item.artistTag,
@@ -59,7 +59,7 @@ export class TagsService {
     });
   }
 
-  updateTrackItems(trackItems: MusicTag[], item: any): MusicTag[] {
+  updateTrackItems(trackItems: Track[], item: any): Track[] {
     return trackItems.map(tag =>{
       if(tag.fileIndex === item.fileIndex) {
         tag.titleTag = item.titleTag;
@@ -77,7 +77,7 @@ export class TagsService {
     });
   }
 
-  removeItem(item: MusicTag, tracklist: MusicTag[]): MusicTag[] {
+  removeItem(item: Track, tracklist: Track[]): Track[] {
     return tracklist.map(tag => {
       if (tag !== item){
         return tag;

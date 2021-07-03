@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input,  Output } from '@angular/core';
-import { MusicTag } from '../../models/MusicTag';
+import { Track } from '../../models/Track';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class DetailComponent implements OnInit {
 
-  @Input() item: MusicTag;
+  @Input() item: Track;
   @Output() clickCover = new EventEmitter();
   constructor(private sanitizer: DomSanitizer) { }
 
