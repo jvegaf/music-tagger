@@ -27,6 +27,7 @@ import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-
 import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.component';
 import { TextFieldContextMenuDirective } from './core/directives/text-field-context-menu.directive';
 import { HeaderComponent } from './core/components/header/header.component';
+import { PlayerComponent } from './core/components/player/player.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { HeaderComponent } from './core/components/header/header.component';
     ArtFetcherViewComponent,
     InfoDialogComponent,
     TextFieldContextMenuDirective,
-    HeaderComponent
+    HeaderComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule,

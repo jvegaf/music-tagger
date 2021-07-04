@@ -1,6 +1,6 @@
 {
   "name": "music-tagger",
-  "version": "0.9.4",
+  "version": "0.9.8",
   "description": "Create and modify the tags of your music files",
   "homepage": "https://github.com/jvegaf/music-tagger",
   "author": {
@@ -39,6 +39,7 @@
     "electron-images-scraper": "^1.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "howler": "^2.2.3",
+    "mousetrap": "^1.6.5",
     "musixmatch": "^0.1.6",
     "ngx-electron": "^2.2.0",
     "node-fetch": "^2.6.1",
@@ -64,6 +65,7 @@
     "@types/howler": "^2.2.2",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/mousetrap": "^1.6.8",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",

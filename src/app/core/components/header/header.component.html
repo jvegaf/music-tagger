@@ -2,17 +2,14 @@
   <dui-window-toolbar>
     <dui-button-group>
       <dui-button textured icon="folder" (click)="onAction('openFolder')">Open Folder </dui-button>
-    </dui-button-group>
-    <dui-button-group>
-      <dui-button textured icon="flag" [disabled]="!haveData" (click)="onAction('tagsFromFNames')"
+      <!-- <dui-button textured icon="flag" [disabled]="!haveData" (click)="onAction('tagsFromFNames')"
         >Tags from Filenames
       </dui-button>
-    </dui-button-group>
-    <dui-button-group float="float">
       <dui-button *ngIf="haveData" textured icon="download" (click)="onAction('findTagsOnline')"
         >Find Tags Online
-      </dui-button>
+      </dui-button> -->
     </dui-button-group>
+    <app-player></app-player>
     <dui-button-group float="right">
       <dui-input textured icon="search" placeholder="Search" round clearer></dui-input>
     </dui-button-group>
