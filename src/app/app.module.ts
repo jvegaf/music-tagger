@@ -1,8 +1,8 @@
 import { TagsService } from './core/services/tags.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import {NgModule} from '@angular/core';
-import {AppComponent} from './app.component';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
 import {
   DuiAppModule,
   DuiButtonModule,
@@ -17,7 +17,7 @@ import {
   DuiSelectModule,
   DuiSliderModule,
   DuiTableModule,
-  DuiWindowModule,
+  DuiWindowModule
 } from '@marcj/angular-desktop-ui';
 import { TracklistComponent } from './core/components/tracklist/tracklist.component';
 import { NgxElectronModule } from 'ngx-electron';
@@ -26,6 +26,7 @@ import { CleanerViewComponent } from './core/components/cleaner-view/cleaner-vie
 import { ArtFetcherViewComponent } from './core/components/art-fetcher-view/art-fetcher-view.component';
 import { InfoDialogComponent } from './core/components/info-dialog/info-dialog.component';
 import { TextFieldContextMenuDirective } from './core/directives/text-field-context-menu.directive';
+import { HeaderComponent } from './core/components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { TextFieldContextMenuDirective } from './core/directives/text-field-cont
     CleanerViewComponent,
     ArtFetcherViewComponent,
     InfoDialogComponent,
-    TextFieldContextMenuDirective
+    TextFieldContextMenuDirective,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -56,10 +58,9 @@ import { TextFieldContextMenuDirective } from './core/directives/text-field-cont
     DuiButtonModule,
     DuiDialogModule,
     DuiEmojiModule,
-    DuiSliderModule,
+    DuiSliderModule
   ],
   providers: [TagsService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

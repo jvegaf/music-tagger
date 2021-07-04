@@ -179,6 +179,22 @@ export class AppComponent {
     }
   }
 
+  onHeaderAction(value: string) {
+    switch (value) {
+      case 'openFolder':
+        this.openFolder();
+        break;
+      case 'tagsFromFNames':
+        this.filenamesToTags();
+        break;
+      case 'findTagsOnline':
+        this.findTagsOnline();
+        break;
+      default:
+        break;
+    }
+  }
+
   private checkTitleTag(musicTag: Track): Track {
     if (musicTag.titleTag) return musicTag;
     return this.tagsService.convertFilenameToTags(musicTag);
