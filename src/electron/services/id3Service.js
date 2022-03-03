@@ -1,7 +1,7 @@
 const NodeId3 = require('node-id3');
 const fetch = require('node-fetch');
 const fs = require('fs');
-const readSync = require('recursive-readdir-sync');
+const recursiveRead = require('recursive-readdir');
 const path = require('path');
 
 
@@ -10,8 +10,11 @@ exports.saveTags = (item) => {
 }
 
 exports.getTagsFromPath = (folderPath) => {
-  const files = readSync(folderPath).filter((file) => path.extname(file).toLowerCase() === '.mp3');
-  return getTagsOfFiles(files);
+  return recursiveRead(folderPath)
+    .then(result => {
+      const files = result.filter((file) => path.extname(file).toLowerCase() === '.mp3');
+      return getTagsOfFiles(files);
+  }).catch(e => console.log(e))
 }
 
 exports.cleanFilename = (item, value) => {
