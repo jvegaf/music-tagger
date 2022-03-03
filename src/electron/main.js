@@ -1,9 +1,9 @@
 const {app, BrowserWindow, ipcMain, dialog} = require('electron');
 const id3 = require('./services/id3Service');
+require('dotenv').config()
 const coverFinder = require('./services/coverFinderService');
 const finderServ = require('./services/onlineFinderService');
 const path = require('path');
-const fs = require('fs');
 
 if (require('electron-squirrel-startup')) return app.quit();
 
@@ -107,10 +107,9 @@ ipcMain.on('clean-from-menu', (event, selectedText) =>{
 });
 
 ipcMain.on('remove-file', (event, item) =>{
-  console.log(`removing ${item.filepath}`);
-  fs.unlink(item.filepath, (err) => {
-    if (err) {
-      console.error(err)
-    }
-  });
+  // fs.unlink(item.filepath, (err) => {
+  //   if (err) {
+  //     console.error(err)
+  //   }
+  // });
 });
