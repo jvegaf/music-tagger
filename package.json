@@ -8,7 +8,7 @@
     "email": "josevega234@gmail.com"
   },
   "license": "MIT",
-  "main": "./src/electron/main.js",
+  "main": "./src/main/main.js",
   "scripts": {
     "ng": "ng",
     "serve": "ng serve",

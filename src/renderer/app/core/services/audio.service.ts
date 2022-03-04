@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Howl } from 'howler';
 import { Observable, Subject } from 'rxjs';
-import { Track } from './../models/Track';
+import { Track } from '../models/Track';
 
 @Injectable({
   providedIn: 'root'

@@ -1,5 +1,5 @@
 import { Track } from '../../models/Track';
-import { AudioService } from './../../services/audio.service';
+import { AudioService } from '../../services/audio.service';
 import Mousetrap from 'mousetrap';
 import { Component, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Track } from './../../models/Track';
-import { AudioService } from './../../services/audio.service';
+import { Track } from '../../models/Track';
+import { AudioService } from '../../services/audio.service';
 
 @Component({
   selector: 'app-player',
